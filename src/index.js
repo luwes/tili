@@ -1,4 +1,5 @@
 export { default as appendOnce } from './appendOnce';
+export { default as compose } from './compose';
 export { default as curry } from './curry';
 export { default as curryN } from './curryN';
 export { default as defaultTo } from './defaultTo';

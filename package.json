@@ -1,6 +1,6 @@
 {
   "name": "tili",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Small javascript utilities.",
   "main": "lib/tili.js",
   "module": "es/tili.js",
