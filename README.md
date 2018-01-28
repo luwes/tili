@@ -1,9 +1,13 @@
 # Tili 
 
+[![Build Status](https://travis-ci.org/luwes/tili.svg?branch=master)](https://travis-ci.org/luwes/tili)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 Small javascript utilities.
 
-- Optimized for tree shaking
-- Arguments ordered for currying but functions uncurried by default
-- DOM utilities included
+## Credits
 
-Still a work in progress.
+A lot of code and API choices by:
+
+- [Ramda](https://github.com/ramda/ramda)
+- [Lodash](https://github.com/lodash/lodash)
