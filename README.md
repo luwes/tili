@@ -7,7 +7,8 @@ Small javascript utilities.
 
 ## Credits
 
-A lot of code and API choices by:
+Remixed code by:
 
 - [Ramda](https://github.com/ramda/ramda)
 - [Lodash](https://github.com/lodash/lodash)
+- [Redux](https://github.com/reactjs/redux)
