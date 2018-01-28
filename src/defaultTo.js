@@ -1,3 +1,3 @@
-export default function defaultTo(d, val) {
-  return val == null ? d : val;
+export default function defaultTo(d, v) {
+  return v == null || v !== v ? d : v;
 }

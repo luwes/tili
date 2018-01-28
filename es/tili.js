@@ -72,8 +72,8 @@ function curry(fn) {
   return curryN.apply(void 0, [fn.length, fn].concat(args));
 }
 
-function defaultTo(d, val) {
-  return val == null ? d : val;
+function defaultTo(d, v) {
+  return v == null || v !== v ? d : v;
 }
 
 function includes(search, arr) {

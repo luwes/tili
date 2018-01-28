@@ -7,22 +7,38 @@
   "author": "Wesley Luyten",
   "license": "ISC",
   "repository": "luwes/tili",
+  "files": [
+    "es",
+    "lib",
+    "dist"
+  ],
   "scripts": {
     "clean": "rimraf lib dist es coverage",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest": "npm run build:cjs",
+    "test": "ava",
     "format": "prettier --write '{src,test}/**/*.js'",
     "format:check": "prettier --list-different '{src,test}/**/*.js'",
     "lint": "eslint src test",
-    "build:commonjs": "cross-env NODE_ENV=cjs rollup -c -o lib/tili.js",
+    "build:cjs": "cross-env NODE_ENV=cjs rollup -c -o lib/tili.js",
     "build:es": "cross-env BABEL_ENV=es NODE_ENV=es rollup -c -o es/tili.js",
     "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -o dist/tili.js",
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -o dist/tili.min.js",
-    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "build": "npm run build:cjs && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "watch": "cross-env BABEL_ENV=es NODE_ENV=es rollup -w -c -o es/tili.js",
     "prepare": "npm run clean && npm run format:check && npm run lint && npm run build"
+  },
+  "ava": {
+    "files": [
+      "test/*.js"
+    ],
+    "source": [
+      "src/*.js"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta",
     "@babel/preset-env": "^7.0.0-beta",
+    "ava": "^0.25.0",
     "babel-eslint": "^7.2.3",
     "chalk": "^2.1.0",
     "chokidar": "^1.7.0",
