@@ -17,7 +17,7 @@ test('throttle', async t => {
 
 test('throttle arguments', async t => {
   let value = 0;
-  const update = (val) => value = val;
+  const update = val => (value = val);
   const throttledUpdate = l.throttle(update, 32);
   throttledUpdate(1);
   throttledUpdate(2);
@@ -73,7 +73,9 @@ test.serial('throttle repeatedly with results', async t => {
   const throttledIncr = l.throttle(incr, 100);
 
   const results = [];
-  const saveResult = function() { results.push(throttledIncr()); };
+  const saveResult = function() {
+    results.push(throttledIncr());
+  };
   saveResult();
   saveResult();
   await delay(50);
@@ -128,36 +130,39 @@ test('throttle does not trigger leading call when leading is set to false', asyn
   t.is(counter, 1);
 });
 
-test.serial('more throttle does not trigger leading call when leading is set to false', async t => {
-  let counter = 0;
-  const incr = () => counter++;
-  const throttledIncr = l.throttle(incr, 100, { leading: false });
+test.serial(
+  'more throttle does not trigger leading call when leading is set to false',
+  async t => {
+    let counter = 0;
+    const incr = () => counter++;
+    const throttledIncr = l.throttle(incr, 100, { leading: false });
 
-  throttledIncr();
-  t.is(counter, 0);
-  await delay(50);
+    throttledIncr();
+    t.is(counter, 0);
+    await delay(50);
 
-  throttledIncr();
-  await delay(10);
+    throttledIncr();
+    await delay(10);
 
-  throttledIncr();
-  await delay(140);
+    throttledIncr();
+    await delay(140);
 
-  throttledIncr();
-  await delay(50);
+    throttledIncr();
+    await delay(50);
 
-  t.is(counter, 1);
-  await delay(100);
+    t.is(counter, 1);
+    await delay(100);
 
-  t.is(counter, 2);
-});
+    t.is(counter, 2);
+  }
+);
 
 test('one more throttle with leading: false test', async t => {
   let counter = 0;
   const incr = () => counter++;
   const throttledIncr = l.throttle(incr, 100, { leading: false });
-  const time = new Date;
-  while (new Date - time < 350) throttledIncr();
+  const time = new Date();
+  while (new Date() - time < 350) throttledIncr();
   t.true(counter <= 3);
   await delay(200);
 
@@ -186,7 +191,9 @@ test('throttle does not trigger trailing call when trailing is set to false', as
 
 test('throttle continues to function after system time is set backwards', async t => {
   let counter = 0;
-  var incr = function(){ counter++; };
+  var incr = function() {
+    counter++;
+  };
   var throttledIncr = l.throttle(incr, 100);
   var origNowFunc = l.now;
 
@@ -205,13 +212,10 @@ test('throttle continues to function after system time is set backwards', async 
 });
 
 test('throttle re-entrant', async t => {
-  const sequence = [
-    ['b1', 'b2'],
-    ['c1', 'c2']
-  ];
+  const sequence = [['b1', 'b2'], ['c1', 'c2']];
   let value = '';
   let throttledAppend;
-  const append = function(arg){
+  const append = function(arg) {
     value += this + arg;
     const args = sequence.pop();
     if (args) {
