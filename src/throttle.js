@@ -1,11 +1,20 @@
-export default function throttle(func, wait, options = {}) {
+/**
+ * Throttle a function.
+ * @param  {Function} fn
+ * @param  {Number}   wait
+ * @param  {Object}   options
+ * @param  {Boolean=true} options.leading - Trigger a leading function call.
+ * @param  {Boolean=true} options.trailing - Trigger a trailing function call.
+ * @return {Function}
+ */
+export default function throttle(fn, wait, options = {}) {
   let timeout, context, args, result;
   let previous = 0;
 
   const later = function() {
     previous = options.leading === false ? 0 : Date.now();
     timeout = null;
-    result = func.apply(context, args);
+    result = fn.apply(context, args);
     if (!timeout) context = args = null;
   };
 
@@ -21,7 +30,7 @@ export default function throttle(func, wait, options = {}) {
         timeout = null;
       }
       previous = now;
-      result = func.apply(context, args);
+      result = fn.apply(context, args);
       if (!timeout) context = args = null;
     } else if (!timeout && options.trailing !== false) {
       timeout = setTimeout(later, remaining);
