@@ -192,6 +192,50 @@ function qsa(element, selector) {
   return element.querySelectorAll(selector);
 }
 
+function throttle(func, wait) {
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var timeout, context, args, result;
+  var previous = 0;
+
+  var later = function later() {
+    previous = options.leading === false ? 0 : Date.now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) context = args = null;
+  };
+
+  var throttled = function throttled() {
+    var now = Date.now();
+    if (!previous && options.leading === false) previous = now;
+    var remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+
+    return result;
+  };
+
+  throttled.cancel = function () {
+    clearTimeout(timeout);
+    previous = 0;
+    timeout = context = args = null;
+  };
+
+  return throttled;
+}
+
 exports.appendOnce = appendOnce;
 exports.compose = compose;
 exports.curry = curry;
@@ -204,6 +248,7 @@ exports.memoize = memoize;
 exports.path = path;
 exports.qs = qs;
 exports.qsa = qsa;
+exports.throttle = throttle;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

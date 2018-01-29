@@ -12,3 +12,4 @@ Remixed code by:
 - [Ramda](https://github.com/ramda/ramda)
 - [Lodash](https://github.com/lodash/lodash)
 - [Redux](https://github.com/reactjs/redux)
+- [Underscore](https://github.com/jashkenas/underscore)
