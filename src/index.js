@@ -11,3 +11,4 @@ export { default as path } from './path';
 export { default as qs } from './qs';
 export { default as qsa } from './qsa';
 export { default as throttle } from './throttle';
+export { default as uniqueId } from './uniqueId';

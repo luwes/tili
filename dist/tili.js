@@ -306,6 +306,12 @@ function throttle(fn, wait) {
   return throttled;
 }
 
+var idCounter = 0;
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return "".concat(prefix).concat(id);
+}
+
 exports.appendOnce = appendOnce;
 exports.compose = compose;
 exports.curry = curry;
@@ -319,6 +325,7 @@ exports.path = path;
 exports.qs = qs;
 exports.qsa = qsa;
 exports.throttle = throttle;
+exports.uniqueId = uniqueId;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

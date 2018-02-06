@@ -300,4 +300,10 @@ function throttle(fn, wait) {
   return throttled;
 }
 
-export { appendOnce, compose, curry, curryN, defaultTo, includes, is, isPlainObject, memoize, path, qs, qsa, throttle };
+var idCounter = 0;
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return "".concat(prefix).concat(id);
+}
+
+export { appendOnce, compose, curry, curryN, defaultTo, includes, is, isPlainObject, memoize, path, qs, qsa, throttle, uniqueId };
