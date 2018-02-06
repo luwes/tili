@@ -36,17 +36,6 @@ function _toConsumableArray(arr) {
 }
 
 /**
- * Appends an element only once to a parent.
- * @param  {element} parent
- * @param  {element} element
- * @return {element}
- */
-function appendOnce(parent, element) {
-  parent = parent || document.body;
-  return parent.contains(element) ? element : parent.appendChild(element);
-}
-
-/**
  * Composes single-argument functions from right to left. The rightmost
  * function can take multiple arguments as it provides the signature for
  * the resulting composite function.
@@ -226,28 +215,6 @@ function path(paths, obj) {
 }
 
 /**
- * Get a single element from the DOM.
- * @param  {Element} element
- * @param  {string} selector
- * @return {Element}
- */
-function qs(element, selector) {
-  element = element || document;
-  return element.querySelector(selector);
-}
-
-/**
- * Get a nodelist from the DOM.
- * @param  {Element} element
- * @param  {string} selector
- * @return {NodeList}
- */
-function qsa(element, selector) {
-  element = element || document;
-  return element.querySelectorAll(selector);
-}
-
-/**
  * Throttle a function.
  * @param  {Function} fn
  * @param  {Number}   wait
@@ -306,4 +273,4 @@ function uniqueId(prefix) {
   return "".concat(prefix).concat(id);
 }
 
-export { appendOnce, compose, curry, curryN, defaultTo, includes, is, isPlainObject, memoize, path, qs, qsa, throttle, uniqueId };
+export { compose, curry, curryN, defaultTo, includes, is, isPlainObject, memoize, path, throttle, uniqueId };
