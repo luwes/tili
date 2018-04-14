@@ -31,6 +31,16 @@
     "semi": [
       "error",
       "always"
-    ]
+    ],
+    "valid-jsdoc": ["warn", {
+      "prefer": {
+          "returns": "return",
+          "arg": "param",
+          "arguments": "param"
+      },
+      "requireParamDescription": false,
+      "requireReturn": false,
+      "requireReturnDescription": false
+    }]
   }
 }

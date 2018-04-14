@@ -3,8 +3,8 @@
  * @param  {Function} fn
  * @param  {Number}   wait
  * @param  {Object}   options
- * @param  {Boolean=true} options.leading - Trigger a leading function call.
- * @param  {Boolean=true} options.trailing - Trigger a trailing function call.
+ * @param  {Boolean} [options.leading=true] - Trigger a leading function call.
+ * @param  {Boolean} [options.trailing=true] - Trigger a trailing function call.
  * @return {Function}
  */
 export default function throttle(fn, wait, options = {}) {
