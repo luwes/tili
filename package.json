@@ -25,7 +25,8 @@
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -o dist/tili.min.js",
     "build": "npm run build:cjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "watch": "cross-env BABEL_ENV=es NODE_ENV=es rollup -w -c -o es/tili.js",
-    "prepare": "npm run clean && npm run format:check && npm run lint && npm run build"
+    "prepare": "npm run clean && npm run format:check && npm run lint && npm run build",
+    "docs": "jsdoc2md lib/*.js > API.md"
   },
   "ava": {
     "files": [
@@ -48,7 +49,7 @@
     "rimraf": "^2.6.2",
     "rollup": "^0.52.2",
     "rollup-plugin-babel": "^4.0.0-beta",
-    "rollup-plugin-bundle-size": "https://github.com/vimeo/rollup-plugin-bundle-size",
+    "rollup-plugin-bundle-size": "vimeo/rollup-plugin-bundle-size",
     "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^2.0.0",

@@ -3353,9 +3353,9 @@ rollup-plugin-babel@^4.0.0-beta:
   dependencies:
     rollup-pluginutils "^1.5.0"
 
-"rollup-plugin-bundle-size@https://github.com/vimeo/rollup-plugin-bundle-size":
+rollup-plugin-bundle-size@vimeo/rollup-plugin-bundle-size:
   version "1.0.2"
-  resolved "https://github.com/vimeo/rollup-plugin-bundle-size#c43b59a5e1add364ccb7f45569f49b4c35e01025"
+  resolved "https://codeload.github.com/vimeo/rollup-plugin-bundle-size/tar.gz/c43b59a5e1add364ccb7f45569f49b4c35e01025"
   dependencies:
     chalk "^1.1.3"
     maxmin "^2.1.0"

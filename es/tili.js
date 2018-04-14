@@ -41,7 +41,7 @@ function _toConsumableArray(arr) {
  * the resulting composite function.
  *
  * @param {...Function} funcs - The functions to compose.
- * @returns {Function} - A function obtained by composing the argument functions
+ * @return {Function} - A function obtained by composing the argument functions
  * from right to left. For example, compose(f, g, h) is identical to doing
  * (...args) => f(g(h(...args))).
  */
@@ -145,7 +145,7 @@ function is(Ctor, val) {
 
 /**
  * @param {*} obj - The object to inspect.
- * @returns {Boolean} - True if the argument appears to be a plain object.
+ * @return {Boolean} - True if the argument appears to be a plain object.
  */
 function isPlainObject(obj) {
   if (_typeof(obj) !== 'object' || obj === null) return false;
@@ -219,8 +219,8 @@ function path(paths, obj) {
  * @param  {Function} fn
  * @param  {Number}   wait
  * @param  {Object}   options
- * @param  {Boolean=true} options.leading - Trigger a leading function call.
- * @param  {Boolean=true} options.trailing - Trigger a trailing function call.
+ * @param  {Boolean} [options.leading=true] - Trigger a leading function call.
+ * @param  {Boolean} [options.trailing=true] - Trigger a trailing function call.
  * @return {Function}
  */
 function throttle(fn, wait) {
