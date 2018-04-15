@@ -1,3 +1,4 @@
+export { default as clamp } from './clamp';
 export { default as clone } from './clone';
 export { default as compose } from './compose';
 export { default as curry } from './curry';
@@ -13,6 +14,7 @@ export { default as memoize } from './memoize';
 export { default as omit } from './omit';
 export { default as path } from './path';
 export { default as pick } from './pick';
+export { default as round } from './round';
 export { default as tap } from './tap';
 export { default as throttle } from './throttle';
 export { default as type } from './type';

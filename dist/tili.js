@@ -42,6 +42,33 @@ function _toConsumableArray(arr) {
 }
 
 /**
+ * Restricts a number to be within a range.
+ *
+ * Also works for other ordered types such as Strings and Dates.
+ *
+ * @func
+ * @since v0.4.0
+ * @category Relation
+ * @sig Ord a => a -> a -> a -> a
+ * @param {Number} min The lower limit of the clamp (inclusive)
+ * @param {Number} max The upper limit of the clamp (inclusive)
+ * @param {Number} value Value to be clamped
+ * @return {Number} Returns `minimum` when `val < minimum`, `maximum` when `val > maximum`, returns `val` otherwise
+ * @example
+ *
+ *      clamp(1, 10, -5) // => 1
+ *      clamp(1, 10, 15) // => 10
+ *      clamp(1, 10, 4)  // => 4
+ */
+function clamp(min, max, value) {
+  if (min > max) {
+    throw new Error('min must not be greater than max in clamp(min, max, value)');
+  }
+
+  return value < min ? min : value > max ? max : value;
+}
+
+/**
  * Gives a single-word string description of the (native) type of a value,
  * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
  * attempt to distinguish user Object types any further, reporting them all as
@@ -566,6 +593,54 @@ function pick(names, obj) {
 }
 
 /**
+ * Creates a function like `round`.
+ *
+ * @private
+ * @param {string} methodName The name of the `Math` method to use when rounding.
+ * @return {Function} Returns the new round function.
+ */
+function _round(methodName) {
+  var func = Math[methodName];
+  return function (number, precision) {
+    precision = precision == null ? 0 : Math.min(precision, 292);
+
+    if (precision) {
+      // Shift with exponential notation to avoid floating-point issues.
+      // See [MDN](https://mdn.io/round#Examples) for more details.
+      var pair = "".concat(number, "e").split('e');
+      var value = func("".concat(pair[0], "e").concat(+pair[1] + precision));
+      pair = "".concat(value, "e").split('e');
+      return +"".concat(pair[0], "e").concat(+pair[1] - precision);
+    }
+
+    return func(number);
+  };
+}
+
+/**
+ * Computes `number` rounded to `precision`.
+ *
+ * @func
+ * @since 0.4.0
+ * @category Math
+ * @param {number} number The number to round.
+ * @param {number} [precision=0] The precision to round to.
+ * @returns {number} Returns the rounded number.
+ * @example
+ *
+ * round(4.006)
+ * // => 4
+ *
+ * round(4.006, 2)
+ * // => 4.01
+ *
+ * round(4060, -2)
+ * // => 4100
+ */
+
+var round = _round('round');
+
+/**
  * Runs the given function with the supplied object, then returns the object.
  *
  * @func
@@ -670,6 +745,7 @@ function uniqueId(prefix) {
   return "".concat(prefix).concat(id);
 }
 
+exports.clamp = clamp;
 exports.clone = clone;
 exports.compose = compose;
 exports.curry = curry;
@@ -685,6 +761,7 @@ exports.memoize = memoize;
 exports.omit = omit;
 exports.path = path;
 exports.pick = pick;
+exports.round = round;
 exports.tap = tap;
 exports.throttle = throttle;
 exports.type = type;
