@@ -1,8 +1,18 @@
 /**
- * Get an object value by array paths.
- * @param  {string[]} paths
- * @param  {object} obj
- * @return {*}
+ * Retrieve the value at a given path.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> {a} -> a | Undefined
+ * @param {Array} paths The path to use.
+ * @param {Object} obj The object to retrieve the nested property from.
+ * @return {*} The data at `path`.
+ * @example
+ *
+ *      path(['a', 'b'], {a: {b: 2}}); //=> 2
+ *      path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
 export default function path(paths, obj) {
   let val = obj;

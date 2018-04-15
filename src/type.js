@@ -4,7 +4,11 @@
  * attempt to distinguish user Object types any further, reporting them all as
  * 'Object'.
  *
- * @param  {*} val - The value to test
+ * @func
+ * @since v0.3.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
  * @return {String}
  * @example
  *

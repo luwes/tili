@@ -3,6 +3,9 @@
  * function can take multiple arguments as it provides the signature for
  * the resulting composite function.
  *
+ * @func
+ * @since v0.1.0
+ * @category Function
  * @param {...Function} funcs - The functions to compose.
  * @return {Function} - A function obtained by composing the argument functions
  * from right to left. For example, compose(f, g, h) is identical to doing

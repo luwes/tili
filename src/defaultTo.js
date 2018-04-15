@@ -1,5 +1,9 @@
 /**
  * Default to a value if the passed is null or undefined.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Logic
  * @param  {*} d - The default value.
  * @param  {*} v - The passed value.
  * @return {*}

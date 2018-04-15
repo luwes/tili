@@ -42,10 +42,104 @@ function _toConsumableArray(arr) {
 }
 
 /**
+ * Gives a single-word string description of the (native) type of a value,
+ * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+ * attempt to distinguish user Object types any further, reporting them all as
+ * 'Object'.
+ *
+ * @func
+ * @since v0.3.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
+ * @return {String}
+ * @example
+ *
+ *      type({}); //=> "Object"
+ *      type(1); //=> "Number"
+ *      type(false); //=> "Boolean"
+ *      type('s'); //=> "String"
+ *      type(null); //=> "Null"
+ *      type([]); //=> "Array"
+ *      type(/[A-z]/); //=> "RegExp"
+ *      type(() => {}); //=> "Function"
+ *      type(undefined); //=> "Undefined"
+ */
+function type(val) {
+  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+}
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @since v0.3.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      const objects = [{}, {}, {}];
+ *      const objectsClone = clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+}
+
+function _clone(value, refFrom, refTo, deep) {
+  var copy = function copy(copiedValue) {
+    var len = refFrom.length;
+    var idx = 0;
+
+    while (idx < len) {
+      if (value === refFrom[idx]) {
+        return refTo[idx];
+      }
+
+      idx += 1;
+    }
+
+    refFrom[idx + 1] = value;
+    refTo[idx + 1] = copiedValue;
+
+    for (var key in value) {
+      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
+    }
+
+    return copiedValue;
+  };
+
+  switch (type(value)) {
+    case 'Object':
+      return copy({});
+
+    case 'Array':
+      return copy([]);
+
+    case 'Date':
+      return new Date(value.valueOf());
+
+    default:
+      return value;
+  }
+}
+
+/**
  * Composes single-argument functions from right to left. The rightmost
  * function can take multiple arguments as it provides the signature for
  * the resulting composite function.
  *
+ * @func
+ * @since v0.1.0
+ * @category Function
  * @param {...Function} funcs - The functions to compose.
  * @return {Function} - A function obtained by composing the argument functions
  * from right to left. For example, compose(f, g, h) is identical to doing
@@ -75,6 +169,10 @@ function compose() {
 
 /**
  * Curry a function by argument length.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Function
  * @param  {Number}    length
  * @param  {Function}  fn
  * @param  {...Function} args
@@ -106,6 +204,10 @@ function curryN(length, fn) {
 
 /**
  * Curry a function.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Function
  * @param  {Function} fn
  * @param  {...Function} args
  * @return {Function}
@@ -121,6 +223,10 @@ function curry(fn) {
 
 /**
  * Default to a value if the passed is null or undefined.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Logic
  * @param  {*} d - The default value.
  * @param  {*} v - The passed value.
  * @return {*}
@@ -131,6 +237,10 @@ function defaultTo(d, v) {
 
 /**
  * Check if string or array includes the searched part.
+ *
+ * @func
+ * @since v0.1.0
+ * @category List
  * @param  {*} search
  * @param  {Array|String} arr
  * @return {Boolean}
@@ -140,18 +250,56 @@ function includes(search, arr) {
 }
 
 /**
- * Check if a value is of a certain type.
- * @param  {*} Ctor - Constructor, can be built in types or user-defined.
- * @param  {*} val
+ * See if an object (`val`) is an instance of the supplied constructor. This
+ * function will check up the inheritance chain, if any.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Type
+ * @sig (* -> {*}) -> a -> Boolean
+ * @param {Object} Ctor A constructor
+ * @param {*} val The value to test
  * @return {Boolean}
+ * @example
+ *
+ *      is(Object, {}); //=> true
+ *      is(Number, 1); //=> true
+ *      is(Object, 1); //=> false
+ *      is(String, 's'); //=> true
+ *      is(String, new String('')); //=> true
+ *      is(Object, new String('')); //=> true
+ *      is(Object, 's'); //=> false
+ *      is(Number, {}); //=> false
  */
 function is(Ctor, val) {
   return val != null && (val.constructor === Ctor || val instanceof Ctor);
 }
 
 /**
- * @param {*} obj - The object to inspect.
- * @return {Boolean} - True if the argument appears to be a plain object.
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @since 0.1.0
+ * @category Type
+ * @param {*} obj The value to check.
+ * @return {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1
+ * }
+ *
+ * isPlainObject(new Foo)
+ * // => false
+ *
+ * isPlainObject([1, 2, 3])
+ * // => false
+ *
+ * isPlainObject({ 'x': 0, 'y': 0 })
+ * // => true
+ *
+ * isPlainObject(Object.create(null))
+ * // => true
  */
 function isPlainObject(obj) {
   if (_typeof(obj) !== 'object' || obj === null) return false;
@@ -166,6 +314,10 @@ function isPlainObject(obj) {
 
 /**
  * Memoize a function.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Function
  * @param  {Function} fn
  * @return {*}
  */
@@ -199,10 +351,20 @@ function areArgumentsShallowlyEqual(prev, next) {
 }
 
 /**
- * Get an object value by array paths.
- * @param  {string[]} paths
- * @param  {object} obj
- * @return {*}
+ * Retrieve the value at a given path.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> {a} -> a | Undefined
+ * @param {Array} paths The path to use.
+ * @param {Object} obj The object to retrieve the nested property from.
+ * @return {*} The data at `path`.
+ * @example
+ *
+ *      path(['a', 'b'], {a: {b: 2}}); //=> 2
+ *      path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
 function path(paths, obj) {
   var val = obj;
@@ -222,6 +384,10 @@ function path(paths, obj) {
 
 /**
  * Throttle a function.
+ *
+ * @func
+ * @since v0.2.0
+ * @category Function
  * @param  {Function} fn
  * @param  {Number}   wait
  * @param  {Object}   options
@@ -274,11 +440,29 @@ function throttle(fn, wait) {
 }
 
 var idCounter = 0;
+/**
+ * Generates a unique ID. If `prefix` is given, the ID is appended to it.
+ *
+ * @func
+ * @since 0.1.0
+ * @category Util
+ * @param {string} [prefix=''] The value to prefix the ID with.
+ * @return {string} Returns the unique ID.
+ * @example
+ *
+ *      uniqueId('contact_');
+ *      // => 'contact_104'
+ *
+ *      uniqueId();
+ *      // => '105'
+ */
+
 function uniqueId(prefix) {
   var id = ++idCounter;
   return "".concat(prefix).concat(id);
 }
 
+exports.clone = clone;
 exports.compose = compose;
 exports.curry = curry;
 exports.curryN = curryN;
@@ -289,6 +473,7 @@ exports.isPlainObject = isPlainObject;
 exports.memoize = memoize;
 exports.path = path;
 exports.throttle = throttle;
+exports.type = type;
 exports.uniqueId = uniqueId;
 
 Object.defineProperty(exports, '__esModule', { value: true });

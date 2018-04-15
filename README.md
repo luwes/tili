@@ -5,6 +5,18 @@
 
 Small javascript utilities.
 
+- Tiny in size.
+- Not curried by default, but arguments set up for it.
+
+## Credits
+
+Remixed code by:
+
+- [Ramda](https://github.com/ramda/ramda)
+- [Lodash](https://github.com/lodash/lodash)
+- [Underscore](https://github.com/jashkenas/underscore)
+- [Redux](https://github.com/reactjs/redux)
+
 ## Functions
 
 <dl>
@@ -19,25 +31,43 @@ the resulting composite function.</p>
 <dt><a href="#curry">curry(fn, ...args)</a> ⇒ <code>function</code></dt>
 <dd><p>Curry a function.</p>
 </dd>
-<dt><a href="#defaultTo">defaultTo(d, v)</a> ⇒ <code>*</code></dt>
-<dd><p>Default to a value if the passed is null or undefined.</p>
+<dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
+<dd><p>Memoize a function.</p>
+</dd>
+<dt><a href="#throttle">throttle(fn, wait, options)</a> ⇒ <code>function</code></dt>
+<dd><p>Throttle a function.</p>
 </dd>
 <dt><a href="#includes">includes(search, arr)</a> ⇒ <code>Boolean</code></dt>
 <dd><p>Check if string or array includes the searched part.</p>
 </dd>
-<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>Check if a value is of a certain type.</p>
+<dt><a href="#defaultTo">defaultTo(d, v)</a> ⇒ <code>*</code></dt>
+<dd><p>Default to a value if the passed is null or undefined.</p>
 </dd>
-<dt><a href="#isPlainObject">isPlainObject(obj)</a> ⇒ <code>Boolean</code></dt>
-<dd></dd>
-<dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
-<dd><p>Memoize a function.</p>
+<dt><a href="#clone">clone(value)</a> ⇒ <code>*</code></dt>
+<dd><p>Creates a deep copy of the value which may contain (nested) <code>Array</code>s and
+<code>Object</code>s, <code>Number</code>s, <code>String</code>s, <code>Boolean</code>s and <code>Date</code>s. <code>Function</code>s are
+assigned by reference rather than copied</p>
+<p>Dispatches to a <code>clone</code> method if present.</p>
 </dd>
 <dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
-<dd><p>Get an object value by array paths.</p>
+<dd><p>Retrieve the value at a given path.</p>
 </dd>
-<dt><a href="#throttle">throttle(fn, wait, options)</a> ⇒ <code>function</code></dt>
-<dd><p>Throttle a function.</p>
+<dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
+<dd><p>Gives a single-word string description of the (native) type of a value,
+returning such answers as &#39;Object&#39;, &#39;Number&#39;, &#39;Array&#39;, or &#39;Null&#39;. Does not
+attempt to distinguish user Object types any further, reporting them all as
+&#39;Object&#39;.</p>
+</dd>
+<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>See if an object (<code>val</code>) is an instance of the supplied constructor. This
+function will check up the inheritance chain, if any.</p>
+</dd>
+<dt><a href="#isPlainObject">isPlainObject(obj)</a> ⇒ <code>boolean</code></dt>
+<dd><p>Checks if <code>value</code> is a plain object, that is, an object created by the
+<code>Object</code> constructor or one with a <code>[[Prototype]]</code> of <code>null</code>.</p>
+</dd>
+<dt><a href="#uniqueId">uniqueId([prefix])</a> ⇒ <code>string</code></dt>
+<dd><p>Generates a unique ID. If <code>prefix</code> is given, the ID is appended to it.</p>
 </dd>
 </dl>
 
@@ -52,6 +82,8 @@ the resulting composite function.
 **Returns**: <code>function</code> - - A function obtained by composing the argument functions
 from right to left. For example, compose(f, g, h) is identical to doing
 (...args) => f(g(h(...args))).  
+**Category**: Function  
+**Since**: v0.1.0  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -63,6 +95,8 @@ from right to left. For example, compose(f, g, h) is identical to doing
 Curry a function by argument length.
 
 **Kind**: global function  
+**Category**: Function  
+**Since**: v0.1.0  
 
 | Param | Type |
 | --- | --- |
@@ -76,57 +110,13 @@ Curry a function by argument length.
 Curry a function.
 
 **Kind**: global function  
+**Category**: Function  
+**Since**: v0.1.0  
 
 | Param | Type |
 | --- | --- |
 | fn | <code>function</code> | 
 | ...args | <code>function</code> | 
-
-<a name="defaultTo"></a>
-
-## defaultTo(d, v) ⇒ <code>\*</code>
-Default to a value if the passed is null or undefined.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| d | <code>\*</code> | The default value. |
-| v | <code>\*</code> | The passed value. |
-
-<a name="includes"></a>
-
-## includes(search, arr) ⇒ <code>Boolean</code>
-Check if string or array includes the searched part.
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| search | <code>\*</code> | 
-| arr | <code>Array</code> \| <code>String</code> | 
-
-<a name="is"></a>
-
-## is(Ctor, val) ⇒ <code>Boolean</code>
-Check if a value is of a certain type.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| Ctor | <code>\*</code> | Constructor, can be built in types or user-defined. |
-| val | <code>\*</code> |  |
-
-<a name="isPlainObject"></a>
-
-## isPlainObject(obj) ⇒ <code>Boolean</code>
-**Kind**: global function  
-**Returns**: <code>Boolean</code> - - True if the argument appears to be a plain object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| obj | <code>\*</code> | The object to inspect. |
 
 <a name="memoize"></a>
 
@@ -134,22 +124,12 @@ Check if a value is of a certain type.
 Memoize a function.
 
 **Kind**: global function  
+**Category**: Function  
+**Since**: v0.1.0  
 
 | Param | Type |
 | --- | --- |
 | fn | <code>function</code> | 
-
-<a name="path"></a>
-
-## path(paths, obj) ⇒ <code>\*</code>
-Get an object value by array paths.
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| paths | <code>Array.&lt;string&gt;</code> | 
-| obj | <code>object</code> | 
 
 <a name="throttle"></a>
 
@@ -157,6 +137,8 @@ Get an object value by array paths.
 Throttle a function.
 
 **Kind**: global function  
+**Category**: Function  
+**Since**: v0.2.0  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -166,12 +148,190 @@ Throttle a function.
 | [options.leading] | <code>Boolean</code> | <code>true</code> | Trigger a leading function call. |
 | [options.trailing] | <code>Boolean</code> | <code>true</code> | Trigger a trailing function call. |
 
+<a name="includes"></a>
 
-## Credits
+## includes(search, arr) ⇒ <code>Boolean</code>
+Check if string or array includes the searched part.
 
-Remixed code by:
+**Kind**: global function  
+**Category**: List  
+**Since**: v0.1.0  
 
-- [Ramda](https://github.com/ramda/ramda)
-- [Lodash](https://github.com/lodash/lodash)
-- [Redux](https://github.com/reactjs/redux)
-- [Underscore](https://github.com/jashkenas/underscore)
+| Param | Type |
+| --- | --- |
+| search | <code>\*</code> | 
+| arr | <code>Array</code> \| <code>String</code> | 
+
+<a name="defaultTo"></a>
+
+## defaultTo(d, v) ⇒ <code>\*</code>
+Default to a value if the passed is null or undefined.
+
+**Kind**: global function  
+**Category**: Logic  
+**Since**: v0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| d | <code>\*</code> | The default value. |
+| v | <code>\*</code> | The passed value. |
+
+<a name="clone"></a>
+
+## clone(value) ⇒ <code>\*</code>
+Creates a deep copy of the value which may contain (nested) `Array`s and
+`Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+assigned by reference rather than copied
+
+Dispatches to a `clone` method if present.
+
+**Kind**: global function  
+**Returns**: <code>\*</code> - A deeply cloned copy of `val`  
+**Category**: Object  
+**Sig**: <code>\*</code> -> {*}  
+**Since**: v0.3.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>\*</code> | The object or array to clone |
+
+**Example**  
+```js
+const objects = [{}, {}, {}];
+     const objectsClone = clone(objects);
+     objects === objectsClone; //=> false
+     objects[0] === objectsClone[0]; //=> false
+```
+<a name="path"></a>
+
+## path(paths, obj) ⇒ <code>\*</code>
+Retrieve the value at a given path.
+
+**Kind**: global function  
+**Returns**: <code>\*</code> - The data at `path`.  
+**Category**: Object  
+**Typedefn**: Idx = String | Int  
+**Sig**: [Idx] -> {a} -> a | Undefined  
+**Since**: v0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paths | <code>Array</code> | The path to use. |
+| obj | <code>Object</code> | The object to retrieve the nested property from. |
+
+**Example**  
+```js
+path(['a', 'b'], {a: {b: 2}}); //=> 2
+     path(['a', 'b'], {c: {b: 2}}); //=> undefined
+```
+<a name="type"></a>
+
+## type(val) ⇒ <code>String</code>
+Gives a single-word string description of the (native) type of a value,
+returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+attempt to distinguish user Object types any further, reporting them all as
+'Object'.
+
+**Kind**: global function  
+**Category**: Type  
+**Sig**: (* -> {*}) -> String  
+**Since**: v0.3.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| val | <code>\*</code> | The value to test |
+
+**Example**  
+```js
+type({}); //=> "Object"
+     type(1); //=> "Number"
+     type(false); //=> "Boolean"
+     type('s'); //=> "String"
+     type(null); //=> "Null"
+     type([]); //=> "Array"
+     type(/[A-z]/); //=> "RegExp"
+     type(() => {}); //=> "Function"
+     type(undefined); //=> "Undefined"
+```
+<a name="is"></a>
+
+## is(Ctor, val) ⇒ <code>Boolean</code>
+See if an object (`val`) is an instance of the supplied constructor. This
+function will check up the inheritance chain, if any.
+
+**Kind**: global function  
+**Category**: Type  
+**Sig**: (* -> {*}) -> a -> Boolean  
+**Since**: v0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Ctor | <code>Object</code> | A constructor |
+| val | <code>\*</code> | The value to test |
+
+**Example**  
+```js
+is(Object, {}); //=> true
+     is(Number, 1); //=> true
+     is(Object, 1); //=> false
+     is(String, 's'); //=> true
+     is(String, new String('')); //=> true
+     is(Object, new String('')); //=> true
+     is(Object, 's'); //=> false
+     is(Number, {}); //=> false
+```
+<a name="isPlainObject"></a>
+
+## isPlainObject(obj) ⇒ <code>boolean</code>
+Checks if `value` is a plain object, that is, an object created by the
+`Object` constructor or one with a `[[Prototype]]` of `null`.
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - Returns `true` if `value` is a plain object, else `false`.  
+**Category**: Type  
+**Since**: 0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>\*</code> | The value to check. |
+
+**Example**  
+```js
+function Foo() {
+  this.a = 1
+}
+
+isPlainObject(new Foo)
+// => false
+
+isPlainObject([1, 2, 3])
+// => false
+
+isPlainObject({ 'x': 0, 'y': 0 })
+// => true
+
+isPlainObject(Object.create(null))
+// => true
+```
+<a name="uniqueId"></a>
+
+## uniqueId([prefix]) ⇒ <code>string</code>
+Generates a unique ID. If `prefix` is given, the ID is appended to it.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - Returns the unique ID.  
+**Category**: Util  
+**Since**: 0.1.0  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [prefix] | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The value to prefix the ID with. |
+
+**Example**  
+```js
+uniqueId('contact_');
+     // => 'contact_104'
+
+     uniqueId();
+     // => '105'
+```

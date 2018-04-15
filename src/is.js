@@ -1,7 +1,13 @@
 /**
- * Check if a value is of a certain type.
- * @param  {*} Ctor - Constructor, can be built in types or user-defined.
- * @param  {*} val
+ * See if an object (`val`) is an instance of the supplied constructor. This
+ * function will check up the inheritance chain, if any.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Type
+ * @sig (* -> {*}) -> a -> Boolean
+ * @param {Object} Ctor A constructor
+ * @param {*} val The value to test
  * @return {Boolean}
  * @example
  *

@@ -1,5 +1,9 @@
 /**
  * Throttle a function.
+ *
+ * @func
+ * @since v0.2.0
+ * @category Function
  * @param  {Function} fn
  * @param  {Number}   wait
  * @param  {Object}   options

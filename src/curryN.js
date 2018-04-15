@@ -1,5 +1,9 @@
 /**
  * Curry a function by argument length.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Function
  * @param  {Number}    length
  * @param  {Function}  fn
  * @param  {...Function} args

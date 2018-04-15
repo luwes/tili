@@ -1,3 +1,4 @@
+export { default as clone } from './clone';
 export { default as compose } from './compose';
 export { default as curry } from './curry';
 export { default as curryN } from './curryN';
@@ -8,4 +9,5 @@ export { default as isPlainObject } from './isPlainObject';
 export { default as memoize } from './memoize';
 export { default as path } from './path';
 export { default as throttle } from './throttle';
+export { default as type } from './type';
 export { default as uniqueId } from './uniqueId';
