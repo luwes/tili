@@ -31,6 +31,19 @@ the resulting composite function.</p>
 <dt><a href="#curry">curry(fn, ...args)</a> ⇒ <code>function</code></dt>
 <dd><p>Curry a function.</p>
 </dd>
+<dt><a href="#delay">delay(wait, func, [...args])</a> ⇒ <code>number</code></dt>
+<dd><p>Invokes <code>func</code> after <code>wait</code> milliseconds. Any additional arguments are
+provided to <code>func</code> when it&#39;s invoked.</p>
+</dd>
+<dt><a href="#debounce">debounce(wait, func, immediate)</a> ⇒ <code>function</code></dt>
+<dd><p>Returns a function, that, as long as it continues to be invoked, will not
+be triggered. The function will be called after it stops being called for
+N milliseconds. If <code>immediate</code> is passed, trigger the function on the
+leading edge, instead of the trailing.</p>
+</dd>
+<dt><a href="#defer">defer(func)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it&#39;s invoked.</p>
+</dd>
 <dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
 <dd><p>Memoize a function.</p>
 </dd>
@@ -45,6 +58,9 @@ the resulting composite function.</p>
 </dd>
 <dt><a href="#defaultTo">defaultTo(d, v)</a> ⇒ <code>*</code></dt>
 <dd><p>Default to a value if the passed is null or undefined.</p>
+</dd>
+<dt><a href="#round">round(number, [precision])</a> ⇒ <code>number</code></dt>
+<dd><p>Computes <code>number</code> rounded to <code>precision</code>.</p>
 </dd>
 <dt><a href="#clone">clone(value)</a> ⇒ <code>*</code></dt>
 <dd><p>Creates a deep copy of the value which may contain (nested) <code>Array</code>s and
@@ -61,6 +77,10 @@ assigned by reference rather than copied</p>
 <dt><a href="#pick">pick(names, obj)</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns a partial copy of an object containing only the keys specified. If
 the key does not exist, the property is ignored.</p>
+</dd>
+<dt><a href="#clamp">clamp(min, max, value)</a> ⇒ <code>Number</code></dt>
+<dd><p>Restricts a number to be within a range.</p>
+<p>Also works for other ordered types such as Strings and Dates.</p>
 </dd>
 <dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
 <dd><p>Gives a single-word string description of the (native) type of a value,
@@ -127,6 +147,61 @@ Curry a function.
 | --- | --- |
 | fn | <code>function</code> | 
 | ...args | <code>function</code> | 
+
+<a name="delay"></a>
+
+## delay(wait, func, [...args]) ⇒ <code>number</code>
+Invokes `func` after `wait` milliseconds. Any additional arguments are
+provided to `func` when it's invoked.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - Returns the timer id.  
+**Category**: Function  
+**Since**: 0.4.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| wait | <code>number</code> | The number of milliseconds to delay invocation. |
+| func | <code>function</code> | The function to delay. |
+| [...args] | <code>\*</code> | The arguments to invoke `func` with. |
+
+**Example**  
+```js
+delay(text => console.log(text), 1000, 'later')
+// => Logs 'later' after one second.
+```
+<a name="debounce"></a>
+
+## debounce(wait, func, immediate) ⇒ <code>function</code>
+Returns a function, that, as long as it continues to be invoked, will not
+be triggered. The function will be called after it stops being called for
+N milliseconds. If `immediate` is passed, trigger the function on the
+leading edge, instead of the trailing.
+
+**Kind**: global function  
+**Category**: Function  
+**Since**: v0.4.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| wait | <code>Number</code> | Amount of milliseconds |
+| func | <code>function</code> |  |
+| immediate | <code>Boolean</code> |  |
+
+<a name="defer"></a>
+
+## defer(func) ⇒ <code>Promise</code>
+Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - defer promise  
+**Category**: Function  
+**See**: https://github.com/jamiebuilds/tickedoff  
+**Since**: v0.4.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| func | <code>function</code> | deferred function |
 
 <a name="memoize"></a>
 
@@ -209,6 +284,32 @@ Default to a value if the passed is null or undefined.
 | d | <code>\*</code> | The default value. |
 | v | <code>\*</code> | The passed value. |
 
+<a name="round"></a>
+
+## round(number, [precision]) ⇒ <code>number</code>
+Computes `number` rounded to `precision`.
+
+**Kind**: global function  
+**Returns**: <code>number</code> - Returns the rounded number.  
+**Category**: Math  
+**Since**: 0.4.0  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| number | <code>number</code> |  | The number to round. |
+| [precision] | <code>number</code> | <code>0</code> | The precision to round to. |
+
+**Example**  
+```js
+round(4.006)
+// => 4
+
+round(4.006, 2)
+// => 4.01
+
+round(4060, -2)
+// => 4100
+```
 <a name="clone"></a>
 
 ## clone(value) ⇒ <code>\*</code>
@@ -300,6 +401,31 @@ the key does not exist, the property is ignored.
 ```js
 pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
    pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
+```
+<a name="clamp"></a>
+
+## clamp(min, max, value) ⇒ <code>Number</code>
+Restricts a number to be within a range.
+
+Also works for other ordered types such as Strings and Dates.
+
+**Kind**: global function  
+**Returns**: <code>Number</code> - Returns `minimum` when `val < minimum`, `maximum` when `val > maximum`, returns `val` otherwise  
+**Category**: Relation  
+**Sig**: Ord a => a -> a -> a -> a  
+**Since**: v0.4.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| min | <code>Number</code> | The lower limit of the clamp (inclusive) |
+| max | <code>Number</code> | The upper limit of the clamp (inclusive) |
+| value | <code>Number</code> | Value to be clamped |
+
+**Example**  
+```js
+clamp(1, 10, -5) // => 1
+     clamp(1, 10, 15) // => 10
+     clamp(1, 10, 4)  // => 4
 ```
 <a name="type"></a>
 
