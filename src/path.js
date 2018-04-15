@@ -11,8 +11,8 @@
  * @return {*} The data at `path`.
  * @example
  *
- *      path(['a', 'b'], {a: {b: 2}}); //=> 2
- *      path(['a', 'b'], {c: {b: 2}}); //=> undefined
+ * path(['a', 'b'], {a: {b: 2}}); //=> 2
+ * path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
 export default function path(paths, obj) {
   let val = obj;

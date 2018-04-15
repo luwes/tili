@@ -16,31 +16,22 @@
   },
   "rules": {
     "no-console": 0,
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "valid-jsdoc": ["warn", {
-      "prefer": {
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "valid-jsdoc": [
+      "warn",
+      {
+        "prefer": {
           "returns": "return",
           "arg": "param",
           "arguments": "param"
-      },
-      "requireParamDescription": false,
-      "requireReturn": false,
-      "requireReturnDescription": false
-    }]
+        },
+        "requireParamDescription": false,
+        "requireReturn": false,
+        "requireReturnDescription": false
+      }
+    ]
   }
 }

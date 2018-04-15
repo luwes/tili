@@ -10,11 +10,11 @@ let idCounter = 0;
  * @return {string} Returns the unique ID.
  * @example
  *
- *      uniqueId('contact_');
- *      // => 'contact_104'
+ * uniqueId('contact_');
+ * // => 'contact_104'
  *
- *      uniqueId();
- *      // => '105'
+ * uniqueId();
+ * // => '105'
  */
 export default function uniqueId(prefix) {
   var id = ++idCounter;
