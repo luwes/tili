@@ -12,15 +12,15 @@
  * @return {String}
  * @example
  *
- * type({}); //=> "Object"
- * type(1); //=> "Number"
- * type(false); //=> "Boolean"
- * type('s'); //=> "String"
- * type(null); //=> "Null"
- * type([]); //=> "Array"
- * type(/[A-z]/); //=> "RegExp"
- * type(() => {}); //=> "Function"
- * type(undefined); //=> "Undefined"
+ *    type({}); //=> "Object"
+ *    type(1); //=> "Number"
+ *    type(false); //=> "Boolean"
+ *    type('s'); //=> "String"
+ *    type(null); //=> "Null"
+ *    type([]); //=> "Array"
+ *    type(/[A-z]/); //=> "RegExp"
+ *    type(() => {}); //=> "Function"
+ *    type(undefined); //=> "Undefined"
  */
 export default function type(val) {
   return val === null

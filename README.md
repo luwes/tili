@@ -34,6 +34,9 @@ the resulting composite function.</p>
 <dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
 <dd><p>Memoize a function.</p>
 </dd>
+<dt><a href="#tap">tap(fn, x)</a> ⇒ <code>*</code></dt>
+<dd><p>Runs the given function with the supplied object, then returns the object.</p>
+</dd>
 <dt><a href="#throttle">throttle(fn, wait, options)</a> ⇒ <code>function</code></dt>
 <dd><p>Throttle a function.</p>
 </dd>
@@ -49,8 +52,15 @@ the resulting composite function.</p>
 assigned by reference rather than copied</p>
 <p>Dispatches to a <code>clone</code> method if present.</p>
 </dd>
+<dt><a href="#omit">omit(names, obj)</a> ⇒ <code>Object</code></dt>
+<dd><p>Returns a partial copy of an object omitting the keys specified.</p>
+</dd>
 <dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
 <dd><p>Retrieve the value at a given path.</p>
+</dd>
+<dt><a href="#pick">pick(names, obj)</a> ⇒ <code>Object</code></dt>
+<dd><p>Returns a partial copy of an object containing only the keys specified. If
+the key does not exist, the property is ignored.</p>
 </dd>
 <dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
 <dd><p>Gives a single-word string description of the (native) type of a value,
@@ -131,6 +141,29 @@ Memoize a function.
 | --- | --- |
 | fn | <code>function</code> | 
 
+<a name="tap"></a>
+
+## tap(fn, x) ⇒ <code>\*</code>
+Runs the given function with the supplied object, then returns the object.
+
+**Kind**: global function  
+**Returns**: <code>\*</code> - `x`.  
+**Category**: Function  
+**Sig**: (a -> *) -> a -> a  
+**Symb**: tap(f, a) = a  
+**Since**: v0.3.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fn | <code>function</code> | The function to call with `x`. The return value of `fn` will be thrown away. |
+| x | <code>\*</code> |  |
+
+**Example**  
+```js
+const sayX = x => console.log('x is ' + x);
+   tap(sayX, 100); //=> 100
+   // logs 'x is 100'
+```
 <a name="throttle"></a>
 
 ## throttle(fn, wait, options) ⇒ <code>function</code>
@@ -198,9 +231,30 @@ Dispatches to a `clone` method if present.
 **Example**  
 ```js
 const objects = [{}, {}, {}];
-     const objectsClone = clone(objects);
-     objects === objectsClone; //=> false
-     objects[0] === objectsClone[0]; //=> false
+   const objectsClone = clone(objects);
+   objects === objectsClone; //=> false
+   objects[0] === objectsClone[0]; //=> false
+```
+<a name="omit"></a>
+
+## omit(names, obj) ⇒ <code>Object</code>
+Returns a partial copy of an object omitting the keys specified.
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - A new object with properties from `names` not on it.  
+**Category**: Object  
+**Sig**: [String] -> {String: *} -> {String: *}  
+**See**: pick  
+**Since**: v0.3.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| names | <code>Array</code> | an array of String property names to omit from the new object |
+| obj | <code>Object</code> | The object to copy from |
+
+**Example**  
+```js
+omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
 ```
 <a name="path"></a>
 
@@ -222,7 +276,30 @@ Retrieve the value at a given path.
 **Example**  
 ```js
 path(['a', 'b'], {a: {b: 2}}); //=> 2
-     path(['a', 'b'], {c: {b: 2}}); //=> undefined
+   path(['a', 'b'], {c: {b: 2}}); //=> undefined
+```
+<a name="pick"></a>
+
+## pick(names, obj) ⇒ <code>Object</code>
+Returns a partial copy of an object containing only the keys specified. If
+the key does not exist, the property is ignored.
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - A new object with only properties from `names` on it.  
+**Category**: Object  
+**Sig**: [k] -> {k: v} -> {k: v}  
+**See**: omit  
+**Since**: v0.3.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| names | <code>Array</code> | an array of String property names to copy onto a new object |
+| obj | <code>Object</code> | The object to copy from |
+
+**Example**  
+```js
+pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+   pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
 ```
 <a name="type"></a>
 
@@ -244,14 +321,14 @@ attempt to distinguish user Object types any further, reporting them all as
 **Example**  
 ```js
 type({}); //=> "Object"
-     type(1); //=> "Number"
-     type(false); //=> "Boolean"
-     type('s'); //=> "String"
-     type(null); //=> "Null"
-     type([]); //=> "Array"
-     type(/[A-z]/); //=> "RegExp"
-     type(() => {}); //=> "Function"
-     type(undefined); //=> "Undefined"
+   type(1); //=> "Number"
+   type(false); //=> "Boolean"
+   type('s'); //=> "String"
+   type(null); //=> "Null"
+   type([]); //=> "Array"
+   type(/[A-z]/); //=> "RegExp"
+   type(() => {}); //=> "Function"
+   type(undefined); //=> "Undefined"
 ```
 <a name="is"></a>
 
@@ -272,13 +349,13 @@ function will check up the inheritance chain, if any.
 **Example**  
 ```js
 is(Object, {}); //=> true
-     is(Number, 1); //=> true
-     is(Object, 1); //=> false
-     is(String, 's'); //=> true
-     is(String, new String('')); //=> true
-     is(Object, new String('')); //=> true
-     is(Object, 's'); //=> false
-     is(Number, {}); //=> false
+   is(Number, 1); //=> true
+   is(Object, 1); //=> false
+   is(String, 's'); //=> true
+   is(String, new String('')); //=> true
+   is(Object, new String('')); //=> true
+   is(Object, 's'); //=> false
+   is(Number, {}); //=> false
 ```
 <a name="isPlainObject"></a>
 
@@ -298,20 +375,20 @@ Checks if `value` is a plain object, that is, an object created by the
 **Example**  
 ```js
 function Foo() {
-  this.a = 1
-}
+     this.a = 1
+   }
 
-isPlainObject(new Foo)
-// => false
+   isPlainObject(new Foo)
+   // => false
 
-isPlainObject([1, 2, 3])
-// => false
+   isPlainObject([1, 2, 3])
+   // => false
 
-isPlainObject({ 'x': 0, 'y': 0 })
-// => true
+   isPlainObject({ 'x': 0, 'y': 0 })
+   // => true
 
-isPlainObject(Object.create(null))
-// => true
+   isPlainObject(Object.create(null))
+   // => true
 ```
 <a name="uniqueId"></a>
 
@@ -330,8 +407,8 @@ Generates a unique ID. If `prefix` is given, the ID is appended to it.
 **Example**  
 ```js
 uniqueId('contact_');
-     // => 'contact_104'
+   // => 'contact_104'
 
-     uniqueId();
-     // => '105'
+   uniqueId();
+   // => '105'
 ```

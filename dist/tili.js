@@ -55,15 +55,15 @@ function _toConsumableArray(arr) {
  * @return {String}
  * @example
  *
- *      type({}); //=> "Object"
- *      type(1); //=> "Number"
- *      type(false); //=> "Boolean"
- *      type('s'); //=> "String"
- *      type(null); //=> "Null"
- *      type([]); //=> "Array"
- *      type(/[A-z]/); //=> "RegExp"
- *      type(() => {}); //=> "Function"
- *      type(undefined); //=> "Undefined"
+ *    type({}); //=> "Object"
+ *    type(1); //=> "Number"
+ *    type(false); //=> "Boolean"
+ *    type('s'); //=> "String"
+ *    type(null); //=> "Null"
+ *    type([]); //=> "Array"
+ *    type(/[A-z]/); //=> "RegExp"
+ *    type(() => {}); //=> "Function"
+ *    type(undefined); //=> "Undefined"
  */
 function type(val) {
   return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
@@ -84,10 +84,10 @@ function type(val) {
  * @return {*} A deeply cloned copy of `val`
  * @example
  *
- *      const objects = [{}, {}, {}];
- *      const objectsClone = clone(objects);
- *      objects === objectsClone; //=> false
- *      objects[0] === objectsClone[0]; //=> false
+ *    const objects = [{}, {}, {}];
+ *    const objectsClone = clone(objects);
+ *    objects === objectsClone; //=> false
+ *    objects[0] === objectsClone[0]; //=> false
  */
 
 function clone(value) {
@@ -262,14 +262,14 @@ function includes(search, arr) {
  * @return {Boolean}
  * @example
  *
- *      is(Object, {}); //=> true
- *      is(Number, 1); //=> true
- *      is(Object, 1); //=> false
- *      is(String, 's'); //=> true
- *      is(String, new String('')); //=> true
- *      is(Object, new String('')); //=> true
- *      is(Object, 's'); //=> false
- *      is(Number, {}); //=> false
+ *    is(Object, {}); //=> true
+ *    is(Number, 1); //=> true
+ *    is(Object, 1); //=> false
+ *    is(String, 's'); //=> true
+ *    is(String, new String('')); //=> true
+ *    is(Object, new String('')); //=> true
+ *    is(Object, 's'); //=> false
+ *    is(Number, {}); //=> false
  */
 function is(Ctor, val) {
   return val != null && (val.constructor === Ctor || val instanceof Ctor);
@@ -285,21 +285,21 @@ function is(Ctor, val) {
  * @return {boolean} Returns `true` if `value` is a plain object, else `false`.
  * @example
  *
- * function Foo() {
- *   this.a = 1
- * }
+ *    function Foo() {
+ *      this.a = 1
+ *    }
  *
- * isPlainObject(new Foo)
- * // => false
+ *    isPlainObject(new Foo)
+ *    // => false
  *
- * isPlainObject([1, 2, 3])
- * // => false
+ *    isPlainObject([1, 2, 3])
+ *    // => false
  *
- * isPlainObject({ 'x': 0, 'y': 0 })
- * // => true
+ *    isPlainObject({ 'x': 0, 'y': 0 })
+ *    // => true
  *
- * isPlainObject(Object.create(null))
- * // => true
+ *    isPlainObject(Object.create(null))
+ *    // => true
  */
 function isPlainObject(obj) {
   if (_typeof(obj) !== 'object' || obj === null) return false;
@@ -351,6 +351,41 @@ function areArgumentsShallowlyEqual(prev, next) {
 }
 
 /**
+ * Returns a partial copy of an object omitting the keys specified.
+ *
+ * @func
+ * @since v0.3.0
+ * @category Object
+ * @sig [String] -> {String: *} -> {String: *}
+ * @param {Array} names an array of String property names to omit from the new object
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with properties from `names` not on it.
+ * @see pick
+ * @example
+ *
+ *    omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
+ */
+function omit(names, obj) {
+  var result = {};
+  var index = {};
+  var idx = 0;
+  var len = names.length;
+
+  while (idx < len) {
+    index[names[idx]] = 1;
+    idx += 1;
+  }
+
+  for (var prop in obj) {
+    if (!index.hasOwnProperty(prop)) {
+      result[prop] = obj[prop];
+    }
+  }
+
+  return result;
+}
+
+/**
  * Retrieve the value at a given path.
  *
  * @func
@@ -363,8 +398,8 @@ function areArgumentsShallowlyEqual(prev, next) {
  * @return {*} The data at `path`.
  * @example
  *
- *      path(['a', 'b'], {a: {b: 2}}); //=> 2
- *      path(['a', 'b'], {c: {b: 2}}); //=> undefined
+ *    path(['a', 'b'], {a: {b: 2}}); //=> 2
+ *    path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
 function path(paths, obj) {
   var val = obj;
@@ -381,6 +416,63 @@ function path(paths, obj) {
 
   return val;
 }
+
+/**
+ * Returns a partial copy of an object containing only the keys specified. If
+ * the key does not exist, the property is ignored.
+ *
+ * @func
+ * @since v0.3.0
+ * @category Object
+ * @sig [k] -> {k: v} -> {k: v}
+ * @param {Array} names an array of String property names to copy onto a new object
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with only properties from `names` on it.
+ * @see omit
+ * @example
+ *
+ *    pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+ *    pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
+ */
+function pick(names, obj) {
+  var result = {};
+  var idx = 0;
+
+  while (idx < names.length) {
+    if (names[idx] in obj) {
+      result[names[idx]] = obj[names[idx]];
+    }
+
+    idx += 1;
+  }
+
+  return result;
+}
+
+/**
+ * Runs the given function with the supplied object, then returns the object.
+ *
+ * @func
+ * @since v0.3.0
+ * @category Function
+ * @sig (a -> *) -> a -> a
+ * @param {Function} fn The function to call with `x`.
+ * The return value of `fn` will be thrown away.
+ * @param {*} x
+ * @return {*} `x`.
+ * @example
+ *
+ *    const sayX = x => console.log('x is ' + x);
+ *    tap(sayX, 100); //=> 100
+ *    // logs 'x is 100'
+ *
+ * @symb tap(f, a) = a
+ */
+
+var tap = curryN(2, function (fn, x) {
+  fn(x);
+  return x;
+});
 
 /**
  * Throttle a function.
@@ -450,11 +542,11 @@ var idCounter = 0;
  * @return {string} Returns the unique ID.
  * @example
  *
- *      uniqueId('contact_');
- *      // => 'contact_104'
+ *    uniqueId('contact_');
+ *    // => 'contact_104'
  *
- *      uniqueId();
- *      // => '105'
+ *    uniqueId();
+ *    // => '105'
  */
 
 function uniqueId(prefix) {
@@ -471,7 +563,10 @@ exports.includes = includes;
 exports.is = is;
 exports.isPlainObject = isPlainObject;
 exports.memoize = memoize;
+exports.omit = omit;
 exports.path = path;
+exports.pick = pick;
+exports.tap = tap;
 exports.throttle = throttle;
 exports.type = type;
 exports.uniqueId = uniqueId;

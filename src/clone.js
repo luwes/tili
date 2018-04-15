@@ -15,10 +15,10 @@ import type from './type';
  * @return {*} A deeply cloned copy of `val`
  * @example
  *
- * const objects = [{}, {}, {}];
- * const objectsClone = clone(objects);
- * objects === objectsClone; //=> false
- * objects[0] === objectsClone[0]; //=> false
+ *    const objects = [{}, {}, {}];
+ *    const objectsClone = clone(objects);
+ *    objects === objectsClone; //=> false
+ *    objects[0] === objectsClone[0]; //=> false
  */
 export default function clone(value) {
   return value != null && typeof value.clone === 'function'
