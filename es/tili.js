@@ -216,6 +216,83 @@ function curry(fn) {
 }
 
 /**
+ * Invokes `func` after `wait` milliseconds. Any additional arguments are
+ * provided to `func` when it's invoked.
+ *
+ * @since 0.4.0
+ * @category Function
+ * @param {number} wait The number of milliseconds to delay invocation.
+ * @param {Function} func The function to delay.
+ * @param {...*} [args] The arguments to invoke `func` with.
+ * @return {number} Returns the timer id.
+ * @example
+ *
+ * delay(text => console.log(text), 1000, 'later')
+ * // => Logs 'later' after one second.
+ */
+function delay(wait, func) {
+  if (typeof func != 'function') {
+    throw new TypeError('Expected a function');
+  }
+
+  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    args[_key - 2] = arguments[_key];
+  }
+
+  return setTimeout.apply(void 0, [func, +wait || 0].concat(args));
+}
+
+/**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing.
+ *
+ * @func
+ * @since v0.4.0
+ * @category Function
+ * @param  {Number} wait - Amount of milliseconds
+ * @param  {Function} func
+ * @param  {Boolean} immediate
+ * @return {Function}
+ */
+
+function debounce(wait, func, immediate) {
+  var timeout;
+  var result;
+
+  var later = function later(context, args) {
+    timeout = null;
+    if (args) result = func.apply(context, args);
+  };
+
+  var debounced = function debounced() {
+    if (timeout) clearTimeout(timeout);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    if (immediate) {
+      var callNow = !timeout;
+      timeout = setTimeout(later, wait);
+      if (callNow) result = func.apply(this, args);
+    } else {
+      timeout = delay(wait, later, this, args);
+    }
+
+    return result;
+  };
+
+  debounced.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return debounced;
+}
+
+/**
  * Default to a value if the passed is null or undefined.
  *
  * @func
@@ -227,6 +304,45 @@ function curry(fn) {
  */
 function defaultTo(d, v) {
   return v == null || v !== v ? d : v;
+}
+
+/* eslint no-undef:0 */
+var tick;
+
+if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === 'object' && typeof process.nextTick === 'function') {
+  tick = process.nextTick;
+} else if (typeof Promise === 'function') {
+  var resolve = Promise.resolve();
+  tick = resolve.then.bind(resolve);
+} else if (typeof setImmediate === 'function') {
+  tick = setImmediate;
+} else {
+  tick = setTimeout;
+}
+/**
+ * Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
+ *
+ * @func
+ * @since v0.4.0
+ * @category Function
+ * @param  {Function} func - deferred function
+ * @return {Promise} defer promise
+ * @see  https://github.com/jamiebuilds/tickedoff
+ */
+
+
+function defer(func) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
+  if (typeof func != 'function') {
+    throw new TypeError('Expected a function');
+  }
+
+  return tick(function () {
+    return func.apply(null, args);
+  });
 }
 
 /**
@@ -548,4 +664,4 @@ function uniqueId(prefix) {
   return "".concat(prefix).concat(id);
 }
 
-export { clone, compose, curry, curryN, defaultTo, includes, is, isPlainObject, memoize, omit, path, pick, tap, throttle, type, uniqueId };
+export { clone, compose, curry, curryN, debounce, defaultTo, defer, delay, includes, is, isPlainObject, memoize, omit, path, pick, tap, throttle, type, uniqueId };
