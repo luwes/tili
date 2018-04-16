@@ -3,7 +3,7 @@ import * as l from '..';
 
 test('should mutate target and return same object', t => {
   const target = { a: 4 };
-  const expected = { a: 4, b:3 };
+  const expected = { a: 4, b: 3 };
 
   const actual = l.merge(target, { b: 3 });
 
@@ -22,32 +22,22 @@ test('should mutate target and return same array', t => {
 });
 
 test('merges an object', t => {
-
   const names = {
-    'characters': [
-      { 'name': 'barney' },
-      { 'name': 'fred' }
-    ]
+    characters: [{ name: 'barney' }, { name: 'fred' }]
   };
 
   const ages = {
-    'characters': [
-      { 'age': 36 },
-      { 'age': 40 }
-    ]
+    characters: [{ age: 36 }, { age: 40 }]
   };
 
   const heights = {
-    'characters': [
-      { 'height': '5\'4"' },
-      { 'height': '5\'5"' }
-    ]
+    characters: [{ height: '5\'4"' }, { height: '5\'5"' }]
   };
 
   const expected = {
-    'characters': [
-      { 'name': 'barney', 'age': 36, 'height': '5\'4"' },
-      { 'name': 'fred', 'age': 40, 'height': '5\'5"' }
+    characters: [
+      { name: 'barney', age: 36, height: '5\'4"' },
+      { name: 'fred', age: 40, height: '5\'5"' }
     ]
   };
 
@@ -62,6 +52,6 @@ test('should work with four arguments', t => {
 });
 
 test('should not overwrite existing values with `undefined` source values', t => {
-  const actual = l.merge({ 'a': 1 }, { 'a': undefined, 'b': undefined });
-  t.deepEqual(actual, { 'a': 1, 'b': undefined });
+  const actual = l.merge({ a: 1 }, { a: undefined, b: undefined });
+  t.deepEqual(actual, { a: 1, b: undefined });
 });

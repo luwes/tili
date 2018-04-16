@@ -609,16 +609,24 @@ function mergeAll(target) {
 }
 
 function merge(target, source) {
+  if (target === source) {
+    return target;
+  }
+
   if (Array.isArray(source)) {
     return mergeArray(target, source);
-  } else if (isPlainObject(source)) {
-    return mergeObject(target, source);
-  } else {
-    return clone$1(target, source);
   }
+
+  if (isPlainObject(source)) {
+    return mergeObject(target, source);
+  }
+
+  return clone$1(source);
 }
 
 function mergeArray(target, source) {
+  if (!target) target = [];
+
   if (Array.isArray(target)) {
     for (var i = 0; i < source.length; i++) {
       target[i] = merge(target[i], source[i]);
@@ -629,24 +637,27 @@ function mergeArray(target, source) {
 }
 
 function mergeObject(target, source) {
+  if (!target) target = {};
   Object.keys(source).forEach(function (key) {
     if (isPlainObject(source[key]) || Array.isArray(source[key])) {
       target[key] = merge(target[key], source[key]);
-    } else {
-      target[key] = clone$1(target[key], source[key]);
+    } else if (!isUndefinedSource(target[key], source[key])) {
+      target[key] = clone$1(source[key]);
     }
   });
   return target;
 }
 
-function clone$1(target, source) {
+function isUndefinedSource(target, source) {
+  return target && source === undefined;
+}
+
+function clone$1(source) {
   if (isPlainObject(source)) {
-    target = merge(emptyTarget(source), source);
-  } else if (source !== undefined) {
-    target = source;
+    return merge(emptyTarget(source), source);
   }
 
-  return target;
+  return source;
 }
 
 function emptyTarget(val) {
