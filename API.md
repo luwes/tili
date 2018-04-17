@@ -31,7 +31,7 @@ leading edge, instead of the trailing.</p>
 <dt><a href="#tap">tap(fn, x)</a> ⇒ <code>*</code></dt>
 <dd><p>Runs the given function with the supplied object, then returns the object.</p>
 </dd>
-<dt><a href="#throttle">throttle(fn, wait, options)</a> ⇒ <code>function</code></dt>
+<dt><a href="#throttle">throttle(wait, fn, options)</a> ⇒ <code>function</code></dt>
 <dd><p>Throttle a function.</p>
 </dd>
 <dt><a href="#includes">includes(search, arr)</a> ⇒ <code>Boolean</code></dt>
@@ -236,7 +236,7 @@ const sayX = x => console.log('x is ' + x);
 ```
 <a name="throttle"></a>
 
-## throttle(fn, wait, options) ⇒ <code>function</code>
+## throttle(wait, fn, options) ⇒ <code>function</code>
 Throttle a function.
 
 **Kind**: global function  
@@ -245,8 +245,8 @@ Throttle a function.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| fn | <code>function</code> |  |  |
 | wait | <code>Number</code> |  |  |
+| fn | <code>function</code> |  |  |
 | options | <code>Object</code> |  |  |
 | [options.leading] | <code>Boolean</code> | <code>true</code> | Trigger a leading function call. |
 | [options.trailing] | <code>Boolean</code> | <code>true</code> | Trigger a trailing function call. |
