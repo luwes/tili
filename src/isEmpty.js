@@ -18,7 +18,7 @@ var toString = Object.prototype.toString;
  *      isEmpty([1, 2, 3]);   //=> false
  *      isEmpty([]);          //=> true
  *      isEmpty('');          //=> true
- *      isEmpty(null);        //=> false
+ *      isEmpty(null);        //=> true
  *      isEmpty({});          //=> true
  *      isEmpty({length: 0}); //=> false
  */
