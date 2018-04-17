@@ -14,5 +14,5 @@ test('works like advertised', t => {
   t.truthy(l.isEmpty(''));
   t.truthy(l.isEmpty(null));
   t.truthy(l.isEmpty({}));
-  t.falsy(l.isEmpty({length:0}));
+  t.falsy(l.isEmpty({ length: 0 }));
 });
