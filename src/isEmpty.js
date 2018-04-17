@@ -1,19 +1,6 @@
 // https://github.com/ianstormtaylor/is-empty
 
-/**
- * Has own property.
- *
- * @type {Function}
- */
-
 var has = Object.prototype.hasOwnProperty;
-
-/**
- * To string.
- *
- * @type {Function}
- */
-
 var toString = Object.prototype.toString;
 
 /**

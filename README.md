@@ -59,6 +59,10 @@ leading edge, instead of the trailing.</p>
 <dt><a href="#defaultTo">defaultTo(d, v)</a> ⇒ <code>*</code></dt>
 <dd><p>Default to a value if the passed is null or undefined.</p>
 </dd>
+<dt><a href="#isEmpty">isEmpty(val)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Returns <code>true</code> if the given value is its type&#39;s empty value; <code>false</code>
+otherwise.</p>
+</dd>
 <dt><a href="#round">round(number, [precision])</a> ⇒ <code>number</code></dt>
 <dd><p>Computes <code>number</code> rounded to <code>precision</code>.</p>
 </dd>
@@ -67,6 +71,16 @@ leading edge, instead of the trailing.</p>
 <code>Object</code>s, <code>Number</code>s, <code>String</code>s, <code>Boolean</code>s and <code>Date</code>s. <code>Function</code>s are
 assigned by reference rather than copied</p>
 <p>Dispatches to a <code>clone</code> method if present.</p>
+</dd>
+<dt><a href="#merge">merge(target, [...sources])</a> ⇒ <code>Object</code></dt>
+<dd><p>This method is like <code>assign</code> except that it recursively merges own and
+inherited enumerable string keyed properties of source objects into the
+destination object. Source properties that resolve to <code>undefined</code> are
+skipped if a destination value exists. Array and plain object properties
+are merged recursively. Other objects and value types are overridden by
+assignment. Source objects are applied from left to right. Subsequent
+sources overwrite property assignments of previous sources.</p>
+<p><strong>Note:</strong> This method mutates <code>target</code>.</p>
 </dd>
 <dt><a href="#omit">omit(names, obj)</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns a partial copy of an object omitting the keys specified.</p>
@@ -284,6 +298,30 @@ Default to a value if the passed is null or undefined.
 | d | <code>\*</code> | The default value. |
 | v | <code>\*</code> | The passed value. |
 
+<a name="isEmpty"></a>
+
+## isEmpty(val) ⇒ <code>Boolean</code>
+Returns `true` if the given value is its type's empty value; `false`
+otherwise.
+
+**Kind**: global function  
+**Category**: Logic  
+**Sig**: a -> Boolean  
+**Since**: v0.4.0  
+
+| Param | Type |
+| --- | --- |
+| val | <code>\*</code> | 
+
+**Example**  
+```js
+isEmpty([1, 2, 3]);   //=> false
+     isEmpty([]);          //=> true
+     isEmpty('');          //=> true
+     isEmpty(null);        //=> false
+     isEmpty({});          //=> true
+     isEmpty({length: 0}); //=> false
+```
 <a name="round"></a>
 
 ## round(number, [precision]) ⇒ <code>number</code>
@@ -335,6 +373,42 @@ const objects = [{}, {}, {}];
    const objectsClone = clone(objects);
    objects === objectsClone; //=> false
    objects[0] === objectsClone[0]; //=> false
+```
+<a name="merge"></a>
+
+## merge(target, [...sources]) ⇒ <code>Object</code>
+This method is like `assign` except that it recursively merges own and
+inherited enumerable string keyed properties of source objects into the
+destination object. Source properties that resolve to `undefined` are
+skipped if a destination value exists. Array and plain object properties
+are merged recursively. Other objects and value types are overridden by
+assignment. Source objects are applied from left to right. Subsequent
+sources overwrite property assignments of previous sources.
+
+**Note:** This method mutates `target`.
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - Returns `object`.  
+**Category**: Object  
+**Since**: 0.4.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>Object</code> | The destination object. |
+| [...sources] | <code>Object</code> | The source objects. |
+
+**Example**  
+```js
+const object = {
+     'a': [{ 'b': 2 }, { 'd': 4 }]
+   }
+
+   const other = {
+     'a': [{ 'c': 3 }, { 'e': 5 }]
+   }
+
+   merge(object, other)
+   // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
 ```
 <a name="omit"></a>
 

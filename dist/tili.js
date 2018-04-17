@@ -419,19 +419,7 @@ function is(Ctor, val) {
 }
 
 // https://github.com/ianstormtaylor/is-empty
-
-/**
- * Has own property.
- *
- * @type {Function}
- */
 var has = Object.prototype.hasOwnProperty;
-/**
- * To string.
- *
- * @type {Function}
- */
-
 var toString = Object.prototype.toString;
 /**
  * Returns `true` if the given value is its type's empty value; `false`
@@ -600,15 +588,15 @@ function areArgumentsShallowlyEqual(prev, next) {
  *    // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
  */
 
-function mergeAll(target) {
+function merge(target) {
   for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     sources[_key - 1] = arguments[_key];
   }
 
-  return sources.reduce(merge, target);
+  return sources.reduce(_merge, target);
 }
 
-function merge(target, source) {
+function _merge(target, source) {
   if (target === source) {
     return target;
   }
@@ -629,7 +617,7 @@ function mergeArray(target, source) {
 
   if (Array.isArray(target)) {
     for (var i = 0; i < source.length; i++) {
-      target[i] = merge(target[i], source[i]);
+      target[i] = _merge(target[i], source[i]);
     }
   }
 
@@ -640,7 +628,7 @@ function mergeObject(target, source) {
   if (!target) target = {};
   Object.keys(source).forEach(function (key) {
     if (isPlainObject(source[key]) || Array.isArray(source[key])) {
-      target[key] = merge(target[key], source[key]);
+      target[key] = _merge(target[key], source[key]);
     } else if (!isUndefinedSource(target[key], source[key])) {
       target[key] = clone$1(source[key]);
     }
@@ -654,7 +642,7 @@ function isUndefinedSource(target, source) {
 
 function clone$1(source) {
   if (isPlainObject(source)) {
-    return merge(emptyTarget(source), source);
+    return _merge(emptyTarget(source), source);
   }
 
   return source;
@@ -930,7 +918,7 @@ exports.is = is;
 exports.isEmpty = isEmpty;
 exports.isPlainObject = isPlainObject;
 exports.memoize = memoize;
-exports.merge = mergeAll;
+exports.merge = merge;
 exports.omit = omit;
 exports.path = path;
 exports.pick = pick;

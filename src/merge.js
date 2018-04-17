@@ -29,11 +29,11 @@ import isPlainObject from './isPlainObject';
  *    merge(object, other)
  *    // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
  */
-export default function mergeAll(target, ...sources) {
-  return sources.reduce(merge, target);
+export default function merge(target, ...sources) {
+  return sources.reduce(_merge, target);
 }
 
-function merge(target, source) {
+function _merge(target, source) {
   if (target === source) {
     return target;
   }
@@ -53,7 +53,7 @@ function mergeArray(target, source) {
   if (!target) target = [];
   if (Array.isArray(target)) {
     for (var i = 0; i < source.length; i++) {
-      target[i] = merge(target[i], source[i]);
+      target[i] = _merge(target[i], source[i]);
     }
   }
   return target;
@@ -63,7 +63,7 @@ function mergeObject(target, source) {
   if (!target) target = {};
   Object.keys(source).forEach(function(key) {
     if (isPlainObject(source[key]) || Array.isArray(source[key])) {
-      target[key] = merge(target[key], source[key]);
+      target[key] = _merge(target[key], source[key]);
     } else if (!isUndefinedSource(target[key], source[key])) {
       target[key] = clone(source[key]);
     }
@@ -77,7 +77,7 @@ function isUndefinedSource(target, source) {
 
 function clone(source) {
   if (isPlainObject(source)) {
-    return merge(emptyTarget(source), source);
+    return _merge(emptyTarget(source), source);
   }
   return source;
 }

@@ -26,6 +26,7 @@
     "build": "npm run build:cjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "watch": "cross-env BABEL_ENV=es NODE_ENV=es rollup -w -c -o es/tili.js",
     "prepare": "npm run clean && npm run format:check && npm run lint && npm run build",
+    "predocs": "npm run build:cjs",
     "docs": "jsdoc2md lib/*.js > API.md"
   },
   "ava": {
