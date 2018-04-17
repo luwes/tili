@@ -18,15 +18,13 @@ if (typeof process === 'object' && typeof process.nextTick === 'function') {
  * @func
  * @since v0.4.0
  * @category Function
- * @param  {Function} func - deferred function
- * @return {Promise} defer promise
+ * @param  {Function} func - Deferred function
+ * @param {*} [args] Optional arguments
  * @see  https://github.com/jamiebuilds/tickedoff
  */
 export default function defer(func, ...args) {
   if (typeof func != 'function') {
     throw new TypeError('Expected a function');
   }
-  return tick(function() {
-    return func.apply(null, args);
-  });
+  tick(() => func(...args));
 }

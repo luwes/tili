@@ -16,13 +16,13 @@ the resulting composite function.</p>
 <dd><p>Invokes <code>func</code> after <code>wait</code> milliseconds. Any additional arguments are
 provided to <code>func</code> when it&#39;s invoked.</p>
 </dd>
-<dt><a href="#debounce">debounce(wait, func, immediate)</a> ⇒ <code>function</code></dt>
+<dt><a href="#debounce">debounce(wait, func, [immediate])</a> ⇒ <code>function</code></dt>
 <dd><p>Returns a function, that, as long as it continues to be invoked, will not
 be triggered. The function will be called after it stops being called for
 N milliseconds. If <code>immediate</code> is passed, trigger the function on the
 leading edge, instead of the trailing.</p>
 </dd>
-<dt><a href="#defer">defer(func)</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#defer">defer(func, [args])</a></dt>
 <dd><p>Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it&#39;s invoked.</p>
 </dd>
 <dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
@@ -31,7 +31,7 @@ leading edge, instead of the trailing.</p>
 <dt><a href="#tap">tap(fn, x)</a> ⇒ <code>*</code></dt>
 <dd><p>Runs the given function with the supplied object, then returns the object.</p>
 </dd>
-<dt><a href="#throttle">throttle(wait, fn, options)</a> ⇒ <code>function</code></dt>
+<dt><a href="#throttle">throttle(wait, fn, [options])</a> ⇒ <code>function</code></dt>
 <dd><p>Throttle a function.</p>
 </dd>
 <dt><a href="#includes">includes(search, arr)</a> ⇒ <code>Boolean</code></dt>
@@ -163,11 +163,11 @@ provided to `func` when it's invoked.
 **Example**  
 ```js
 delay(text => console.log(text), 1000, 'later')
-// => Logs 'later' after one second.
+   // => Logs 'later' after one second.
 ```
 <a name="debounce"></a>
 
-## debounce(wait, func, immediate) ⇒ <code>function</code>
+## debounce(wait, func, [immediate]) ⇒ <code>function</code>
 Returns a function, that, as long as it continues to be invoked, will not
 be triggered. The function will be called after it stops being called for
 N milliseconds. If `immediate` is passed, trigger the function on the
@@ -177,26 +177,26 @@ leading edge, instead of the trailing.
 **Category**: Function  
 **Since**: v0.4.0  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| wait | <code>Number</code> | Amount of milliseconds |
-| func | <code>function</code> |  |
-| immediate | <code>Boolean</code> |  |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| wait | <code>Number</code> |  | Amount of milliseconds |
+| func | <code>function</code> |  |  |
+| [immediate] | <code>Boolean</code> | <code>false</code> |  |
 
 <a name="defer"></a>
 
-## defer(func) ⇒ <code>Promise</code>
+## defer(func, [args])
 Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
 
 **Kind**: global function  
-**Returns**: <code>Promise</code> - defer promise  
 **Category**: Function  
 **See**: https://github.com/jamiebuilds/tickedoff  
 **Since**: v0.4.0  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| func | <code>function</code> | deferred function |
+| func | <code>function</code> | Deferred function |
+| [args] | <code>\*</code> | Optional arguments |
 
 <a name="memoize"></a>
 
@@ -236,7 +236,7 @@ const sayX = x => console.log('x is ' + x);
 ```
 <a name="throttle"></a>
 
-## throttle(wait, fn, options) ⇒ <code>function</code>
+## throttle(wait, fn, [options]) ⇒ <code>function</code>
 Throttle a function.
 
 **Kind**: global function  
@@ -247,7 +247,7 @@ Throttle a function.
 | --- | --- | --- | --- |
 | wait | <code>Number</code> |  |  |
 | fn | <code>function</code> |  |  |
-| options | <code>Object</code> |  |  |
+| [options] | <code>Object</code> |  |  |
 | [options.leading] | <code>Boolean</code> | <code>true</code> | Trigger a leading function call. |
 | [options.trailing] | <code>Boolean</code> | <code>true</code> | Trigger a trailing function call. |
 
@@ -321,13 +321,13 @@ Computes `number` rounded to `precision`.
 **Example**  
 ```js
 round(4.006)
-// => 4
+   // => 4
 
-round(4.006, 2)
-// => 4.01
+   round(4.006, 2)
+   // => 4.01
 
-round(4060, -2)
-// => 4100
+   round(4060, -2)
+   // => 4100
 ```
 <a name="clone"></a>
 

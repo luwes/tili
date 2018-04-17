@@ -260,8 +260,8 @@ function curry(fn) {
  * @return {number} Returns the timer id.
  * @example
  *
- * delay(text => console.log(text), 1000, 'later')
- * // => Logs 'later' after one second.
+ *    delay(text => console.log(text), 1000, 'later')
+ *    // => Logs 'later' after one second.
  */
 function delay(wait, func) {
   if (typeof func != 'function') {
@@ -286,11 +286,12 @@ function delay(wait, func) {
  * @category Function
  * @param  {Number} wait - Amount of milliseconds
  * @param  {Function} func
- * @param  {Boolean} immediate
+ * @param  {Boolean} [immediate=false]
  * @return {Function}
  */
 
-function debounce(wait, func, immediate) {
+function debounce(wait, func) {
+  var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var timeout;
   var result;
 
@@ -358,8 +359,8 @@ if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === 'objec
  * @func
  * @since v0.4.0
  * @category Function
- * @param  {Function} func - deferred function
- * @return {Promise} defer promise
+ * @param  {Function} func - Deferred function
+ * @param {*} [args] Optional arguments
  * @see  https://github.com/jamiebuilds/tickedoff
  */
 
@@ -373,8 +374,8 @@ function defer(func) {
     throw new TypeError('Expected a function');
   }
 
-  return tick(function () {
-    return func.apply(null, args);
+  tick(function () {
+    return func.apply(void 0, args);
   });
 }
 
@@ -787,14 +788,14 @@ function _round(methodName) {
  * @returns {number} Returns the rounded number.
  * @example
  *
- * round(4.006)
- * // => 4
+ *    round(4.006)
+ *    // => 4
  *
- * round(4.006, 2)
- * // => 4.01
+ *    round(4.006, 2)
+ *    // => 4.01
  *
- * round(4060, -2)
- * // => 4100
+ *    round(4060, -2)
+ *    // => 4100
  */
 
 var round = _round('round');
@@ -832,9 +833,9 @@ var tap = curryN(2, function (fn, x) {
  * @category Function
  * @param  {Number}   wait
  * @param  {Function} fn
- * @param  {Object}   options
- * @param  {Boolean} [options.leading=true] - Trigger a leading function call.
- * @param  {Boolean} [options.trailing=true] - Trigger a trailing function call.
+ * @param  {Object}   [options]
+ * @param  {Boolean}  [options.leading=true] - Trigger a leading function call.
+ * @param  {Boolean}  [options.trailing=true] - Trigger a trailing function call.
  * @return {Function}
  */
 function throttle(wait, fn) {

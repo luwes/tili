@@ -10,8 +10,8 @@
  * @return {number} Returns the timer id.
  * @example
  *
- * delay(text => console.log(text), 1000, 'later')
- * // => Logs 'later' after one second.
+ *    delay(text => console.log(text), 1000, 'later')
+ *    // => Logs 'later' after one second.
  */
 export default function delay(wait, func, ...args) {
   if (typeof func != 'function') {

@@ -11,10 +11,10 @@ import delay from './delay';
  * @category Function
  * @param  {Number} wait - Amount of milliseconds
  * @param  {Function} func
- * @param  {Boolean} immediate
+ * @param  {Boolean} [immediate=false]
  * @return {Function}
  */
-export default function debounce(wait, func, immediate) {
+export default function debounce(wait, func, immediate = false) {
   let timeout;
   let result;
 
