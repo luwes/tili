@@ -55,3 +55,23 @@ test('should not overwrite existing values with `undefined` source values', t =>
   const actual = l.merge({ a: 1 }, { a: undefined, b: undefined });
   t.deepEqual(actual, { a: 1, b: undefined });
 });
+
+test('should merge onto function `object` values', t => {
+  function Foo() {}
+
+  var source = { 'a': 1 };
+  var actual = l.merge(Foo, source);
+
+  t.truthy(actual === Foo);
+  t.is(Foo.a, 1);
+});
+
+test('should merge onto non-plain `object` values', t => {
+  function Foo() {}
+
+  var object = new Foo;
+  var actual = l.merge(object, { 'a': 1 });
+
+  t.truthy(actual === object);
+  t.is(object.a, 1);
+});
