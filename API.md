@@ -73,6 +73,11 @@ sources overwrite property assignments of previous sources.</p>
 <dd><p>Returns a partial copy of an object containing only the keys specified. If
 the key does not exist, the property is ignored.</p>
 </dd>
+<dt><a href="#values">values(obj)</a> ⇒ <code>Array</code></dt>
+<dd><p>Returns a list of all the enumerable own properties of the supplied object.
+Note that the order of the output array is not guaranteed across different
+JS platforms.</p>
+</dd>
 <dt><a href="#clamp">clamp(min, max, value)</a> ⇒ <code>Number</code></dt>
 <dd><p>Restricts a number to be within a range.</p>
 <p>Also works for other ordered types such as Strings and Dates.</p>
@@ -456,6 +461,27 @@ the key does not exist, the property is ignored.
 ```js
 pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
    pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
+```
+<a name="values"></a>
+
+## values(obj) ⇒ <code>Array</code>
+Returns a list of all the enumerable own properties of the supplied object.
+Note that the order of the output array is not guaranteed across different
+JS platforms.
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - An array of the values of the object's own properties.  
+**Category**: Object  
+**Sig**: <code>k: v</code> -> [v]  
+**Since**: v0.6.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Object</code> | The object to extract values from |
+
+**Example**  
+```js
+values({a: 1, b: 2, c: 3}); //=> [1, 2, 3]
 ```
 <a name="clamp"></a>
 
