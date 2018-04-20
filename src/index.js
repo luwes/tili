@@ -21,3 +21,4 @@ export { default as tap } from './tap';
 export { default as throttle } from './throttle';
 export { default as type } from './type';
 export { default as uniqueId } from './uniqueId';
+export { default as values } from './values';
