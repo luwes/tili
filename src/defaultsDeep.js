@@ -54,8 +54,10 @@ function defaultsArray(target, source) {
 function defaultsObject(target, source) {
   if (!target) target = {};
   Object.keys(source).forEach(function(key) {
-    const isDefaultable = !isUndefinedSource(target[key], source[key]) ||
-      isPlainObject(source[key]) || Array.isArray(source[key]);
+    const isDefaultable =
+      !isUndefinedSource(target[key], source[key]) ||
+      isPlainObject(source[key]) ||
+      Array.isArray(source[key]);
     if (isDefaultable) {
       target[key] = _defaultsDeep(target[key], source[key]);
     }
