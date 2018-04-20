@@ -62,10 +62,10 @@ function mergeArray(target, source) {
 function mergeObject(target, source) {
   if (!target) target = {};
   Object.keys(source).forEach(function(key) {
-    if (isPlainObject(source[key]) || Array.isArray(source[key])) {
+    const isMergeable = !isUndefinedSource(target[key], source[key]) ||
+      isPlainObject(source[key]) || Array.isArray(source[key]);
+    if (isMergeable) {
       target[key] = _merge(target[key], source[key]);
-    } else if (!isUndefinedSource(target[key], source[key])) {
-      target[key] = clone(source[key]);
     }
   });
   return target;

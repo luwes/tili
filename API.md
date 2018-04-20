@@ -53,6 +53,11 @@ otherwise.</p>
 assigned by reference rather than copied</p>
 <p>Dispatches to a <code>clone</code> method if present.</p>
 </dd>
+<dt><a href="#defaultsDeep">defaultsDeep(target, [...sources])</a> ⇒ <code>Object</code></dt>
+<dd><p>This method is like <code>defaults</code> except that it recursively assigns
+default properties.</p>
+<p><strong>Note:</strong> This method mutates <code>object</code>.</p>
+</dd>
 <dt><a href="#merge">merge(target, [...sources])</a> ⇒ <code>Object</code></dt>
 <dd><p>This method is like <code>assign</code> except that it recursively merges own and
 inherited enumerable string keyed properties of source objects into the
@@ -88,13 +93,13 @@ returning such answers as &#39;Object&#39;, &#39;Number&#39;, &#39;Array&#39;, o
 attempt to distinguish user Object types any further, reporting them all as
 &#39;Object&#39;.</p>
 </dd>
-<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>See if an object (<code>val</code>) is an instance of the supplied constructor. This
-function will check up the inheritance chain, if any.</p>
-</dd>
 <dt><a href="#isPlainObject">isPlainObject(obj)</a> ⇒ <code>boolean</code></dt>
 <dd><p>Checks if <code>value</code> is a plain object, that is, an object created by the
 <code>Object</code> constructor or one with a <code>[[Prototype]]</code> of <code>null</code>.</p>
+</dd>
+<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>See if an object (<code>val</code>) is an instance of the supplied constructor. This
+function will check up the inheritance chain, if any.</p>
 </dd>
 <dt><a href="#uniqueId">uniqueId([prefix])</a> ⇒ <code>string</code></dt>
 <dd><p>Generates a unique ID. If <code>prefix</code> is given, the ID is appended to it.</p>
@@ -360,6 +365,30 @@ const objects = [{}, {}, {}];
    objects === objectsClone; //=> false
    objects[0] === objectsClone[0]; //=> false
 ```
+<a name="defaultsDeep"></a>
+
+## defaultsDeep(target, [...sources]) ⇒ <code>Object</code>
+This method is like `defaults` except that it recursively assigns
+default properties.
+
+**Note:** This method mutates `object`.
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - Returns `object`.  
+**Category**: Object  
+**See**: defaults  
+**Since**: 0.7.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| target | <code>Object</code> | The destination object. |
+| [...sources] | <code>Object</code> | The source objects. |
+
+**Example**  
+```js
+defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } })
+// => { 'a': { 'b': 2, 'c': 3 } }
+```
 <a name="merge"></a>
 
 ## merge(target, [...sources]) ⇒ <code>Object</code>
@@ -537,33 +566,6 @@ type({}); //=> "Object"
    type(() => {}); //=> "Function"
    type(undefined); //=> "Undefined"
 ```
-<a name="is"></a>
-
-## is(Ctor, val) ⇒ <code>Boolean</code>
-See if an object (`val`) is an instance of the supplied constructor. This
-function will check up the inheritance chain, if any.
-
-**Kind**: global function  
-**Category**: Type  
-**Sig**: (* -> {*}) -> a -> Boolean  
-**Since**: v0.1.0  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| Ctor | <code>Object</code> | A constructor |
-| val | <code>\*</code> | The value to test |
-
-**Example**  
-```js
-is(Object, {}); //=> true
-   is(Number, 1); //=> true
-   is(Object, 1); //=> false
-   is(String, 's'); //=> true
-   is(String, new String('')); //=> true
-   is(Object, new String('')); //=> true
-   is(Object, 's'); //=> false
-   is(Number, {}); //=> false
-```
 <a name="isPlainObject"></a>
 
 ## isPlainObject(obj) ⇒ <code>boolean</code>
@@ -596,6 +598,33 @@ function Foo() {
 
    isPlainObject(Object.create(null))
    // => true
+```
+<a name="is"></a>
+
+## is(Ctor, val) ⇒ <code>Boolean</code>
+See if an object (`val`) is an instance of the supplied constructor. This
+function will check up the inheritance chain, if any.
+
+**Kind**: global function  
+**Category**: Type  
+**Sig**: (* -> {*}) -> a -> Boolean  
+**Since**: v0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Ctor | <code>Object</code> | A constructor |
+| val | <code>\*</code> | The value to test |
+
+**Example**  
+```js
+is(Object, {}); //=> true
+   is(Number, 1); //=> true
+   is(Object, 1); //=> false
+   is(String, 's'); //=> true
+   is(String, new String('')); //=> true
+   is(Object, new String('')); //=> true
+   is(Object, 's'); //=> false
+   is(Number, {}); //=> false
 ```
 <a name="uniqueId"></a>
 

@@ -5,6 +5,7 @@ export { default as curry } from './curry';
 export { default as curryN } from './curryN';
 export { default as debounce } from './debounce';
 export { default as defaultTo } from './defaultTo';
+export { default as defaultsDeep } from './defaultsDeep';
 export { default as defer } from './defer';
 export { default as delay } from './delay';
 export { default as includes } from './includes';
