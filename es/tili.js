@@ -497,13 +497,15 @@ function defer(func) {
   });
 }
 
+/* eslint quotes:0 */
+
 /** Used to map characters to HTML entities. */
 var htmlEscapes = {
   '&': '&amp',
   '<': '&lt',
   '>': '&gt',
   '"': '&quot',
-  '\'': '&#39'
+  "'": '&#39'
 };
 /** Used to match HTML entities and HTML characters. */
 
@@ -1029,13 +1031,15 @@ function throttle(wait, fn) {
   return throttled;
 }
 
+/* eslint quotes:0 */
+
 /** Used to map HTML entities to characters. */
 var htmlUnescapes = {
   '&amp;': '&',
   '&lt;': '<',
   '&gt;': '>',
   '&quot;': '"',
-  '&#39;': '\''
+  '&#39;': "'"
 };
 /** Used to match HTML entities and HTML characters. */
 
