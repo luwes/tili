@@ -1,3 +1,20 @@
+## Members
+
+<dl>
+<dt><a href="#htmlEscapes">htmlEscapes</a></dt>
+<dd><p>Used to map characters to HTML entities.</p>
+</dd>
+<dt><a href="#reUnescapedHtml">reUnescapedHtml</a></dt>
+<dd><p>Used to match HTML entities and HTML characters.</p>
+</dd>
+<dt><a href="#htmlUnescapes">htmlUnescapes</a></dt>
+<dd><p>Used to map HTML entities to characters.</p>
+</dd>
+<dt><a href="#reEscapedHtml">reEscapedHtml</a></dt>
+<dd><p>Used to match HTML entities and HTML characters.</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -58,6 +75,12 @@ assigned by reference rather than copied</p>
 default properties.</p>
 <p><strong>Note:</strong> This method mutates <code>object</code>.</p>
 </dd>
+<dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
+<dd><p>Retrieve the value at a given path.</p>
+</dd>
+<dt><a href="#get">get(paths, obj)</a> ⇒ <code>*</code></dt>
+<dd><p>Get a object value by a string dot path or array path.</p>
+</dd>
 <dt><a href="#merge">merge(target, [...sources])</a> ⇒ <code>Object</code></dt>
 <dd><p>This method is like <code>assign</code> except that it recursively merges own and
 inherited enumerable string keyed properties of source objects into the
@@ -71,9 +94,6 @@ sources overwrite property assignments of previous sources.</p>
 <dt><a href="#omit">omit(names, obj)</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns a partial copy of an object omitting the keys specified.</p>
 </dd>
-<dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
-<dd><p>Retrieve the value at a given path.</p>
-</dd>
 <dt><a href="#pick">pick(names, obj)</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns a partial copy of an object containing only the keys specified. If
 the key does not exist, the property is ignored.</p>
@@ -86,6 +106,27 @@ JS platforms.</p>
 <dt><a href="#clamp">clamp(min, max, value)</a> ⇒ <code>Number</code></dt>
 <dd><p>Restricts a number to be within a range.</p>
 <p>Also works for other ordered types such as Strings and Dates.</p>
+</dd>
+<dt><a href="#escape">escape([string])</a> ⇒ <code>string</code></dt>
+<dd><p>Converts the characters &quot;&amp;&quot;, &quot;&lt;&quot;, &quot;&gt;&quot;, &#39;&quot;&#39;, and &quot;&#39;&quot; in <code>string</code> to their
+corresponding HTML entities.</p>
+<p><strong>Note:</strong> No other characters are escaped. To escape additional
+characters use a third-party library like <a href="https://mths.be/he">_he_</a>.</p>
+<p>Though the &quot;&gt;&quot; character is escaped for symmetry, characters like
+&quot;&gt;&quot; and &quot;/&quot; don&#39;t need escaping in HTML and have no special meaning
+unless they&#39;re part of a tag or unquoted attribute value. See
+<a href="https://mathiasbynens.be/notes/ambiguous-ampersands">Mathias Bynens&#39;s article</a>
+(under &quot;semi-related fun fact&quot;) for more details.</p>
+<p>When working with HTML you should always
+<a href="http://wonko.com/post/html-escaping">quote attribute values</a> to reduce
+XSS vectors.</p>
+</dd>
+<dt><a href="#unescape">unescape([string])</a> ⇒ <code>string</code></dt>
+<dd><p>The inverse of <code>escape</code>this method converts the HTML entities
+<code>&amp;amp;</code>, <code>&amp;lt;</code>, <code>&amp;gt;</code>, <code>&amp;quot;</code> and <code>&amp;#39;</code> in <code>string</code> to
+their corresponding characters.</p>
+<p><strong>Note:</strong> No other HTML entities are unescaped. To unescape additional
+HTML entities use a third-party library like <a href="https://mths.be/he">_he_</a>.</p>
 </dd>
 <dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
 <dd><p>Gives a single-word string description of the (native) type of a value,
@@ -106,6 +147,30 @@ function will check up the inheritance chain, if any.</p>
 </dd>
 </dl>
 
+<a name="htmlEscapes"></a>
+
+## htmlEscapes
+Used to map characters to HTML entities.
+
+**Kind**: global variable  
+<a name="reUnescapedHtml"></a>
+
+## reUnescapedHtml
+Used to match HTML entities and HTML characters.
+
+**Kind**: global variable  
+<a name="htmlUnescapes"></a>
+
+## htmlUnescapes
+Used to map HTML entities to characters.
+
+**Kind**: global variable  
+<a name="reEscapedHtml"></a>
+
+## reEscapedHtml
+Used to match HTML entities and HTML characters.
+
+**Kind**: global variable  
 <a name="compose"></a>
 
 ## compose(...funcs) ⇒ <code>function</code>
@@ -389,6 +454,42 @@ default properties.
 defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } })
 // => { 'a': { 'b': 2, 'c': 3 } }
 ```
+<a name="path"></a>
+
+## path(paths, obj) ⇒ <code>\*</code>
+Retrieve the value at a given path.
+
+**Kind**: global function  
+**Returns**: <code>\*</code> - The data at `path`.  
+**Category**: Object  
+**Typedefn**: Idx = String | Int  
+**Sig**: [Idx] -> {a} -> a | Undefined  
+**Since**: v0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paths | <code>Array</code> | The path to use. |
+| obj | <code>Object</code> | The object to retrieve the nested property from. |
+
+**Example**  
+```js
+path(['a', 'b'], {a: {b: 2}}); //=> 2
+   path(['a', 'b'], {c: {b: 2}}); //=> undefined
+```
+<a name="get"></a>
+
+## get(paths, obj) ⇒ <code>\*</code>
+Get a object value by a string dot path or array path.
+
+**Kind**: global function  
+**Category**: Object  
+**Since**: v0.7.0  
+
+| Param | Type |
+| --- | --- |
+| paths | <code>String</code> \| <code>Array</code> | 
+| obj | <code>Object</code> | 
+
 <a name="merge"></a>
 
 ## merge(target, [...sources]) ⇒ <code>Object</code>
@@ -445,28 +546,6 @@ Returns a partial copy of an object omitting the keys specified.
 **Example**  
 ```js
 omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
-```
-<a name="path"></a>
-
-## path(paths, obj) ⇒ <code>\*</code>
-Retrieve the value at a given path.
-
-**Kind**: global function  
-**Returns**: <code>\*</code> - The data at `path`.  
-**Category**: Object  
-**Typedefn**: Idx = String | Int  
-**Sig**: [Idx] -> {a} -> a | Undefined  
-**Since**: v0.1.0  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| paths | <code>Array</code> | The path to use. |
-| obj | <code>Object</code> | The object to retrieve the nested property from. |
-
-**Example**  
-```js
-path(['a', 'b'], {a: {b: 2}}); //=> 2
-   path(['a', 'b'], {c: {b: 2}}); //=> undefined
 ```
 <a name="pick"></a>
 
@@ -536,6 +615,65 @@ Also works for other ordered types such as Strings and Dates.
 clamp(1, 10, -5) // => 1
      clamp(1, 10, 15) // => 10
      clamp(1, 10, 4)  // => 4
+```
+<a name="escape"></a>
+
+## escape([string]) ⇒ <code>string</code>
+Converts the characters "&", "<", ">", '"', and "'" in `string` to their
+corresponding HTML entities.
+
+**Note:** No other characters are escaped. To escape additional
+characters use a third-party library like [_he_](https://mths.be/he).
+
+Though the ">" character is escaped for symmetry, characters like
+">" and "/" don't need escaping in HTML and have no special meaning
+unless they're part of a tag or unquoted attribute value. See
+[Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
+(under "semi-related fun fact") for more details.
+
+When working with HTML you should always
+[quote attribute values](http://wonko.com/post/html-escaping) to reduce
+XSS vectors.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - Returns the escaped string.  
+**Category**: String  
+**See**: escapeRegExp, unescape  
+**Since**: 0.7.0  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [string] | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The string to escape. |
+
+**Example**  
+```js
+escape('fred, barney, & pebbles')
+   // => 'fred, barney, &amp pebbles'
+```
+<a name="unescape"></a>
+
+## unescape([string]) ⇒ <code>string</code>
+The inverse of `escape`this method converts the HTML entities
+`&amp;`, `&lt;`, `&gt;`, `&quot;` and `&#39;` in `string` to
+their corresponding characters.
+
+**Note:** No other HTML entities are unescaped. To unescape additional
+HTML entities use a third-party library like [_he_](https://mths.be/he).
+
+**Kind**: global function  
+**Returns**: <code>string</code> - Returns the unescaped string.  
+**Category**: String  
+**See**: escape, escapeRegExp  
+**Since**: 0.7.0  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [string] | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The string to unescape. |
+
+**Example**  
+```js
+unescape('fred, barney, &amp; pebbles')
+   // => 'fred, barney, & pebbles'
 ```
 <a name="type"></a>
 

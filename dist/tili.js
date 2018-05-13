@@ -252,6 +252,7 @@ function curry(fn) {
  * Invokes `func` after `wait` milliseconds. Any additional arguments are
  * provided to `func` when it's invoked.
  *
+ * @func
  * @since 0.4.0
  * @category Function
  * @param {number} wait The number of milliseconds to delay invocation.
@@ -502,18 +503,51 @@ function defer(func) {
   });
 }
 
+/** Used to map characters to HTML entities. */
+var htmlEscapes = {
+  '&': '&amp',
+  '<': '&lt',
+  '>': '&gt',
+  '"': '&quot',
+  '\'': '&#39'
+};
+/** Used to match HTML entities and HTML characters. */
+
+var reUnescapedHtml = /[&<>"']/g;
+var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
 /**
- * Check if string or array includes the searched part.
+ * Converts the characters "&", "<", ">", '"', and "'" in `string` to their
+ * corresponding HTML entities.
+ *
+ * **Note:** No other characters are escaped. To escape additional
+ * characters use a third-party library like [_he_](https://mths.be/he).
+ *
+ * Though the ">" character is escaped for symmetry, characters like
+ * ">" and "/" don't need escaping in HTML and have no special meaning
+ * unless they're part of a tag or unquoted attribute value. See
+ * [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
+ * (under "semi-related fun fact") for more details.
+ *
+ * When working with HTML you should always
+ * [quote attribute values](http://wonko.com/post/html-escaping) to reduce
+ * XSS vectors.
  *
  * @func
- * @since v0.1.0
- * @category List
- * @param  {*} search
- * @param  {Array|String} arr
- * @return {Boolean}
+ * @since 0.7.0
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @return {string} Returns the escaped string.
+ * @see escapeRegExp, unescape
+ * @example
+ *
+ *    escape('fred, barney, & pebbles')
+ *    // => 'fred, barney, &amp pebbles'
  */
-function includes(search, arr) {
-  return arr.indexOf(search) !== -1;
+
+function escape(string) {
+  return string && reHasUnescapedHtml.test(string) ? string.replace(reUnescapedHtml, function (chr) {
+    return htmlEscapes[chr];
+  }) : string;
 }
 
 /**
@@ -540,6 +574,71 @@ function includes(search, arr) {
  */
 function is(Ctor, val) {
   return val != null && (val.constructor === Ctor || val instanceof Ctor);
+}
+
+/**
+ * Retrieve the value at a given path.
+ *
+ * @func
+ * @since v0.1.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> {a} -> a | Undefined
+ * @param {Array} paths The path to use.
+ * @param {Object} obj The object to retrieve the nested property from.
+ * @return {*} The data at `path`.
+ * @example
+ *
+ *    path(['a', 'b'], {a: {b: 2}}); //=> 2
+ *    path(['a', 'b'], {c: {b: 2}}); //=> undefined
+ */
+function path(paths, obj) {
+  var val = obj;
+  var idx = 0;
+
+  while (idx < paths.length) {
+    if (val == null) {
+      return;
+    }
+
+    val = val[paths[idx]];
+    idx += 1;
+  }
+
+  return val;
+}
+
+/**
+ * Get a object value by a string dot path or array path.
+ *
+ * @func
+ * @since v0.7.0
+ * @category Object
+ * @param  {String|Array} paths
+ * @param  {Object} obj
+ * @return {*}
+ */
+
+function get(paths, obj) {
+  if (is(String, paths)) {
+    return path(paths.split('.'), obj);
+  }
+
+  return path(paths, obj);
+}
+
+/**
+ * Check if string or array includes the searched part.
+ *
+ * @func
+ * @since v0.1.0
+ * @category List
+ * @param  {*} search
+ * @param  {Array|String} arr
+ * @return {Boolean}
+ */
+function includes(search, arr) {
+  return arr.indexOf(search) !== -1;
 }
 
 // https://github.com/ianstormtaylor/is-empty
@@ -775,38 +874,6 @@ function omit(names, obj) {
 }
 
 /**
- * Retrieve the value at a given path.
- *
- * @func
- * @since v0.1.0
- * @category Object
- * @typedefn Idx = String | Int
- * @sig [Idx] -> {a} -> a | Undefined
- * @param {Array} paths The path to use.
- * @param {Object} obj The object to retrieve the nested property from.
- * @return {*} The data at `path`.
- * @example
- *
- *    path(['a', 'b'], {a: {b: 2}}); //=> 2
- *    path(['a', 'b'], {c: {b: 2}}); //=> undefined
- */
-function path(paths, obj) {
-  var val = obj;
-  var idx = 0;
-
-  while (idx < paths.length) {
-    if (val == null) {
-      return;
-    }
-
-    val = val[paths[idx]];
-    idx += 1;
-  }
-
-  return val;
-}
-
-/**
  * Returns a partial copy of an object containing only the keys specified. If
  * the key does not exist, the property is ignored.
  *
@@ -968,6 +1035,44 @@ function throttle(wait, fn) {
   return throttled;
 }
 
+/** Used to map HTML entities to characters. */
+var htmlUnescapes = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': '\''
+};
+/** Used to match HTML entities and HTML characters. */
+
+var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
+var reHasEscapedHtml = RegExp(reEscapedHtml.source);
+/**
+ * The inverse of `escape`this method converts the HTML entities
+ * `&amp;`, `&lt;`, `&gt;`, `&quot;` and `&#39;` in `string` to
+ * their corresponding characters.
+ *
+ * **Note:** No other HTML entities are unescaped. To unescape additional
+ * HTML entities use a third-party library like [_he_](https://mths.be/he).
+ *
+ * @func
+ * @since 0.7.0
+ * @category String
+ * @param {string} [string=''] The string to unescape.
+ * @return {string} Returns the unescaped string.
+ * @see escape, escapeRegExp
+ * @example
+ *
+ *    unescape('fred, barney, &amp; pebbles')
+ *    // => 'fred, barney, & pebbles'
+ */
+
+function unescape(string) {
+  return string && reHasEscapedHtml.test(string) ? string.replace(reEscapedHtml, function (entity) {
+    return htmlUnescapes[entity];
+  }) : string;
+}
+
 var idCounter = 0;
 /**
  * Generates a unique ID. If `prefix` is given, the ID is appended to it.
@@ -1030,6 +1135,8 @@ exports.defaultTo = defaultTo;
 exports.defaultsDeep = defaultsDeep;
 exports.defer = defer;
 exports.delay = delay;
+exports.escape = escape;
+exports.get = get;
 exports.includes = includes;
 exports.is = is;
 exports.isEmpty = isEmpty;
@@ -1043,6 +1150,7 @@ exports.round = round;
 exports.tap = tap;
 exports.throttle = throttle;
 exports.type = type;
+exports.unescape = unescape;
 exports.uniqueId = uniqueId;
 exports.values = values;
 
