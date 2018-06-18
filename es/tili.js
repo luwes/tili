@@ -1,40 +1,3 @@
-function _typeof(obj) {
-  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function (obj) {
-      return typeof obj;
-    };
-  } else {
-    _typeof = function (obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-    };
-  }
-
-  return _typeof(obj);
-}
-
-var _sPO = Object.setPrototypeOf || function _sPO(o, p) {
-  o.__proto__ = p;
-  return o;
-};
-
-var _construct = typeof Reflect === "object" && Reflect.construct || function _construct(Parent, args, Class) {
-  var Constructor,
-      a = [null];
-  a.push.apply(a, args);
-  Constructor = Parent.bind.apply(Parent, a);
-  return _sPO(new Constructor(), Class.prototype);
-};
-
-function _toConsumableArray(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-    return arr2;
-  } else {
-    return Array.from(arr);
-  }
-}
-
 /**
  * Restricts a number to be within a range.
  *
@@ -212,7 +175,7 @@ function curryN(length, fn) {
         cArgs[_key2] = arguments[_key2];
       }
 
-      return _curry(_toConsumableArray(fnArgs).concat(cArgs));
+      return _curry(fnArgs.concat(cArgs));
     };
   };
 
@@ -285,8 +248,11 @@ function delay(wait, func) {
  * @return {Function}
  */
 
-function debounce(wait, func) {
-  var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+function debounce(wait, func, immediate) {
+  if (immediate === void 0) {
+    immediate = false;
+  }
+
   var timeout;
   var result;
 
@@ -362,7 +328,7 @@ function defaultTo(d, v) {
  *    // => true
  */
 function isPlainObject(obj) {
-  if (_typeof(obj) !== 'object' || obj === null) return false;
+  if (typeof obj !== 'object' || obj === null) return false;
   var proto = obj;
 
   while (Object.getPrototypeOf(proto) !== null) {
@@ -461,7 +427,7 @@ function emptyTarget(val) {
 /* eslint no-undef:0 */
 var tick;
 
-if ((typeof process === "undefined" ? "undefined" : _typeof(process)) === 'object' && typeof process.nextTick === 'function') {
+if (typeof process === 'object' && typeof process.nextTick === 'function') {
   tick = process.nextTick;
 } else if (typeof Promise === 'function') {
   var resolve = Promise.resolve();
@@ -916,10 +882,10 @@ function _round(methodName) {
     if (precision) {
       // Shift with exponential notation to avoid floating-point issues.
       // See [MDN](https://mdn.io/round#Examples) for more details.
-      var pair = "".concat(number, "e").split('e');
-      var value = func("".concat(pair[0], "e").concat(+pair[1] + precision));
-      pair = "".concat(value, "e").split('e');
-      return +"".concat(pair[0], "e").concat(+pair[1] - precision);
+      var pair = (number + "e").split('e');
+      var value = func(pair[0] + "e" + (+pair[1] + precision));
+      pair = (value + "e").split('e');
+      return +(pair[0] + "e" + (+pair[1] - precision));
     }
 
     return func(number);
@@ -987,8 +953,11 @@ var tap = curryN(2, function (fn, x) {
  * @param  {Boolean}  [options.trailing=true] - Trigger a trailing function call.
  * @return {Function}
  */
-function throttle(wait, fn) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+function throttle(wait, fn, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
   var timeout, context, args, result;
   var previous = 0;
 
@@ -1091,7 +1060,7 @@ var idCounter = 0;
 
 function uniqueId(prefix) {
   var id = ++idCounter;
-  return "".concat(prefix).concat(id);
+  return "" + prefix + id;
 }
 
 /**

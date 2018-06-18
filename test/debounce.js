@@ -1,6 +1,6 @@
 import test from 'ava';
 import delay from 'delay';
-import * as l from '..';
+import * as l from '../src';
 
 test('debounce', async t => {
   var counter = 0;

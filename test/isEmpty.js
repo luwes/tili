@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as l from '..';
+import * as l from '../src';
 
 // *      isEmpty([1, 2, 3]);   //=> false
 // *      isEmpty([]);          //=> true

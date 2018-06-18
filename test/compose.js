@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as l from '..';
+import * as l from '../src';
 
 test('composes from right to left', t => {
   const double = x => x * 2;

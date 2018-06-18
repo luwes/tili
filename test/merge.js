@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as l from '..';
+import * as l from '../src';
 
 test('should mutate target and return same object', t => {
   const target = { a: 4 };

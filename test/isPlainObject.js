@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as l from '..';
+import * as l from '../src';
 import vm from 'vm';
 
 test('returns true only if plain object', t => {

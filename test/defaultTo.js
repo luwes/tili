@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as l from '..';
+import * as l from '../src';
 
 var defaultTo42 = l.curry(l.defaultTo)(42);
 

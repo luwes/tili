@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as l from '..';
+import * as l from '../src';
 
 test('works with built-in types', t => {
   t.is(l.is(Array, []), true);
