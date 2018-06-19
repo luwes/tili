@@ -1,11 +1,11 @@
 import test from 'ava';
-import * as l from '../src';
+import * as _ from '../src';
 
 test('should mutate target and return same object', t => {
   const target = { a: 4 };
   const expected = { a: 4, b: 3 };
 
-  const actual = l.merge(target, { b: 3 });
+  const actual = _.merge(target, { b: 3 });
 
   t.truthy(actual === target);
   t.deepEqual(actual, expected);
@@ -15,7 +15,7 @@ test('should mutate target and return same array', t => {
   const target = [{ a: 4 }];
   const expected = [{ a: 4, b: 3 }];
 
-  const actual = l.merge(target, [{ b: 3 }]);
+  const actual = _.merge(target, [{ b: 3 }]);
 
   t.truthy(actual === target);
   t.deepEqual(actual, expected);
@@ -41,18 +41,18 @@ test('merges an object', t => {
     ]
   };
 
-  t.deepEqual(l.merge(names, ages, heights), expected);
+  t.deepEqual(_.merge(names, ages, heights), expected);
 });
 
 test('should work with four arguments', t => {
   const expected = { a: 4 };
-  const actual = l.merge({ a: 1 }, { a: 2 }, { a: 3 }, expected);
+  const actual = _.merge({ a: 1 }, { a: 2 }, { a: 3 }, expected);
 
   t.deepEqual(actual, expected);
 });
 
 test('should not overwrite existing values with `undefined` source values', t => {
-  const actual = l.merge({ a: 1 }, { a: undefined, b: undefined });
+  const actual = _.merge({ a: 1 }, { a: undefined, b: undefined });
   t.deepEqual(actual, { a: 1, b: undefined });
 });
 
@@ -60,7 +60,7 @@ test('should merge onto function `object` values', t => {
   function Foo() {}
 
   var source = { a: 1 };
-  var actual = l.merge(Foo, source);
+  var actual = _.merge(Foo, source);
 
   t.truthy(actual === Foo);
   t.is(Foo.a, 1);
@@ -70,7 +70,7 @@ test('should merge onto non-plain `object` values', t => {
   function Foo() {}
 
   var object = new Foo();
-  var actual = l.merge(object, { a: 1 });
+  var actual = _.merge(object, { a: 1 });
 
   t.truthy(actual === object);
   t.is(object.a, 1);

@@ -1,11 +1,11 @@
 import test from 'ava';
 import delay from 'delay';
-import * as l from '../src';
+import * as _ from '../src';
 
 test.serial('throttle', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(32, incr);
+  const throttledIncr = _.throttle(32, incr);
   throttledIncr();
   throttledIncr();
 
@@ -18,7 +18,7 @@ test.serial('throttle', async t => {
 test.serial('throttle arguments', async t => {
   let value = 0;
   const update = val => (value = val);
-  const throttledUpdate = l.throttle(32, update);
+  const throttledUpdate = _.throttle(32, update);
   throttledUpdate(1);
   throttledUpdate(2);
   t.is(value, 1, 'updated to latest value');
@@ -33,7 +33,7 @@ test.serial('throttle arguments', async t => {
 test.serial('throttle once', async t => {
   let counter = 0;
   const incr = () => ++counter;
-  const throttledIncr = l.throttle(32, incr);
+  const throttledIncr = _.throttle(32, incr);
   const result = throttledIncr();
   await delay(64);
 
@@ -44,7 +44,7 @@ test.serial('throttle once', async t => {
 test.serial('throttle twice', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(32, incr);
+  const throttledIncr = _.throttle(32, incr);
   throttledIncr();
   throttledIncr();
   await delay(64);
@@ -55,7 +55,7 @@ test.serial('throttle twice', async t => {
 test.serial('more throttling', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(30, incr);
+  const throttledIncr = _.throttle(30, incr);
 
   throttledIncr();
   throttledIncr();
@@ -70,7 +70,7 @@ test.serial('more throttling', async t => {
 test.serial('throttle repeatedly with results', async t => {
   let counter = 0;
   const incr = () => ++counter;
-  const throttledIncr = l.throttle(100, incr);
+  const throttledIncr = _.throttle(100, incr);
 
   const results = [];
   const saveResult = function() {
@@ -104,7 +104,7 @@ test.serial('throttle triggers trailing call when invoked repeatedly', async t =
   let counter = 0;
   const limit = 48;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(32, incr);
+  const throttledIncr = _.throttle(32, incr);
 
   const stamp = Date.now();
   while (Date.now() - stamp < limit) {
@@ -120,7 +120,7 @@ test.serial('throttle triggers trailing call when invoked repeatedly', async t =
 test.serial('throttle does not trigger leading call when leading is set to false', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(60, incr, { leading: false });
+  const throttledIncr = _.throttle(60, incr, { leading: false });
 
   throttledIncr();
   throttledIncr();
@@ -133,7 +133,7 @@ test.serial('throttle does not trigger leading call when leading is set to false
 test.serial('more throttle does not trigger leading call when leading is set to false', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(100, incr, { leading: false });
+  const throttledIncr = _.throttle(100, incr, { leading: false });
 
   throttledIncr();
   t.is(counter, 0);
@@ -157,7 +157,7 @@ test.serial('more throttle does not trigger leading call when leading is set to 
 test.serial('one more throttle with leading: false test', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(100, incr, { leading: false });
+  const throttledIncr = _.throttle(100, incr, { leading: false });
   const time = new Date();
   while (new Date() - time < 350) throttledIncr();
   t.true(counter <= 3);
@@ -169,7 +169,7 @@ test.serial('one more throttle with leading: false test', async t => {
 test.serial('throttle does not trigger trailing call when trailing is set to false', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(60, incr, { trailing: false });
+  const throttledIncr = _.throttle(60, incr, { trailing: false });
 
   throttledIncr();
   throttledIncr();
@@ -191,12 +191,12 @@ test.serial('throttle continues to function after system time is set backwards',
   var incr = function() {
     counter++;
   };
-  var throttledIncr = l.throttle(100, incr);
-  var origNowFunc = l.now;
+  var throttledIncr = _.throttle(100, incr);
+  var origNowFunc = _.now;
 
   throttledIncr();
   t.is(counter, 1);
-  l.now = function() {
+  _.now = function() {
     return new Date(2013, 0, 1, 1, 1, 1);
   };
 
@@ -204,7 +204,7 @@ test.serial('throttle continues to function after system time is set backwards',
     throttledIncr();
     t.is(counter, 2);
 
-    l.now = origNowFunc;
+    _.now = origNowFunc;
   }, 200);
 });
 
@@ -219,7 +219,7 @@ test.serial('throttle re-entrant', async t => {
       throttledAppend.call(args[0], args[1]);
     }
   };
-  throttledAppend = l.throttle(32, append);
+  throttledAppend = _.throttle(32, append);
   throttledAppend.call('a1', 'a2');
   t.is(value, 'a1a2');
   await delay(100);
@@ -230,7 +230,7 @@ test.serial('throttle re-entrant', async t => {
 test.serial('throttle cancel', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(32, incr);
+  const throttledIncr = _.throttle(32, incr);
   throttledIncr();
   throttledIncr.cancel();
   throttledIncr();
@@ -244,7 +244,7 @@ test.serial('throttle cancel', async t => {
 test.serial('throttle cancel with leading: false', async t => {
   let counter = 0;
   const incr = () => counter++;
-  const throttledIncr = l.throttle(32, incr, { leading: false });
+  const throttledIncr = _.throttle(32, incr, { leading: false });
   throttledIncr();
   throttledIncr.cancel();
   t.is(counter, 0, 'incr was throttled');
