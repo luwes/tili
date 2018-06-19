@@ -24,3 +24,7 @@ test('works with letters as well', function(t) {
   t.is(_.clamp('d', 'n', 'a'), 'd');
   t.is(_.clamp('d', 'n', 'q'), 'n');
 });
+
+test('throws if min is bigger than max', function(t) {
+  t.throws(() => _.clamp(11, 10, 4));
+});
