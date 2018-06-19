@@ -130,32 +130,29 @@ test.serial('throttle does not trigger leading call when leading is set to false
   t.is(counter, 1);
 });
 
-test.serial(
-  'more throttle does not trigger leading call when leading is set to false',
-  async t => {
-    let counter = 0;
-    const incr = () => counter++;
-    const throttledIncr = l.throttle(100, incr, { leading: false });
+test.serial('more throttle does not trigger leading call when leading is set to false', async t => {
+  let counter = 0;
+  const incr = () => counter++;
+  const throttledIncr = l.throttle(100, incr, { leading: false });
 
-    throttledIncr();
-    t.is(counter, 0);
-    await delay(50);
+  throttledIncr();
+  t.is(counter, 0);
+  await delay(50);
 
-    throttledIncr();
-    await delay(10);
+  throttledIncr();
+  await delay(10);
 
-    throttledIncr();
-    await delay(140);
+  throttledIncr();
+  await delay(140);
 
-    throttledIncr();
-    await delay(50);
+  throttledIncr();
+  await delay(50);
 
-    t.is(counter, 1);
-    await delay(100);
+  t.is(counter, 1);
+  await delay(100);
 
-    t.is(counter, 2);
-  }
-);
+  t.is(counter, 2);
+});
 
 test.serial('one more throttle with leading: false test', async t => {
   let counter = 0;
