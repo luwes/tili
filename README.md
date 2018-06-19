@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/luwes/tili.svg?branch=master)](https://travis-ci.org/luwes/tili)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![codecov](https://codecov.io/gh/luwes/tili/branch/master/graph/badge.svg)](https://codecov.io/gh/luwes/tili)
 
 Small javascript utilities.
 
