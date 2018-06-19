@@ -467,11 +467,11 @@ function defer(func) {
 
 /** Used to map characters to HTML entities. */
 var htmlEscapes = {
-  '&': '&amp',
-  '<': '&lt',
-  '>': '&gt',
-  '"': '&quot',
-  "'": '&#39'
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;'
 };
 /** Used to match HTML entities and HTML characters. */
 
@@ -503,7 +503,7 @@ var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
  * @example
  *
  *    escape('fred, barney, & pebbles')
- *    // => 'fred, barney, &amp pebbles'
+ *    // => 'fred, barney, &amp; pebbles'
  */
 
 function escape(string) {
