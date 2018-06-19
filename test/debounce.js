@@ -2,7 +2,7 @@ import test from 'ava';
 import delay from 'delay';
 import * as l from '../src';
 
-test('debounce', async t => {
+test.serial('debounce', async t => {
   var counter = 0;
   const incr = () => counter++;
   const debouncedIncr = l.debounce(32, incr);
@@ -14,7 +14,7 @@ test('debounce', async t => {
   t.is(counter, 1, 'incr was debounced');
 });
 
-test('debounce cancel', async t => {
+test.serial('debounce cancel', async t => {
   var counter = 0;
   const incr = () => counter++;
   const debouncedIncr = l.debounce(32, incr);
@@ -24,7 +24,7 @@ test('debounce cancel', async t => {
   t.is(counter, 0, 'incr was not called');
 });
 
-test('debounce asap', async t => {
+test.serial('debounce asap', async t => {
   var a, b, c;
   var counter = 0;
   const incr = () => ++counter;
@@ -48,7 +48,7 @@ test('debounce asap', async t => {
   t.is(counter, 2, 'incr was called again');
 });
 
-test('debounce asap cancel', async t => {
+test.serial('debounce asap cancel', async t => {
   var a, b;
   var counter = 0;
   const incr = () => ++counter;
@@ -69,7 +69,7 @@ test('debounce asap cancel', async t => {
   t.is(counter, 2, 'incr was debounced');
 });
 
-test('debounce asap recursively', async t => {
+test.serial('debounce asap recursively', async t => {
   var counter = 0;
   const debouncedIncr = l.debounce(
     32,
@@ -86,7 +86,7 @@ test('debounce asap recursively', async t => {
   t.is(counter, 1, 'incr was debounced');
 });
 
-test('debounce re-entrant', async t => {
+test.serial('debounce re-entrant', async t => {
   const sequence = [['b1', 'b2']];
   let value = '';
   let debouncedAppend;
