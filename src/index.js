@@ -1,3 +1,4 @@
+export { default as __ } from './__';
 export { default as clamp } from './clamp';
 export { default as clone } from './clone';
 export { default as compose } from './compose';
