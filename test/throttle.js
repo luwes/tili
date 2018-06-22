@@ -200,12 +200,12 @@ test.serial('throttle continues to function after system time is set backwards',
     return new Date(2013, 0, 1, 1, 1, 1);
   };
 
-  setTimeout(function() {
-    throttledIncr();
-    t.is(counter, 2);
+  await delay(200);
 
-    l.now = origNowFunc;
-  }, 200);
+  throttledIncr();
+  t.is(counter, 2);
+
+  l.now = origNowFunc;
 });
 
 test.serial('throttle re-entrant', async t => {

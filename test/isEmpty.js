@@ -9,10 +9,12 @@ import * as l from '../src';
 // *      isEmpty({length: 0}); //=> false
 
 test('works like advertised', t => {
-  t.falsy(l.isEmpty([1, 2, 3]));
-  t.truthy(l.isEmpty([]));
-  t.truthy(l.isEmpty(''));
-  t.truthy(l.isEmpty(null));
-  t.truthy(l.isEmpty({}));
-  t.falsy(l.isEmpty({ length: 0 }));
+  t.false(l.isEmpty([1, 2, 3]));
+  t.true(l.isEmpty([]));
+  t.true(l.isEmpty(''));
+  t.true(l.isEmpty(null));
+  t.true(l.isEmpty({}));
+  t.false(l.isEmpty({ length: 0 }));
+  t.true(l.isEmpty(new Map()));
+  t.false(l.isEmpty(new RegExp()));
 });

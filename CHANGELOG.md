@@ -1,7 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.8.0 - 2018-06-22
+## 0.8.1 - 2018-06-22
+### Added
+- Fix `defaultsDeep` overwriting `null` value
+
+## 0.8.0 - 2018-06-21
 ### Added
 - Added `curry` placeholder
 

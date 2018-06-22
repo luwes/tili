@@ -34,7 +34,7 @@ function _defaultsDeep(target, source) {
     return defaultsObject(target, source);
   }
 
-  if (target == null) {
+  if (target === undefined) {
     return clone(source);
   }
 

@@ -7,7 +7,7 @@ test('should mutate target and return same object', t => {
 
   const actual = l.merge(target, { b: 3 });
 
-  t.truthy(actual === target);
+  t.true(actual === target);
   t.deepEqual(actual, expected);
 });
 
@@ -17,7 +17,7 @@ test('should mutate target and return same array', t => {
 
   const actual = l.merge(target, [{ b: 3 }]);
 
-  t.truthy(actual === target);
+  t.true(actual === target);
   t.deepEqual(actual, expected);
 });
 
@@ -62,7 +62,7 @@ test('should merge onto function `object` values', t => {
   var source = { a: 1 };
   var actual = l.merge(Foo, source);
 
-  t.truthy(actual === Foo);
+  t.true(actual === Foo);
   t.is(Foo.a, 1);
 });
 
@@ -72,6 +72,6 @@ test('should merge onto non-plain `object` values', t => {
   var object = new Foo();
   var actual = l.merge(object, { a: 1 });
 
-  t.truthy(actual === object);
+  t.true(actual === object);
   t.is(object.a, 1);
 });

@@ -532,7 +532,7 @@
       return defaultsObject(target, source);
     }
 
-    if (target == null) {
+    if (target === undefined) {
       return clone$1(source);
     }
 
