@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.0 - 2018-06-22
+### Added
+- Added `curry` placeholder
+
 ## 0.7.2 - 2018-06-19
 ### Changed
 - Fix `escape`
