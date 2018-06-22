@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as _ from '../src';
+import * as l from '../src';
 
 // *      isEmpty([1, 2, 3]);   //=> false
 // *      isEmpty([]);          //=> true
@@ -9,10 +9,10 @@ import * as _ from '../src';
 // *      isEmpty({length: 0}); //=> false
 
 test('works like advertised', t => {
-  t.falsy(_.isEmpty([1, 2, 3]));
-  t.truthy(_.isEmpty([]));
-  t.truthy(_.isEmpty(''));
-  t.truthy(_.isEmpty(null));
-  t.truthy(_.isEmpty({}));
-  t.falsy(_.isEmpty({ length: 0 }));
+  t.falsy(l.isEmpty([1, 2, 3]));
+  t.truthy(l.isEmpty([]));
+  t.truthy(l.isEmpty(''));
+  t.truthy(l.isEmpty(null));
+  t.truthy(l.isEmpty({}));
+  t.falsy(l.isEmpty({ length: 0 }));
 });

@@ -1,10 +1,10 @@
 import test from 'ava';
 import delay from 'delay';
-import * as _ from '../src';
+import * as l from '../src';
 
 test('defer', async (t) => {
   var deferred = false;
-  _.defer((bool) => {
+  l.defer((bool) => {
     deferred = bool;
   }, true);
 
