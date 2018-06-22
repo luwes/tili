@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.2 - 2018-06-22
+### Added
+- Add `RegExp` to `clone` function
+
 ## 0.8.1 - 2018-06-22
 ### Added
 - Fix `defaultsDeep` overwriting `null` value
