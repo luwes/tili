@@ -37,9 +37,7 @@
       "test/*.mjs"
     ],
     "sources": [
-      "src/*.mjs",
-      "!src/index.mjs",
-      "!src/__.mjs"
+      "src/*.mjs"
     ],
     "require": [
       "esm"
@@ -50,11 +48,13 @@
       ".mjs"
     ],
     "include": [
-      "src/*.mjs"
+      "src/*.mjs",
+      "src/internal/_round.mjs"
     ],
     "exclude": [
+      "src/__.mjs",
       "src/index.mjs",
-      "src/__.mjs"
+      "src/round.mjs"
     ],
     "require": [
       "esm"
