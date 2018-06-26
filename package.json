@@ -15,7 +15,7 @@
   "scripts": {
     "clean": "rimraf lib dist es coverage",
     "test": "nyc ava",
-    "lint": "eslint src test",
+    "lint": "eslint src test --ext=.js,.mjs",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "build:cjs": "cross-env NODE_ENV=cjs rollup -c -o lib/tili.js",
     "build:es": "cross-env BABEL_ENV=es NODE_ENV=es rollup -c -o es/tili.js",
