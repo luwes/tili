@@ -17,4 +17,15 @@ test.serial('delay', async (t) => {
 
   await testDelay(200);
   t.true(deferred, 'deferred the function');
+
+  deferred = false;
+
+  l.delay(0, (bool) => {
+    deferred = bool;
+  }, true);
+
+  t.false(deferred);
+
+  await testDelay(0);
+  t.true(deferred, 'deferred the function');
 });
