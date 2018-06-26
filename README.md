@@ -6,7 +6,7 @@
 Small javascript utilities.
 
 - Tiny in size and no dependencies.
-- Functions have minimal reliance on other functions to for efficient tree shaking.
+- Functions have minimal reliance on other functions for efficient tree shaking.
 - Not curried by default, but arguments set up for it.
 - This library was not meant to cover all situations and data types, this helps keep the library small. Use a single specialized function for edge cases.
 
