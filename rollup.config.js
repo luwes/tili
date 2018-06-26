@@ -7,7 +7,7 @@ import bundleSize from 'rollup-plugin-bundle-size';
 
 const env = process.env.NODE_ENV;
 const config = {
-  input: 'src/index.js',
+  input: 'src/index.mjs',
   plugins: []
 };
 

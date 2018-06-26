@@ -28,24 +28,36 @@
     "docs": "jsdoc2md lib/*.js > API.md"
   },
   "ava": {
+    "babel": false,
+    "compileEnhancements": false,
+    "extensions": [
+      "mjs"
+    ],
     "files": [
-      "test/*.js"
+      "test/*.mjs"
     ],
     "sources": [
-      "src/*.js"
+      "src/*.mjs",
+      "!src/index.mjs",
+      "!src/__.mjs"
     ],
     "require": [
-      "esm",
-      "@babel/register"
+      "esm"
     ]
   },
   "nyc": {
+    "extension": [
+      ".mjs"
+    ],
     "include": [
-      "src/*.js"
+      "src/*.mjs"
+    ],
+    "exclude": [
+      "src/index.mjs",
+      "src/__.mjs"
     ],
     "require": [
-      "esm",
-      "@babel/register"
+      "esm"
     ]
   },
   "devDependencies": {
