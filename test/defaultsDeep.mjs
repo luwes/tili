@@ -6,9 +6,9 @@ var noop = function() {};
 test('should deep assign source objects if missing on `object`', function(t) {
   t.plan(1);
 
-  var object = undefined,
-      source = { 'a': [1, 2, 3]},
-      expected = { 'a': [1, 2, 3]};
+  var object = { a: 99, b: [1, 2, 3] },
+      source = { 'a': [1, 2, 3], 'b': {}, 'c': [11], 'd': 99 },
+      expected = { 'a': 99, 'b': [1, 2, 3], 'c': [11], 'd': 99 };
 
   t.deepEqual(l.defaultsDeep(object, source), expected);
 });

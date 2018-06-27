@@ -35,7 +35,7 @@ function _defaultsDeep(target, source) {
   }
 
   if (target === undefined) {
-    return clone(source);
+    return source;
   }
 
   return target;
@@ -67,15 +67,4 @@ function defaultsObject(target, source) {
 
 function isUndefinedSource(target, source) {
   return target && source === undefined;
-}
-
-function clone(source) {
-  if (isPlainObject(source)) {
-    return _defaultsDeep(emptyTarget(source), source);
-  }
-  return source;
-}
-
-function emptyTarget(val) {
-  return Array.isArray(val) ? [] : {};
 }
