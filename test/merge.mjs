@@ -2,10 +2,30 @@ import test from 'ava';
 import * as l from '../src';
 
 test('should mutate target and return same object', t => {
-  const target = { a: 4 };
-  const expected = { a: 4, b: 3 };
+  const target = { a: 4, d: [1] };
+  const expected = { a: 4, b: 3, c: [99], d: [2], e: { x: [] } };
 
-  const actual = l.merge(target, { b: 3 });
+  const actual = l.merge(target, { b: 3, c: [99], d: [2], e: { x: [] } });
+
+  t.true(actual === target);
+  t.deepEqual(actual, expected);
+});
+
+test('replace simple key with nested object in target', function(t) {
+  var target = { a: 1, b: 1 };
+  var expected = { a: { x: 8, y: 9 }, b: 1 };
+
+  const actual = l.merge(target, { a: { x: 8, y: 9 } });
+
+  t.true(actual === target);
+  t.deepEqual(actual, expected);
+});
+
+test('replace simple key with nested array in target', function(t) {
+  var target = { a: 1, b: 1 };
+  var expected = { a: [8, 9], b: 1 };
+
+  const actual = l.merge(target, { a: [8, 9] });
 
   t.true(actual === target);
   t.deepEqual(actual, expected);

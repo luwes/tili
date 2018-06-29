@@ -545,7 +545,7 @@ function _defaultsDeep(target, source) {
   }
 
   if (target === undefined) {
-    return clone$1(source);
+    return source;
   }
 
   return target;
@@ -579,31 +579,8 @@ function isUndefinedSource(target, source) {
   return target && source === undefined;
 }
 
-function clone$1(source) {
-  if (isPlainObject(source)) {
-    return _defaultsDeep(emptyTarget(source), source);
-  }
-
-  return source;
-}
-
-function emptyTarget(val) {
-  return Array.isArray(val) ? [] : {};
-}
-
 /* eslint no-undef:0 */
-var tick;
 
-if (typeof process === 'object' && typeof process.nextTick === 'function') {
-  tick = process.nextTick;
-} else if (typeof Promise === 'function') {
-  var resolve = Promise.resolve();
-  tick = resolve.then.bind(resolve);
-} else if (typeof setImmediate === 'function') {
-  tick = setImmediate;
-} else {
-  tick = setTimeout;
-}
 /**
  * Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
  *
@@ -614,8 +591,6 @@ if (typeof process === 'object' && typeof process.nextTick === 'function') {
  * @param {*} [args] Optional arguments
  * @see  https://github.com/jamiebuilds/tickedoff
  */
-
-
 function defer(func) {
   for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
@@ -623,6 +598,19 @@ function defer(func) {
 
   if (typeof func != 'function') {
     throw new TypeError('Expected a function');
+  }
+
+  var tick;
+
+  if (typeof process === 'object' && typeof process.nextTick === 'function') {
+    tick = process.nextTick;
+  } else if (typeof Promise === 'function') {
+    var resolve = Promise.resolve();
+    tick = resolve.then.bind(resolve);
+  } else if (typeof setImmediate === 'function') {
+    tick = setImmediate;
+  } else {
+    tick = setTimeout;
   }
 
   tick(function () {
@@ -924,47 +912,43 @@ function _merge(target, source) {
     return mergeObject(target, source);
   }
 
-  return clone$2(source);
+  if (source === undefined) {
+    return target;
+  }
+
+  return source;
 }
 
 function mergeArray(target, source) {
-  if (!target) target = [];
+  if (!Array.isArray(target)) {
+    target = [];
+  }
 
-  if (Array.isArray(target)) {
-    for (var i = 0; i < source.length; i++) {
-      target[i] = _merge(target[i], source[i]);
-    }
+  for (var i = 0; i < source.length; i++) {
+    target[i] = _merge(target[i], source[i]);
   }
 
   return target;
 }
 
 function mergeObject(target, source) {
-  if (!target) target = {};
-  Object.keys(source).forEach(function (key) {
-    var isMergeable = !isUndefinedSource$1(target[key], source[key]) || isPlainObject(source[key]) || Array.isArray(source[key]);
+  if (!isObjectLike(target) && !isFunction(target)) {
+    target = {};
+  }
 
-    if (isMergeable) {
-      target[key] = _merge(target[key], source[key]);
-    }
-  });
+  for (var key in source) {
+    target[key] = _merge(target[key], source[key]);
+  }
+
   return target;
 }
 
-function isUndefinedSource$1(target, source) {
-  return target && source === undefined;
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
 }
 
-function clone$2(source) {
-  if (isPlainObject(source)) {
-    return _merge(emptyTarget$1(source), source);
-  }
-
-  return source;
-}
-
-function emptyTarget$1(val) {
-  return Array.isArray(val) ? [] : {};
+function isFunction(value) {
+  return value != null && typeof value == 'function';
 }
 
 /**

@@ -46,44 +46,37 @@ function _merge(target, source) {
     return mergeObject(target, source);
   }
 
-  return clone(source);
+  if (source === undefined) {
+    return target;
+  }
+
+  return source;
 }
 
 function mergeArray(target, source) {
-  if (!target) target = [];
-  if (Array.isArray(target)) {
-    for (var i = 0; i < source.length; i++) {
-      target[i] = _merge(target[i], source[i]);
-    }
+  if (!Array.isArray(target)) {
+    target = [];
+  }
+  for (var i = 0; i < source.length; i++) {
+    target[i] = _merge(target[i], source[i]);
   }
   return target;
 }
 
 function mergeObject(target, source) {
-  if (!target) target = {};
-  Object.keys(source).forEach(function(key) {
-    const isMergeable =
-      !isUndefinedSource(target[key], source[key]) ||
-      isPlainObject(source[key]) ||
-      Array.isArray(source[key]);
-    if (isMergeable) {
-      target[key] = _merge(target[key], source[key]);
-    }
-  });
+  if (!isObjectLike(target) && !isFunction(target)) {
+    target = {};
+  }
+  for (var key in source) {
+    target[key] = _merge(target[key], source[key]);
+  }
   return target;
 }
 
-function isUndefinedSource(target, source) {
-  return target && source === undefined;
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
 }
 
-function clone(source) {
-  if (isPlainObject(source)) {
-    return _merge(emptyTarget(source), source);
-  }
-  return source;
-}
-
-function emptyTarget(val) {
-  return Array.isArray(val) ? [] : {};
+function isFunction(value) {
+  return value != null && typeof value == 'function';
 }
