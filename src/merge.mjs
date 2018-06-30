@@ -1,3 +1,5 @@
+import isFunction from './internal/_isFunction';
+import isObjectLike from './internal/_isObjectLike';
 import isPlainObject from './isPlainObject';
 
 /**
@@ -71,12 +73,4 @@ function mergeObject(target, source) {
     target[key] = _merge(target[key], source[key]);
   }
   return target;
-}
-
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-function isFunction(value) {
-  return value != null && typeof value == 'function';
 }

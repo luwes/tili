@@ -47,13 +47,15 @@ test('should accept multiple sources', function(t) {
 });
 
 test('should not overwrite `null` values', function(t) {
-  t.plan(1);
+  t.plan(3);
 
-  var object = { 'a': { 'b': null } },
-      source = { 'a': { 'b': 2 } },
+  var object = { 'a': { 'b': null }, c: null, d: null },
+      source = { 'a': { 'b': 2 }, c: [1], d: {} },
       actual = l.defaultsDeep(object, source);
 
   t.is(actual.a.b, null);
+  t.is(actual.c, null);
+  t.is(actual.d, null);
 });
 
 test('should not overwrite regexp values', function(t) {

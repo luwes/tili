@@ -1,8 +1,10 @@
 import isPlainObject from './isPlainObject';
 
 /**
- * This method is like `defaults` except that it recursively assigns
- * default properties.
+ * Deeply assigns own and inherited enumerable string keyed properties of source
+ * objects to the destination object for all destination properties that
+ * resolve to `undefined`. Source objects are applied from left to right.
+ * Once a property is set, additional values of the same property are ignored.
  *
  * **Note:** This method mutates `object`.
  *
@@ -42,7 +44,7 @@ function _defaultsDeep(target, source) {
 }
 
 function defaultsArray(target, source) {
-  if (!target) target = [];
+  if (target === undefined) target = [];
   if (Array.isArray(target)) {
     for (var i = 0; i < source.length; i++) {
       target[i] = _defaultsDeep(target[i], source[i]);
@@ -52,19 +54,9 @@ function defaultsArray(target, source) {
 }
 
 function defaultsObject(target, source) {
-  if (!target) target = {};
-  Object.keys(source).forEach(function(key) {
-    const isDefaultable =
-      !isUndefinedSource(target[key], source[key]) ||
-      isPlainObject(source[key]) ||
-      Array.isArray(source[key]);
-    if (isDefaultable) {
-      target[key] = _defaultsDeep(target[key], source[key]);
-    }
-  });
+  if (target === undefined) target = {};
+  for (var key in source) {
+    target[key] = _defaultsDeep(target[key], source[key]);
+  }
   return target;
-}
-
-function isUndefinedSource(target, source) {
-  return target && source === undefined;
 }

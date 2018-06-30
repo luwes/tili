@@ -119,8 +119,10 @@ assigned by reference rather than copied</p>
 <p>Dispatches to a <code>clone</code> method if present.</p>
 </dd>
 <dt><a href="#defaultsDeep">defaultsDeep(target, [...sources])</a> ⇒ <code>Object</code></dt>
-<dd><p>This method is like <code>defaults</code> except that it recursively assigns
-default properties.</p>
+<dd><p>Deeply assigns own and inherited enumerable string keyed properties of source
+objects to the destination object for all destination properties that
+resolve to <code>undefined</code>. Source objects are applied from left to right.
+Once a property is set, additional values of the same property are ignored.</p>
 <p><strong>Note:</strong> This method mutates <code>object</code>.</p>
 </dd>
 <dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
@@ -516,8 +518,10 @@ const objects = [{}, {}, {}];
 <a name="defaultsDeep"></a>
 
 ## defaultsDeep(target, [...sources]) ⇒ <code>Object</code>
-This method is like `defaults` except that it recursively assigns
-default properties.
+Deeply assigns own and inherited enumerable string keyed properties of source
+objects to the destination object for all destination properties that
+resolve to `undefined`. Source objects are applied from left to right.
+Once a property is set, additional values of the same property are ignored.
 
 **Note:** This method mutates `object`.
 

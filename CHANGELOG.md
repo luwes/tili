@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.4 - 2018-06-29
+### Changed
+- Fixed `defaultsDeep` function to not override `null` values with arrays or objects
+
 ## 0.8.3 - 2018-06-29
 ### Changed
 - Fixed `merge` function when copying array or object to simple key value
