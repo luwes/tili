@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.8.3 - 2018-06-29
+### Changed
+- Fixed `merge` function when copying array or object to simple key value
+
 ## 0.8.2 - 2018-06-22
 ### Added
 - Add `RegExp` to `clone` function
