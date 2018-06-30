@@ -620,7 +620,7 @@ function defer(func) {
 
 /* eslint quotes:0 */
 
-/** Used to map characters to HTML entities. */
+/* Used to map characters to HTML entities. */
 var htmlEscapes = {
   '&': '&amp;',
   '<': '&lt;',
@@ -628,7 +628,7 @@ var htmlEscapes = {
   '"': '&quot;',
   "'": '&#39;'
 };
-/** Used to match HTML entities and HTML characters. */
+/* Used to match HTML entities and HTML characters. */
 
 var reUnescapedHtml = /[&<>"']/g;
 var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
@@ -1153,7 +1153,7 @@ function throttle(wait, fn, options) {
 
 /* eslint quotes:0 */
 
-/** Used to map HTML entities to characters. */
+/* Used to map HTML entities to characters. */
 var htmlUnescapes = {
   '&amp;': '&',
   '&lt;': '<',
@@ -1161,7 +1161,7 @@ var htmlUnescapes = {
   '&quot;': '"',
   '&#39;': "'"
 };
-/** Used to match HTML entities and HTML characters. */
+/* Used to match HTML entities and HTML characters. */
 
 var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
 var reHasEscapedHtml = RegExp(reEscapedHtml.source);

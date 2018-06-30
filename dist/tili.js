@@ -626,7 +626,7 @@
 
   /* eslint quotes:0 */
 
-  /** Used to map characters to HTML entities. */
+  /* Used to map characters to HTML entities. */
   var htmlEscapes = {
     '&': '&amp;',
     '<': '&lt;',
@@ -634,7 +634,7 @@
     '"': '&quot;',
     "'": '&#39;'
   };
-  /** Used to match HTML entities and HTML characters. */
+  /* Used to match HTML entities and HTML characters. */
 
   var reUnescapedHtml = /[&<>"']/g;
   var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
@@ -1159,7 +1159,7 @@
 
   /* eslint quotes:0 */
 
-  /** Used to map HTML entities to characters. */
+  /* Used to map HTML entities to characters. */
   var htmlUnescapes = {
     '&amp;': '&',
     '&lt;': '<',
@@ -1167,7 +1167,7 @@
     '&quot;': '"',
     '&#39;': "'"
   };
-  /** Used to match HTML entities and HTML characters. */
+  /* Used to match HTML entities and HTML characters. */
 
   var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
   var reHasEscapedHtml = RegExp(reEscapedHtml.source);

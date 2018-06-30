@@ -1,6 +1,6 @@
 /* eslint quotes:0 */
 
-/** Used to map characters to HTML entities. */
+/* Used to map characters to HTML entities. */
 const htmlEscapes = {
   '&': '&amp;',
   '<': '&lt;',
@@ -9,7 +9,7 @@ const htmlEscapes = {
   "'": '&#39;'
 };
 
-/** Used to match HTML entities and HTML characters. */
+/* Used to match HTML entities and HTML characters. */
 const reUnescapedHtml = /[&<>"']/g;
 const reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
 

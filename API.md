@@ -1,17 +1,22 @@
-## Members
+## Constants
 
 <dl>
-<dt><a href="#htmlEscapes">htmlEscapes</a></dt>
-<dd><p>Used to map characters to HTML entities.</p>
-</dd>
-<dt><a href="#reUnescapedHtml">reUnescapedHtml</a></dt>
-<dd><p>Used to match HTML entities and HTML characters.</p>
-</dd>
-<dt><a href="#htmlUnescapes">htmlUnescapes</a></dt>
-<dd><p>Used to map HTML entities to characters.</p>
-</dd>
-<dt><a href="#reEscapedHtml">reEscapedHtml</a></dt>
-<dd><p>Used to match HTML entities and HTML characters.</p>
+<dt><a href="#__">__</a></dt>
+<dd><p>A special placeholder value used to specify &quot;gaps&quot; within curried functions,
+allowing partial application of any combination of arguments, regardless of
+their positions.</p>
+<p>If <code>g</code> is a curried ternary function and <code>_</code> is <code>__</code>, the following are
+equivalent:</p>
+<ul>
+<li><code>g(1, 2, 3)</code></li>
+<li><code>g(_, 2, 3)(1)</code></li>
+<li><code>g(_, _, 3)(1)(2)</code></li>
+<li><code>g(_, _, 3)(1, 2)</code></li>
+<li><code>g(_, 2, _)(1, 3)</code></li>
+<li><code>g(_, 2)(1)(3)</code></li>
+<li><code>g(_, 2)(1, 3)</code></li>
+<li><code>g(_, 2)(_, 3)(1)</code></li>
+</ul>
 </dd>
 </dl>
 
@@ -23,8 +28,30 @@
 function can take multiple arguments as it provides the signature for
 the resulting composite function.</p>
 </dd>
-<dt><a href="#curryN">curryN(length, fn, ...args)</a> ⇒ <code>function</code></dt>
-<dd><p>Curry a function by argument length.</p>
+<dt><a href="#curryN">curryN(length, fn)</a> ⇒ <code>function</code></dt>
+<dd><p>Returns a curried equivalent of the provided function, with the specified
+arity. The curried function has two unusual capabilities. First, its
+arguments needn&#39;t be provided one at a time. If <code>g</code> is <code>curryN(3, f)</code>, the
+following are equivalent:</p>
+<ul>
+<li><code>g(1)(2)(3)</code></li>
+<li><code>g(1)(2, 3)</code></li>
+<li><code>g(1, 2)(3)</code></li>
+<li><code>g(1, 2, 3)</code></li>
+</ul>
+<p>Secondly, the special placeholder value <a href="#__"><code>__</code></a> may be used to specify
+&quot;gaps&quot;, allowing partial application of any combination of arguments,
+regardless of their positions. If <code>g</code> is as above and <code>_</code> is <a href="#__"><code>__</code></a>,
+the following are equivalent:</p>
+<ul>
+<li><code>g(1, 2, 3)</code></li>
+<li><code>g(_, 2, 3)(1)</code></li>
+<li><code>g(_, _, 3)(1)(2)</code></li>
+<li><code>g(_, _, 3)(1, 2)</code></li>
+<li><code>g(_, 2)(1)(3)</code></li>
+<li><code>g(_, 2)(1, 3)</code></li>
+<li><code>g(_, 2)(_, 3)(1)</code></li>
+</ul>
 </dd>
 <dt><a href="#curry">curry(fn, ...args)</a> ⇒ <code>function</code></dt>
 <dd><p>Curry a function.</p>
@@ -147,30 +174,33 @@ function will check up the inheritance chain, if any.</p>
 </dd>
 </dl>
 
-<a name="htmlEscapes"></a>
+<a name="__"></a>
 
-## htmlEscapes
-Used to map characters to HTML entities.
+## __
+A special placeholder value used to specify "gaps" within curried functions,
+allowing partial application of any combination of arguments, regardless of
+their positions.
 
-**Kind**: global variable  
-<a name="reUnescapedHtml"></a>
+If `g` is a curried ternary function and `_` is `__`, the following are
+equivalent:
 
-## reUnescapedHtml
-Used to match HTML entities and HTML characters.
+  - `g(1, 2, 3)`
+  - `g(_, 2, 3)(1)`
+  - `g(_, _, 3)(1)(2)`
+  - `g(_, _, 3)(1, 2)`
+  - `g(_, 2, _)(1, 3)`
+  - `g(_, 2)(1)(3)`
+  - `g(_, 2)(1, 3)`
+  - `g(_, 2)(_, 3)(1)`
 
-**Kind**: global variable  
-<a name="htmlUnescapes"></a>
-
-## htmlUnescapes
-Used to map HTML entities to characters.
-
-**Kind**: global variable  
-<a name="reEscapedHtml"></a>
-
-## reEscapedHtml
-Used to match HTML entities and HTML characters.
-
-**Kind**: global variable  
+**Kind**: global constant  
+**Category**: Function  
+**Since**: v0.8.0  
+**Example**  
+```js
+const greet = replace('{name}', __, 'Hello, {name}!');
+     greet('Alice'); //=> 'Hello, Alice!'
+```
 <a name="compose"></a>
 
 ## compose(...funcs) ⇒ <code>function</code>
@@ -191,19 +221,51 @@ from right to left. For example, compose(f, g, h) is identical to doing
 
 <a name="curryN"></a>
 
-## curryN(length, fn, ...args) ⇒ <code>function</code>
-Curry a function by argument length.
+## curryN(length, fn) ⇒ <code>function</code>
+Returns a curried equivalent of the provided function, with the specified
+arity. The curried function has two unusual capabilities. First, its
+arguments needn't be provided one at a time. If `g` is `curryN(3, f)`, the
+following are equivalent:
+
+  - `g(1)(2)(3)`
+  - `g(1)(2, 3)`
+  - `g(1, 2)(3)`
+  - `g(1, 2, 3)`
+
+Secondly, the special placeholder value [`__`](#__) may be used to specify
+"gaps", allowing partial application of any combination of arguments,
+regardless of their positions. If `g` is as above and `_` is [`__`](#__),
+the following are equivalent:
+
+  - `g(1, 2, 3)`
+  - `g(_, 2, 3)(1)`
+  - `g(_, _, 3)(1)(2)`
+  - `g(_, _, 3)(1, 2)`
+  - `g(_, 2)(1)(3)`
+  - `g(_, 2)(1, 3)`
+  - `g(_, 2)(_, 3)(1)`
 
 **Kind**: global function  
+**Returns**: <code>function</code> - A new, curried function.  
 **Category**: Function  
+**Sig**: Number -> (* -> a) -> (* -> a)  
+**See**: curry  
 **Since**: v0.1.0  
 
-| Param | Type |
-| --- | --- |
-| length | <code>Number</code> | 
-| fn | <code>function</code> | 
-| ...args | <code>function</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| length | <code>Number</code> | The arity for the returned function. |
+| fn | <code>function</code> | The function to curry. |
 
+**Example**  
+```js
+const sumArgs = (...args) => sum(args);
+
+     const curriedAddFourNumbers = curryN(4, sumArgs);
+     const f = curriedAddFourNumbers(1, 2);
+     const g = f(3);
+     g(4); //=> 10
+```
 <a name="curry"></a>
 
 ## curry(fn, ...args) ⇒ <code>function</code>
@@ -648,7 +710,7 @@ XSS vectors.
 **Example**  
 ```js
 escape('fred, barney, & pebbles')
-   // => 'fred, barney, &amp pebbles'
+   // => 'fred, barney, &amp; pebbles'
 ```
 <a name="unescape"></a>
 
