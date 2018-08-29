@@ -938,7 +938,9 @@ function _round(methodName) {
  *    // => 4100
  */
 
-const round = _round('round');
+function round(number, precision) {
+  return _round('round')(number, precision);
+}
 
 /**
  * Runs the given function with the supplied object, then returns the object.
@@ -959,10 +961,10 @@ const round = _round('round');
  *
  * @symb tap(f, a) = a
  */
-var tap = curryN(2, (fn, x) => {
+function tap(fn, x) {
   fn(x);
   return x;
-});
+}
 
 /**
  * Throttle a function.

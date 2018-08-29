@@ -1,5 +1,3 @@
-import curryN from './curryN';
-
 /**
  * Runs the given function with the supplied object, then returns the object.
  *
@@ -19,9 +17,9 @@ import curryN from './curryN';
  *
  * @symb tap(f, a) = a
  */
-var tap = curryN(2, (fn, x) => {
+function tap(fn, x) {
   fn(x);
   return x;
-});
+}
 
 export default tap;

@@ -21,6 +21,8 @@ import _round from './internal/_round';
  *    // => 4100
  */
 
-const round = _round('round');
+function round(number, precision) {
+  return _round('round')(number, precision);
+}
 
 export default round;

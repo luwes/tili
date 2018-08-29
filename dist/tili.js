@@ -1066,7 +1066,9 @@
    *    // => 4100
    */
 
-  var round = _round('round');
+  function round(number, precision) {
+    return _round('round')(number, precision);
+  }
 
   /**
    * Runs the given function with the supplied object, then returns the object.
@@ -1087,11 +1089,10 @@
    *
    * @symb tap(f, a) = a
    */
-
-  var tap = curryN(2, function (fn, x) {
+  function tap(fn, x) {
     fn(x);
     return x;
-  });
+  }
 
   /**
    * Throttle a function.
