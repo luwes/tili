@@ -15,7 +15,7 @@
  *    pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
  *    pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
  */
-export default function pick(names, obj) {
+function pick(names, obj) {
   var result = {};
   var idx = 0;
   while (idx < names.length) {
@@ -26,3 +26,5 @@ export default function pick(names, obj) {
   }
   return result;
 }
+
+export default pick;

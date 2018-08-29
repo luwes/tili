@@ -11,7 +11,7 @@
  * from right to left. For example, compose(f, g, h) is identical to doing
  * (...args) => f(g(h(...args))).
  */
-export default function compose(...funcs) {
+function compose(...funcs) {
   if (funcs.length === 0) {
     return arg => arg;
   }
@@ -22,3 +22,5 @@ export default function compose(...funcs) {
 
   return funcs.reduce((a, b) => (...args) => a(b(...args)));
 }
+
+export default compose;

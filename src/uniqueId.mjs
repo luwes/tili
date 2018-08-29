@@ -16,7 +16,9 @@ let idCounter = 0;
  *    uniqueId();
  *    // => '105'
  */
-export default function uniqueId(prefix) {
+function uniqueId(prefix) {
   var id = ++idCounter;
   return `${prefix}${id}`;
 }
+
+export default uniqueId;

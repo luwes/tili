@@ -20,8 +20,10 @@ import _clone from './internal/_clone';
  *    objects === objectsClone; //=> false
  *    objects[0] === objectsClone[0]; //=> false
  */
-export default function clone(value) {
+function clone(value) {
   return value != null && typeof value.clone === 'function'
     ? value.clone()
     : _clone(value, [], [], true);
 }
+
+export default clone;

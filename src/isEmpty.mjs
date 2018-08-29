@@ -22,7 +22,7 @@ var toString = Object.prototype.toString;
  *      isEmpty({});          //=> true
  *      isEmpty({length: 0}); //=> false
  */
-export default function isEmpty(val) {
+function isEmpty(val) {
   // Null and Undefined...
   if (val == null) return true;
 
@@ -68,3 +68,5 @@ export default function isEmpty(val) {
   // Anything else...
   return false;
 }
+
+export default isEmpty;

@@ -24,7 +24,7 @@
  *    isPlainObject(Object.create(null))
  *    // => true
  */
-export default function isPlainObject(obj) {
+function isPlainObject(obj) {
   if (typeof obj !== 'object' || obj === null) return false;
 
   let proto = obj;
@@ -34,3 +34,5 @@ export default function isPlainObject(obj) {
 
   return Object.getPrototypeOf(obj) === proto;
 }
+
+export default isPlainObject;

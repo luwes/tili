@@ -19,7 +19,7 @@ import isPlainObject from './isPlainObject';
  * defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } })
  * // => { 'a': { 'b': 2, 'c': 3 } }
  */
-export default function defaultsDeep(target, ...sources) {
+function defaultsDeep(target, ...sources) {
   return sources.reduce(_defaultsDeep, target);
 }
 
@@ -60,3 +60,5 @@ function defaultsObject(target, source) {
   }
   return target;
 }
+
+export default defaultsDeep;

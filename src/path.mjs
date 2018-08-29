@@ -14,7 +14,7 @@
  *    path(['a', 'b'], {a: {b: 2}}); //=> 2
  *    path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
-export default function path(paths, obj) {
+function path(paths, obj) {
   let val = obj;
   let idx = 0;
   while (idx < paths.length) {
@@ -26,3 +26,5 @@ export default function path(paths, obj) {
   }
   return val;
 }
+
+export default path;

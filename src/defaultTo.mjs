@@ -8,6 +8,8 @@
  * @param  {*} v - The passed value.
  * @return {*}
  */
-export default function defaultTo(d, v) {
+function defaultTo(d, v) {
   return v == null || v !== v ? d : v;
 }
+
+export default defaultTo;

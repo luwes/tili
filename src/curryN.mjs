@@ -42,6 +42,8 @@ import _curryN from './internal/_curryN';
  *      const g = f(3);
  *      g(4); //=> 10
  */
-export default function curryN(length, fn) {
+function curryN(length, fn) {
   return _arity(length, _curryN(length, [], fn));
 }
+
+export default curryN;

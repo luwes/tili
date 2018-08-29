@@ -10,7 +10,7 @@
  * @param {*} [args] Optional arguments
  * @see  https://github.com/jamiebuilds/tickedoff
  */
-export default function defer(func, ...args) {
+function defer(func, ...args) {
   if (typeof func != 'function') {
     throw new TypeError('Expected a function');
   }
@@ -29,3 +29,5 @@ export default function defer(func, ...args) {
 
   tick(() => func(...args));
 }
+
+export default defer;

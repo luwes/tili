@@ -14,9 +14,11 @@
  *    delay(text => console.log(text), 1000, 'later')
  *    // => Logs 'later' after one second.
  */
-export default function delay(wait, func, ...args) {
+function delay(wait, func, ...args) {
   if (typeof func != 'function') {
     throw new TypeError('Expected a function');
   }
   return setTimeout(func, +wait || 0, ...args);
 }
+
+export default delay;

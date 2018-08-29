@@ -21,4 +21,6 @@ import _round from './internal/_round';
  *    // => 4100
  */
 
-export default _round('round');
+const round = _round('round');
+
+export default round;

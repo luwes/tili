@@ -13,7 +13,7 @@
  *
  *      values({a: 1, b: 2, c: 3}); //=> [1, 2, 3]
  */
-export default function values(obj) {
+function values(obj) {
   var props = Object.keys(obj);
   var len = props.length;
   var vals = [];
@@ -24,3 +24,5 @@ export default function values(obj) {
   }
   return vals;
 }
+
+export default values;

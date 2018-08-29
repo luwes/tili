@@ -22,10 +22,12 @@
  *    type(() => {}); //=> "Function"
  *    type(undefined); //=> "Undefined"
  */
-export default function type(val) {
+function type(val) {
   return val === null
     ? 'Null'
     : val === undefined
       ? 'Undefined'
       : Object.prototype.toString.call(val).slice(8, -1);
 }
+
+export default type;

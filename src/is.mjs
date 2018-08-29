@@ -20,6 +20,8 @@
  *    is(Object, 's'); //=> false
  *    is(Number, {}); //=> false
  */
-export default function is(Ctor, val) {
+function is(Ctor, val) {
   return val != null && (val.constructor === Ctor || val instanceof Ctor);
 }
+
+export default is;

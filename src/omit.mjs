@@ -13,7 +13,7 @@
  *
  *    omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
  */
-export default function omit(names, obj) {
+function omit(names, obj) {
   var result = {};
   var index = {};
   var idx = 0;
@@ -31,3 +31,5 @@ export default function omit(names, obj) {
   }
   return result;
 }
+
+export default omit;

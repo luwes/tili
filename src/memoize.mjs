@@ -7,7 +7,7 @@
  * @param  {Function} fn
  * @return {*}
  */
-export default function memoize(fn) {
+function memoize(fn) {
   let lastArgs = null;
   let lastResult = null;
   return function() {
@@ -31,3 +31,5 @@ function areArgumentsShallowlyEqual(prev, next) {
   }
   return true;
 }
+
+export default memoize;

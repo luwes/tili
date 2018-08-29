@@ -10,6 +10,8 @@ import curryN from './curryN';
  * @param  {...Function} args
  * @return {Function}
  */
-export default function curry(fn, ...args) {
+function curry(fn, ...args) {
   return curryN(fn.length, fn, ...args);
 }
+
+export default curry;

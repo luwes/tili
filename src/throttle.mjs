@@ -11,7 +11,7 @@
  * @param  {Boolean}  [options.trailing=true] - Trigger a trailing function call.
  * @return {Function}
  */
-export default function throttle(wait, fn, options = {}) {
+function throttle(wait, fn, options = {}) {
   let timeout, context, args, result;
   let previous = 0;
 
@@ -50,3 +50,5 @@ export default function throttle(wait, fn, options = {}) {
 
   return throttled;
 }
+
+export default throttle;

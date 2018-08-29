@@ -31,7 +31,7 @@ import isPlainObject from './isPlainObject';
  *    merge(object, other)
  *    // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
  */
-export default function merge(target, ...sources) {
+function merge(target, ...sources) {
   return sources.reduce(_merge, target);
 }
 
@@ -74,3 +74,5 @@ function mergeObject(target, source) {
   }
   return target;
 }
+
+export default merge;

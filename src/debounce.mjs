@@ -14,7 +14,7 @@ import delay from './delay';
  * @param  {Boolean} [immediate=false]
  * @return {Function}
  */
-export default function debounce(wait, func, immediate = false) {
+function debounce(wait, func, immediate = false) {
   let timeout;
   let result;
 
@@ -43,3 +43,5 @@ export default function debounce(wait, func, immediate = false) {
 
   return debounced;
 }
+
+export default debounce;

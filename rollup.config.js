@@ -11,12 +11,11 @@ const config = {
   plugins: []
 };
 
-if (env === 'es' || env === 'cjs') {
+if (env === 'es') {
   config.output = { format: env };
-  config.plugins.push(babel());
 }
 
-if (env === 'development' || env === 'production') {
+if (env === 'umd' || env === 'umd:min') {
   config.output = {
     format: 'umd',
     name: 'tili'
@@ -34,7 +33,7 @@ if (env === 'development' || env === 'production') {
   );
 }
 
-if (env === 'production') {
+if (env === 'umd:min') {
   config.plugins.push(
     uglify({
       compress: {

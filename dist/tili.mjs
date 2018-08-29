@@ -24,9 +24,7 @@
  *      const greet = replace('{name}', __, 'Hello, {name}!');
  *      greet('Alice'); //=> 'Hello, Alice!'
  */
-var __ = {
-  '@@functional/placeholder': true
-};
+var __ = {'@@functional/placeholder': true};
 
 /**
  * Restricts a number to be within a range.
@@ -49,9 +47,10 @@ var __ = {
  */
 function clamp(min, max, value) {
   if (min > max) {
-    throw new Error('min must not be greater than max in clamp(min, max, value)');
+    throw new Error(
+      'min must not be greater than max in clamp(min, max, value)'
+    );
   }
-
   return value < min ? min : value > max ? max : value;
 }
 
@@ -84,7 +83,11 @@ function _cloneRegExp(pattern) {
  *    type(undefined); //=> "Undefined"
  */
 function type(val) {
-  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+  return val === null
+    ? 'Null'
+    : val === undefined
+      ? 'Undefined'
+      : Object.prototype.toString.call(val).slice(8, -1);
 }
 
 /**
@@ -97,45 +100,30 @@ function type(val) {
  * @param {Boolean} deep Whether or not to perform deep cloning.
  * @return {*} The copied value.
  */
-
 function _clone(value, refFrom, refTo, deep) {
   var copy = function copy(copiedValue) {
     var len = refFrom.length;
     var idx = 0;
-
     while (idx < len) {
       if (value === refFrom[idx]) {
         return refTo[idx];
       }
-
       idx += 1;
     }
-
     refFrom[idx + 1] = value;
     refTo[idx + 1] = copiedValue;
-
     for (var key in value) {
-      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
+      copiedValue[key] = deep ?
+        _clone(value[key], refFrom, refTo, true) : value[key];
     }
-
     return copiedValue;
   };
-
   switch (type(value)) {
-    case 'Object':
-      return copy({});
-
-    case 'Array':
-      return copy([]);
-
-    case 'Date':
-      return new Date(value.valueOf());
-
-    case 'RegExp':
-      return _cloneRegExp(value);
-
-    default:
-      return value;
+    case 'Object':  return copy({});
+    case 'Array':   return copy([]);
+    case 'Date':    return new Date(value.valueOf());
+    case 'RegExp':  return _cloneRegExp(value);
+    default:        return value;
   }
 }
 
@@ -159,9 +147,10 @@ function _clone(value, refFrom, refTo, deep) {
  *    objects === objectsClone; //=> false
  *    objects[0] === objectsClone[0]; //=> false
  */
-
 function clone(value) {
-  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+  return value != null && typeof value.clone === 'function'
+    ? value.clone()
+    : _clone(value, [], [], true);
 }
 
 /**
@@ -177,93 +166,40 @@ function clone(value) {
  * from right to left. For example, compose(f, g, h) is identical to doing
  * (...args) => f(g(h(...args))).
  */
-function compose() {
-  for (var _len = arguments.length, funcs = new Array(_len), _key = 0; _key < _len; _key++) {
-    funcs[_key] = arguments[_key];
-  }
-
+function compose(...funcs) {
   if (funcs.length === 0) {
-    return function (arg) {
-      return arg;
-    };
+    return arg => arg;
   }
 
   if (funcs.length === 1) {
     return funcs[0];
   }
 
-  return funcs.reduce(function (a, b) {
-    return function () {
-      return a(b.apply(void 0, arguments));
-    };
-  });
+  return funcs.reduce((a, b) => (...args) => a(b(...args)));
 }
 
 function _arity(n, fn) {
   /* eslint-disable no-unused-vars */
   switch (n) {
-    case 0:
-      return function () {
-        return fn.apply(this, arguments);
-      };
-
-    case 1:
-      return function (a0) {
-        return fn.apply(this, arguments);
-      };
-
-    case 2:
-      return function (a0, a1) {
-        return fn.apply(this, arguments);
-      };
-
-    case 3:
-      return function (a0, a1, a2) {
-        return fn.apply(this, arguments);
-      };
-
-    case 4:
-      return function (a0, a1, a2, a3) {
-        return fn.apply(this, arguments);
-      };
-
-    case 5:
-      return function (a0, a1, a2, a3, a4) {
-        return fn.apply(this, arguments);
-      };
-
-    case 6:
-      return function (a0, a1, a2, a3, a4, a5) {
-        return fn.apply(this, arguments);
-      };
-
-    case 7:
-      return function (a0, a1, a2, a3, a4, a5, a6) {
-        return fn.apply(this, arguments);
-      };
-
-    case 8:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
-        return fn.apply(this, arguments);
-      };
-
-    case 9:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
-        return fn.apply(this, arguments);
-      };
-
-    case 10:
-      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-        return fn.apply(this, arguments);
-      };
-
-    default:
-      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+    case 0: return function() { return fn.apply(this, arguments); };
+    case 1: return function(a0) { return fn.apply(this, arguments); };
+    case 2: return function(a0, a1) { return fn.apply(this, arguments); };
+    case 3: return function(a0, a1, a2) { return fn.apply(this, arguments); };
+    case 4: return function(a0, a1, a2, a3) { return fn.apply(this, arguments); };
+    case 5: return function(a0, a1, a2, a3, a4) { return fn.apply(this, arguments); };
+    case 6: return function(a0, a1, a2, a3, a4, a5) { return fn.apply(this, arguments); };
+    case 7: return function(a0, a1, a2, a3, a4, a5, a6) { return fn.apply(this, arguments); };
+    case 8: return function(a0, a1, a2, a3, a4, a5, a6, a7) { return fn.apply(this, arguments); };
+    case 9: return function(a0, a1, a2, a3, a4, a5, a6, a7, a8) { return fn.apply(this, arguments); };
+    case 10: return function(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) { return fn.apply(this, arguments); };
+    default: throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
   }
 }
 
 function _isPlaceholder(a) {
-  return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+  return a != null &&
+         typeof a === 'object' &&
+         a['@@functional/placeholder'] === true;
 }
 
 /**
@@ -276,34 +212,30 @@ function _isPlaceholder(a) {
  * @param {Function} fn The function to curry.
  * @return {Function} The curried function.
  */
-
 function _curryN(length, received, fn) {
-  return function () {
+  return function() {
     var combined = [];
     var argsIdx = 0;
     var left = length;
     var combinedIdx = 0;
-
     while (combinedIdx < received.length || argsIdx < arguments.length) {
       var result;
-
-      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+      if (combinedIdx < received.length &&
+          (!_isPlaceholder(received[combinedIdx]) ||
+           argsIdx >= arguments.length)) {
         result = received[combinedIdx];
       } else {
         result = arguments[argsIdx];
         argsIdx += 1;
       }
-
       combined[combinedIdx] = result;
-
       if (!_isPlaceholder(result)) {
         left -= 1;
       }
-
       combinedIdx += 1;
     }
-
-    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+    return left <= 0 ? fn.apply(this, combined)
+      : _arity(left, _curryN(length, combined, fn));
   };
 }
 
@@ -348,7 +280,6 @@ function _curryN(length, received, fn) {
  *      const g = f(3);
  *      g(4); //=> 10
  */
-
 function curryN(length, fn) {
   return _arity(length, _curryN(length, [], fn));
 }
@@ -363,13 +294,8 @@ function curryN(length, fn) {
  * @param  {...Function} args
  * @return {Function}
  */
-
-function curry(fn) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
-
-  return curryN.apply(void 0, [fn.length, fn].concat(args));
+function curry(fn, ...args) {
+  return curryN(fn.length, fn, ...args);
 }
 
 /**
@@ -388,16 +314,11 @@ function curry(fn) {
  *    delay(text => console.log(text), 1000, 'later')
  *    // => Logs 'later' after one second.
  */
-function delay(wait, func) {
+function delay(wait, func, ...args) {
   if (typeof func != 'function') {
     throw new TypeError('Expected a function');
   }
-
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  return setTimeout.apply(void 0, [func, +wait || 0].concat(args));
+  return setTimeout(func, +wait || 0, ...args);
 }
 
 /**
@@ -414,29 +335,19 @@ function delay(wait, func) {
  * @param  {Boolean} [immediate=false]
  * @return {Function}
  */
+function debounce(wait, func, immediate = false) {
+  let timeout;
+  let result;
 
-function debounce(wait, func, immediate) {
-  if (immediate === void 0) {
-    immediate = false;
-  }
-
-  var timeout;
-  var result;
-
-  var later = function later(context, args) {
+  const later = function(context, args) {
     timeout = null;
     if (args) result = func.apply(context, args);
   };
 
-  var debounced = function debounced() {
+  const debounced = function(...args) {
     if (timeout) clearTimeout(timeout);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
     if (immediate) {
-      var callNow = !timeout;
+      const callNow = !timeout;
       timeout = setTimeout(later, wait);
       if (callNow) result = func.apply(this, args);
     } else {
@@ -446,7 +357,7 @@ function debounce(wait, func, immediate) {
     return result;
   };
 
-  debounced.cancel = function () {
+  debounced.cancel = function() {
     clearTimeout(timeout);
     timeout = null;
   };
@@ -496,8 +407,8 @@ function defaultTo(d, v) {
  */
 function isPlainObject(obj) {
   if (typeof obj !== 'object' || obj === null) return false;
-  var proto = obj;
 
+  let proto = obj;
   while (Object.getPrototypeOf(proto) !== null) {
     proto = Object.getPrototypeOf(proto);
   }
@@ -524,12 +435,7 @@ function isPlainObject(obj) {
  * defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } })
  * // => { 'a': { 'b': 2, 'c': 3 } }
  */
-
-function defaultsDeep(target) {
-  for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    sources[_key - 1] = arguments[_key];
-  }
-
+function defaultsDeep(target, ...sources) {
   return sources.reduce(_defaultsDeep, target);
 }
 
@@ -555,23 +461,19 @@ function _defaultsDeep(target, source) {
 
 function defaultsArray(target, source) {
   if (target === undefined) target = [];
-
   if (Array.isArray(target)) {
     for (var i = 0; i < source.length; i++) {
       target[i] = _defaultsDeep(target[i], source[i]);
     }
   }
-
   return target;
 }
 
 function defaultsObject(target, source) {
   if (target === undefined) target = {};
-
   for (var key in source) {
     target[key] = _defaultsDeep(target[key], source[key]);
   }
-
   return target;
 }
 
@@ -587,17 +489,12 @@ function defaultsObject(target, source) {
  * @param {*} [args] Optional arguments
  * @see  https://github.com/jamiebuilds/tickedoff
  */
-function defer(func) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
-
+function defer(func, ...args) {
   if (typeof func != 'function') {
     throw new TypeError('Expected a function');
   }
 
   var tick;
-
   if (typeof process === 'object' && typeof process.nextTick === 'function') {
     tick = process.nextTick;
   } else if (typeof Promise === 'function') {
@@ -609,25 +506,24 @@ function defer(func) {
     tick = setTimeout;
   }
 
-  tick(function () {
-    return func.apply(void 0, args);
-  });
+  tick(() => func(...args));
 }
 
 /* eslint quotes:0 */
 
 /* Used to map characters to HTML entities. */
-var htmlEscapes = {
+const htmlEscapes = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;',
   '"': '&quot;',
   "'": '&#39;'
 };
-/* Used to match HTML entities and HTML characters. */
 
-var reUnescapedHtml = /[&<>"']/g;
-var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+/* Used to match HTML entities and HTML characters. */
+const reUnescapedHtml = /[&<>"']/g;
+const reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+
 /**
  * Converts the characters "&", "<", ">", '"', and "'" in `string` to their
  * corresponding HTML entities.
@@ -656,11 +552,10 @@ var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
  *    escape('fred, barney, & pebbles')
  *    // => 'fred, barney, &amp; pebbles'
  */
-
 function escape(string) {
-  return string && reHasUnescapedHtml.test(string) ? string.replace(reUnescapedHtml, function (chr) {
-    return htmlEscapes[chr];
-  }) : string;
+  return string && reHasUnescapedHtml.test(string)
+    ? string.replace(reUnescapedHtml, chr => htmlEscapes[chr])
+    : string;
 }
 
 /**
@@ -706,18 +601,15 @@ function is(Ctor, val) {
  *    path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
 function path(paths, obj) {
-  var val = obj;
-  var idx = 0;
-
+  let val = obj;
+  let idx = 0;
   while (idx < paths.length) {
     if (val == null) {
       return;
     }
-
     val = val[paths[idx]];
     idx += 1;
   }
-
   return val;
 }
 
@@ -731,12 +623,10 @@ function path(paths, obj) {
  * @param  {Object} obj
  * @return {*}
  */
-
 function get(paths, obj) {
   if (is(String, paths)) {
     return path(paths.split('.'), obj);
   }
-
   return path(paths, obj);
 }
 
@@ -755,8 +645,10 @@ function includes(search, arr) {
 }
 
 // https://github.com/ianstormtaylor/is-empty
+
 var has = Object.prototype.hasOwnProperty;
 var toString = Object.prototype.toString;
+
 /**
  * Returns `true` if the given value is its type's empty value; `false`
  * otherwise.
@@ -776,46 +668,50 @@ var toString = Object.prototype.toString;
  *      isEmpty({});          //=> true
  *      isEmpty({length: 0}); //=> false
  */
-
 function isEmpty(val) {
   // Null and Undefined...
-  if (val == null) return true; // Booleans...
+  if (val == null) return true;
 
-  if ('boolean' == typeof val) return false; // Numbers...
+  // Booleans...
+  if ('boolean' == typeof val) return false;
 
-  if ('number' == typeof val) return val === 0; // Strings...
+  // Numbers...
+  if ('number' == typeof val) return val === 0;
 
-  if ('string' == typeof val) return val.length === 0; // Functions...
+  // Strings...
+  if ('string' == typeof val) return val.length === 0;
 
-  if ('function' == typeof val) return val.length === 0; // Arrays...
+  // Functions...
+  if ('function' == typeof val) return val.length === 0;
 
-  if (Array.isArray(val)) return val.length === 0; // Errors...
+  // Arrays...
+  if (Array.isArray(val)) return val.length === 0;
 
-  if (val instanceof Error) return val.message === ''; // Objects...
+  // Errors...
+  if (val instanceof Error) return val.message === '';
 
+  // Objects...
   if (val.toString == toString) {
     switch (val.toString()) {
       // Maps, Sets, Files and Errors...
       case '[object File]':
       case '[object Map]':
-      case '[object Set]':
-        {
-          return val.size === 0;
-        }
+      case '[object Set]': {
+        return val.size === 0;
+      }
+
       // Plain objects...
-
-      case '[object Object]':
-        {
-          for (var key in val) {
-            if (has.call(val, key)) return false;
-          }
-
-          return true;
+      case '[object Object]': {
+        for (var key in val) {
+          if (has.call(val, key)) return false;
         }
+
+        return true;
+      }
     }
-  } // Anything else...
+  }
 
-
+  // Anything else...
   return false;
 }
 
@@ -829,13 +725,12 @@ function isEmpty(val) {
  * @return {*}
  */
 function memoize(fn) {
-  var lastArgs = null;
-  var lastResult = null;
-  return function () {
+  let lastArgs = null;
+  let lastResult = null;
+  return function() {
     if (!areArgumentsShallowlyEqual(lastArgs, arguments)) {
       lastResult = fn.apply(null, arguments);
     }
-
     lastArgs = arguments;
     return lastResult;
   };
@@ -845,15 +740,12 @@ function areArgumentsShallowlyEqual(prev, next) {
   if (prev === null || next === null || prev.length !== next.length) {
     return false;
   }
-
-  var length = prev.length;
-
-  for (var i = 0; i < length; i++) {
+  const length = prev.length;
+  for (let i = 0; i < length; i++) {
     if (prev[i] !== next[i]) {
       return false;
     }
   }
-
   return true;
 }
 
@@ -894,12 +786,7 @@ function _isObjectLike(value) {
  *    merge(object, other)
  *    // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
  */
-
-function merge(target) {
-  for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    sources[_key - 1] = arguments[_key];
-  }
-
+function merge(target, ...sources) {
   return sources.reduce(_merge, target);
 }
 
@@ -927,11 +814,9 @@ function mergeArray(target, source) {
   if (!Array.isArray(target)) {
     target = [];
   }
-
   for (var i = 0; i < source.length; i++) {
     target[i] = _merge(target[i], source[i]);
   }
-
   return target;
 }
 
@@ -939,11 +824,9 @@ function mergeObject(target, source) {
   if (!_isObjectLike(target) && !_isFunction(target)) {
     target = {};
   }
-
   for (var key in source) {
     target[key] = _merge(target[key], source[key]);
   }
-
   return target;
 }
 
@@ -978,7 +861,6 @@ function omit(names, obj) {
       result[prop] = obj[prop];
     }
   }
-
   return result;
 }
 
@@ -1002,15 +884,12 @@ function omit(names, obj) {
 function pick(names, obj) {
   var result = {};
   var idx = 0;
-
   while (idx < names.length) {
     if (names[idx] in obj) {
       result[names[idx]] = obj[names[idx]];
     }
-
     idx += 1;
   }
-
   return result;
 }
 
@@ -1022,19 +901,18 @@ function pick(names, obj) {
  * @return {Function} Returns the new round function.
  */
 function _round(methodName) {
-  var func = Math[methodName];
-  return function (number, precision) {
+  const func = Math[methodName];
+  return (number, precision) => {
     precision = precision == null ? 0 : Math.min(precision, 292);
-
     if (precision) {
       // Shift with exponential notation to avoid floating-point issues.
       // See [MDN](https://mdn.io/round#Examples) for more details.
-      var pair = (number + "e").split('e');
-      var value = func(pair[0] + "e" + (+pair[1] + precision));
-      pair = (value + "e").split('e');
-      return +(pair[0] + "e" + (+pair[1] - precision));
-    }
+      let pair = `${number}e`.split('e');
+      const value = func(`${pair[0]}e${+pair[1] + precision}`);
 
+      pair = `${value}e`.split('e');
+      return +`${pair[0]}e${+pair[1] - precision}`;
+    }
     return func(number);
   };
 }
@@ -1060,7 +938,7 @@ function _round(methodName) {
  *    // => 4100
  */
 
-var round = _round('round');
+const round = _round('round');
 
 /**
  * Runs the given function with the supplied object, then returns the object.
@@ -1081,8 +959,7 @@ var round = _round('round');
  *
  * @symb tap(f, a) = a
  */
-
-var tap = curryN(2, function (fn, x) {
+var tap = curryN(2, (fn, x) => {
   fn(x);
   return x;
 });
@@ -1100,45 +977,38 @@ var tap = curryN(2, function (fn, x) {
  * @param  {Boolean}  [options.trailing=true] - Trigger a trailing function call.
  * @return {Function}
  */
-function throttle(wait, fn, options) {
-  if (options === void 0) {
-    options = {};
-  }
+function throttle(wait, fn, options = {}) {
+  let timeout, context, args, result;
+  let previous = 0;
 
-  var timeout, context, args, result;
-  var previous = 0;
-
-  var later = function later() {
+  const later = function() {
     previous = options.leading === false ? 0 : Date.now();
     timeout = null;
     result = fn.apply(context, args);
     if (!timeout) context = args = null;
   };
 
-  var throttled = function throttled() {
-    var now = Date.now();
+  const throttled = function() {
+    const now = Date.now();
     if (!previous && options.leading === false) previous = now;
-    var remaining = wait - (now - previous);
+    const remaining = wait - (now - previous);
     context = this;
     args = arguments;
-
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {
         clearTimeout(timeout);
         timeout = null;
       }
-
       previous = now;
       result = fn.apply(context, args);
       if (!timeout) context = args = null;
     } else if (!timeout && options.trailing !== false) {
       timeout = setTimeout(later, remaining);
     }
-
     return result;
   };
 
-  throttled.cancel = function () {
+  throttled.cancel = function() {
     clearTimeout(timeout);
     previous = 0;
     timeout = context = args = null;
@@ -1150,17 +1020,18 @@ function throttle(wait, fn, options) {
 /* eslint quotes:0 */
 
 /* Used to map HTML entities to characters. */
-var htmlUnescapes = {
+const htmlUnescapes = {
   '&amp;': '&',
   '&lt;': '<',
   '&gt;': '>',
   '&quot;': '"',
   '&#39;': "'"
 };
-/* Used to match HTML entities and HTML characters. */
 
-var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
-var reHasEscapedHtml = RegExp(reEscapedHtml.source);
+/* Used to match HTML entities and HTML characters. */
+const reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
+const reHasEscapedHtml = RegExp(reEscapedHtml.source);
+
 /**
  * The inverse of `escape`this method converts the HTML entities
  * `&amp;`, `&lt;`, `&gt;`, `&quot;` and `&#39;` in `string` to
@@ -1180,14 +1051,14 @@ var reHasEscapedHtml = RegExp(reEscapedHtml.source);
  *    unescape('fred, barney, &amp; pebbles')
  *    // => 'fred, barney, & pebbles'
  */
-
 function unescape(string) {
-  return string && reHasEscapedHtml.test(string) ? string.replace(reEscapedHtml, function (entity) {
-    return htmlUnescapes[entity];
-  }) : string;
+  return string && reHasEscapedHtml.test(string)
+    ? string.replace(reEscapedHtml, entity => htmlUnescapes[entity])
+    : string;
 }
 
-var idCounter = 0;
+let idCounter = 0;
+
 /**
  * Generates a unique ID. If `prefix` is given, the ID is appended to it.
  *
@@ -1204,10 +1075,9 @@ var idCounter = 0;
  *    uniqueId();
  *    // => '105'
  */
-
 function uniqueId(prefix) {
   var id = ++idCounter;
-  return "" + prefix + id;
+  return `${prefix}${id}`;
 }
 
 /**
@@ -1230,12 +1100,10 @@ function values(obj) {
   var len = props.length;
   var vals = [];
   var idx = 0;
-
   while (idx < len) {
     vals[idx] = obj[props[idx]];
     idx += 1;
   }
-
   return vals;
 }
 

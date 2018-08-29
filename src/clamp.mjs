@@ -17,7 +17,7 @@
  *      clamp(1, 10, 15) // => 10
  *      clamp(1, 10, 4)  // => 4
  */
-export default function clamp(min, max, value) {
+function clamp(min, max, value) {
   if (min > max) {
     throw new Error(
       'min must not be greater than max in clamp(min, max, value)'
@@ -25,3 +25,5 @@ export default function clamp(min, max, value) {
   }
   return value < min ? min : value > max ? max : value;
 }
+
+export default clamp;

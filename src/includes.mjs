@@ -8,6 +8,8 @@
  * @param  {Array|String} arr
  * @return {Boolean}
  */
-export default function includes(search, arr) {
+function includes(search, arr) {
   return arr.indexOf(search) !== -1;
 }
+
+export default includes;

@@ -11,9 +11,11 @@ import path from './path';
  * @param  {Object} obj
  * @return {*}
  */
-export default function get(paths, obj) {
+function get(paths, obj) {
   if (is(String, paths)) {
     return path(paths.split('.'), obj);
   }
   return path(paths, obj);
 }
+
+export default get;
