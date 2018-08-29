@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.1 - 2018-08-29
+### Changed
+- Remove auto curry from `tap`, improves tree-shake
+- Make `round` tree-shakeable
+
 ## 0.9.0 - 2018-08-29
 ### Changed
 - Use unbabelified bundle for pkg.module. The consumer of this library should make sure to run it through a transpiler. Benefit is that the consumer can bundle a separate lean ES2015 bundle.
