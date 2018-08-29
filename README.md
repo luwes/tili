@@ -49,6 +49,9 @@ equivalent:</p>
 function can take multiple arguments as it provides the signature for
 the resulting composite function.</p>
 </dd>
+<dt><a href="#curry">curry(fn, ...args)</a> ⇒ <code>function</code></dt>
+<dd><p>Curry a function.</p>
+</dd>
 <dt><a href="#curryN">curryN(length, fn)</a> ⇒ <code>function</code></dt>
 <dd><p>Returns a curried equivalent of the provided function, with the specified
 arity. The curried function has two unusual capabilities. First, its
@@ -74,21 +77,18 @@ the following are equivalent:</p>
 <li><code>g(_, 2)(_, 3)(1)</code></li>
 </ul>
 </dd>
-<dt><a href="#curry">curry(fn, ...args)</a> ⇒ <code>function</code></dt>
-<dd><p>Curry a function.</p>
-</dd>
-<dt><a href="#delay">delay(wait, func, [...args])</a> ⇒ <code>number</code></dt>
-<dd><p>Invokes <code>func</code> after <code>wait</code> milliseconds. Any additional arguments are
-provided to <code>func</code> when it&#39;s invoked.</p>
-</dd>
 <dt><a href="#debounce">debounce(wait, func, [immediate])</a> ⇒ <code>function</code></dt>
 <dd><p>Returns a function, that, as long as it continues to be invoked, will not
 be triggered. The function will be called after it stops being called for
 N milliseconds. If <code>immediate</code> is passed, trigger the function on the
 leading edge, instead of the trailing.</p>
 </dd>
-<dt><a href="#defer">defer(func, [args])</a></dt>
+<dt><a href="#defer">defer(func, [...args])</a></dt>
 <dd><p>Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it&#39;s invoked.</p>
+</dd>
+<dt><a href="#delay">delay(wait, func, [...args])</a> ⇒ <code>number</code></dt>
+<dd><p>Invokes <code>func</code> after <code>wait</code> milliseconds. Any additional arguments are
+provided to <code>func</code> when it&#39;s invoked.</p>
 </dd>
 <dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
 <dd><p>Memoize a function.</p>
@@ -125,9 +125,6 @@ resolve to <code>undefined</code>. Source objects are applied from left to right
 Once a property is set, additional values of the same property are ignored.</p>
 <p><strong>Note:</strong> This method mutates <code>object</code>.</p>
 </dd>
-<dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
-<dd><p>Retrieve the value at a given path.</p>
-</dd>
 <dt><a href="#get">get(paths, obj)</a> ⇒ <code>*</code></dt>
 <dd><p>Get a object value by a string dot path or array path.</p>
 </dd>
@@ -143,6 +140,9 @@ sources overwrite property assignments of previous sources.</p>
 </dd>
 <dt><a href="#omit">omit(names, obj)</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns a partial copy of an object omitting the keys specified.</p>
+</dd>
+<dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
+<dd><p>Retrieve the value at a given path.</p>
 </dd>
 <dt><a href="#pick">pick(names, obj)</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns a partial copy of an object containing only the keys specified. If
@@ -178,19 +178,19 @@ their corresponding characters.</p>
 <p><strong>Note:</strong> No other HTML entities are unescaped. To unescape additional
 HTML entities use a third-party library like <a href="https://mths.be/he">_he_</a>.</p>
 </dd>
-<dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
-<dd><p>Gives a single-word string description of the (native) type of a value,
-returning such answers as &#39;Object&#39;, &#39;Number&#39;, &#39;Array&#39;, or &#39;Null&#39;. Does not
-attempt to distinguish user Object types any further, reporting them all as
-&#39;Object&#39;.</p>
+<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>See if an object (<code>val</code>) is an instance of the supplied constructor. This
+function will check up the inheritance chain, if any.</p>
 </dd>
 <dt><a href="#isPlainObject">isPlainObject(obj)</a> ⇒ <code>boolean</code></dt>
 <dd><p>Checks if <code>value</code> is a plain object, that is, an object created by the
 <code>Object</code> constructor or one with a <code>[[Prototype]]</code> of <code>null</code>.</p>
 </dd>
-<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>See if an object (<code>val</code>) is an instance of the supplied constructor. This
-function will check up the inheritance chain, if any.</p>
+<dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
+<dd><p>Gives a single-word string description of the (native) type of a value,
+returning such answers as &#39;Object&#39;, &#39;Number&#39;, &#39;Array&#39;, or &#39;Null&#39;. Does not
+attempt to distinguish user Object types any further, reporting them all as
+&#39;Object&#39;.</p>
 </dd>
 <dt><a href="#uniqueId">uniqueId([prefix])</a> ⇒ <code>string</code></dt>
 <dd><p>Generates a unique ID. If <code>prefix</code> is given, the ID is appended to it.</p>
@@ -242,6 +242,20 @@ from right to left. For example, compose(f, g, h) is identical to doing
 | --- | --- | --- |
 | ...funcs | <code>function</code> | The functions to compose. |
 
+<a name="curry"></a>
+
+## curry(fn, ...args) ⇒ <code>function</code>
+Curry a function.
+
+**Kind**: global function  
+**Category**: Function  
+**Since**: v0.1.0  
+
+| Param | Type |
+| --- | --- |
+| fn | <code>function</code> | 
+| ...args | <code>function</code> | 
+
 <a name="curryN"></a>
 
 ## curryN(length, fn) ⇒ <code>function</code>
@@ -289,19 +303,38 @@ const sumArgs = (...args) => sum(args);
      const g = f(3);
      g(4); //=> 10
 ```
-<a name="curry"></a>
+<a name="debounce"></a>
 
-## curry(fn, ...args) ⇒ <code>function</code>
-Curry a function.
+## debounce(wait, func, [immediate]) ⇒ <code>function</code>
+Returns a function, that, as long as it continues to be invoked, will not
+be triggered. The function will be called after it stops being called for
+N milliseconds. If `immediate` is passed, trigger the function on the
+leading edge, instead of the trailing.
 
 **Kind**: global function  
 **Category**: Function  
-**Since**: v0.1.0  
+**Since**: v0.4.0  
 
-| Param | Type |
-| --- | --- |
-| fn | <code>function</code> | 
-| ...args | <code>function</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| wait | <code>Number</code> |  | Amount of milliseconds |
+| func | <code>function</code> |  |  |
+| [immediate] | <code>Boolean</code> | <code>false</code> |  |
+
+<a name="defer"></a>
+
+## defer(func, [...args])
+Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
+
+**Kind**: global function  
+**Category**: Function  
+**See**: https://github.com/jamiebuilds/tickedoff  
+**Since**: v0.4.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| func | <code>function</code> | Deferred function |
+| [...args] | <code>\*</code> | Optional arguments |
 
 <a name="delay"></a>
 
@@ -325,39 +358,6 @@ provided to `func` when it's invoked.
 delay(text => console.log(text), 1000, 'later')
    // => Logs 'later' after one second.
 ```
-<a name="debounce"></a>
-
-## debounce(wait, func, [immediate]) ⇒ <code>function</code>
-Returns a function, that, as long as it continues to be invoked, will not
-be triggered. The function will be called after it stops being called for
-N milliseconds. If `immediate` is passed, trigger the function on the
-leading edge, instead of the trailing.
-
-**Kind**: global function  
-**Category**: Function  
-**Since**: v0.4.0  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| wait | <code>Number</code> |  | Amount of milliseconds |
-| func | <code>function</code> |  |  |
-| [immediate] | <code>Boolean</code> | <code>false</code> |  |
-
-<a name="defer"></a>
-
-## defer(func, [args])
-Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
-
-**Kind**: global function  
-**Category**: Function  
-**See**: https://github.com/jamiebuilds/tickedoff  
-**Since**: v0.4.0  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| func | <code>function</code> | Deferred function |
-| [args] | <code>\*</code> | Optional arguments |
-
 <a name="memoize"></a>
 
 ## memoize(fn) ⇒ <code>\*</code>
@@ -541,28 +541,6 @@ Once a property is set, additional values of the same property are ignored.
 defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } })
 // => { 'a': { 'b': 2, 'c': 3 } }
 ```
-<a name="path"></a>
-
-## path(paths, obj) ⇒ <code>\*</code>
-Retrieve the value at a given path.
-
-**Kind**: global function  
-**Returns**: <code>\*</code> - The data at `path`.  
-**Category**: Object  
-**Typedefn**: Idx = String | Int  
-**Sig**: [Idx] -> {a} -> a | Undefined  
-**Since**: v0.1.0  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| paths | <code>Array</code> | The path to use. |
-| obj | <code>Object</code> | The object to retrieve the nested property from. |
-
-**Example**  
-```js
-path(['a', 'b'], {a: {b: 2}}); //=> 2
-   path(['a', 'b'], {c: {b: 2}}); //=> undefined
-```
 <a name="get"></a>
 
 ## get(paths, obj) ⇒ <code>\*</code>
@@ -633,6 +611,28 @@ Returns a partial copy of an object omitting the keys specified.
 **Example**  
 ```js
 omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
+```
+<a name="path"></a>
+
+## path(paths, obj) ⇒ <code>\*</code>
+Retrieve the value at a given path.
+
+**Kind**: global function  
+**Returns**: <code>\*</code> - The data at `path`.  
+**Category**: Object  
+**Typedefn**: Idx = String | Int  
+**Sig**: [Idx] -> {a} -> a | Undefined  
+**Since**: v0.1.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paths | <code>Array</code> | The path to use. |
+| obj | <code>Object</code> | The object to retrieve the nested property from. |
+
+**Example**  
+```js
+path(['a', 'b'], {a: {b: 2}}); //=> 2
+   path(['a', 'b'], {c: {b: 2}}); //=> undefined
 ```
 <a name="pick"></a>
 
@@ -762,34 +762,32 @@ HTML entities use a third-party library like [_he_](https://mths.be/he).
 unescape('fred, barney, &amp; pebbles')
    // => 'fred, barney, & pebbles'
 ```
-<a name="type"></a>
+<a name="is"></a>
 
-## type(val) ⇒ <code>String</code>
-Gives a single-word string description of the (native) type of a value,
-returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
-attempt to distinguish user Object types any further, reporting them all as
-'Object'.
+## is(Ctor, val) ⇒ <code>Boolean</code>
+See if an object (`val`) is an instance of the supplied constructor. This
+function will check up the inheritance chain, if any.
 
 **Kind**: global function  
 **Category**: Type  
-**Sig**: (* -> {*}) -> String  
-**Since**: v0.3.0  
+**Sig**: (* -> {*}) -> a -> Boolean  
+**Since**: v0.1.0  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| Ctor | <code>Object</code> | A constructor |
 | val | <code>\*</code> | The value to test |
 
 **Example**  
 ```js
-type({}); //=> "Object"
-   type(1); //=> "Number"
-   type(false); //=> "Boolean"
-   type('s'); //=> "String"
-   type(null); //=> "Null"
-   type([]); //=> "Array"
-   type(/[A-z]/); //=> "RegExp"
-   type(() => {}); //=> "Function"
-   type(undefined); //=> "Undefined"
+is(Object, {}); //=> true
+   is(Number, 1); //=> true
+   is(Object, 1); //=> false
+   is(String, 's'); //=> true
+   is(String, new String('')); //=> true
+   is(Object, new String('')); //=> true
+   is(Object, 's'); //=> false
+   is(Number, {}); //=> false
 ```
 <a name="isPlainObject"></a>
 
@@ -824,32 +822,34 @@ function Foo() {
    isPlainObject(Object.create(null))
    // => true
 ```
-<a name="is"></a>
+<a name="type"></a>
 
-## is(Ctor, val) ⇒ <code>Boolean</code>
-See if an object (`val`) is an instance of the supplied constructor. This
-function will check up the inheritance chain, if any.
+## type(val) ⇒ <code>String</code>
+Gives a single-word string description of the (native) type of a value,
+returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+attempt to distinguish user Object types any further, reporting them all as
+'Object'.
 
 **Kind**: global function  
 **Category**: Type  
-**Sig**: (* -> {*}) -> a -> Boolean  
-**Since**: v0.1.0  
+**Sig**: (* -> {*}) -> String  
+**Since**: v0.3.0  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| Ctor | <code>Object</code> | A constructor |
 | val | <code>\*</code> | The value to test |
 
 **Example**  
 ```js
-is(Object, {}); //=> true
-   is(Number, 1); //=> true
-   is(Object, 1); //=> false
-   is(String, 's'); //=> true
-   is(String, new String('')); //=> true
-   is(Object, new String('')); //=> true
-   is(Object, 's'); //=> false
-   is(Number, {}); //=> false
+type({}); //=> "Object"
+   type(1); //=> "Number"
+   type(false); //=> "Boolean"
+   type('s'); //=> "String"
+   type(null); //=> "Null"
+   type([]); //=> "Array"
+   type(/[A-z]/); //=> "RegExp"
+   type(() => {}); //=> "Function"
+   type(undefined); //=> "Undefined"
 ```
 <a name="uniqueId"></a>
 
