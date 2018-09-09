@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.10.0 - 2018-09-09
+### Added
+- Add `pipe` function
+
 ## 0.9.1 - 2018-08-29
 ### Changed
 - Remove auto curry from `tap`, improves tree-shake

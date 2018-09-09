@@ -20,6 +20,7 @@ export { default as merge } from './merge';
 export { default as omit } from './omit';
 export { default as path } from './path';
 export { default as pick } from './pick';
+export { default as pipe } from './pipe';
 export { default as round } from './round';
 export { default as tap } from './tap';
 export { default as throttle } from './throttle';

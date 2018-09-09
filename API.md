@@ -72,6 +72,11 @@ provided to <code>func</code> when it&#39;s invoked.</p>
 <dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
 <dd><p>Memoize a function.</p>
 </dd>
+<dt><a href="#pipe">pipe(...funcs)</a> ⇒ <code>function</code></dt>
+<dd><p>Pipes single-argument functions from left to right. The leftmost
+function can take multiple arguments as it provides the signature for
+the resulting composite function.</p>
+</dd>
 <dt><a href="#tap">tap(fn, x)</a> ⇒ <code>*</code></dt>
 <dd><p>Runs the given function with the supplied object, then returns the object.</p>
 </dd>
@@ -349,6 +354,24 @@ Memoize a function.
 | Param | Type |
 | --- | --- |
 | fn | <code>function</code> | 
+
+<a name="pipe"></a>
+
+## pipe(...funcs) ⇒ <code>function</code>
+Pipes single-argument functions from left to right. The leftmost
+function can take multiple arguments as it provides the signature for
+the resulting composite function.
+
+**Kind**: global function  
+**Returns**: <code>function</code> - - A function obtained by composing the argument functions
+from left to right. For example, pipe(f, g, h) is identical to doing
+(...args) => h(g(f(...args))).  
+**Category**: Function  
+**Since**: v0.10.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...funcs | <code>function</code> | The functions to compose. |
 
 <a name="tap"></a>
 
