@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/luwes/tili.svg?branch=master)](https://travis-ci.org/luwes/tili)
 [![codecov](https://codecov.io/gh/luwes/tili/branch/master/graph/badge.svg)](https://codecov.io/gh/luwes/tili)
+![](http://img.badgesize.io/luwes/tili/master/dist/tili.min.js.svg?compression=gzip)
 
 Small javascript utilities.
 
