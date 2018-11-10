@@ -1,6 +1,13 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.11.0 - 2018-11-10
+### Added
+- Add `key`, `has`, `hasPath`, `without` function
+
+### Changed
+- Improved tree-shakeability of JS modules w/ agadoo
+
 ## 0.10.0 - 2018-09-09
 ### Added
 - Add `pipe` function
