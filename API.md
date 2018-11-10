@@ -86,6 +86,10 @@ the resulting composite function.</p>
 <dt><a href="#includes">includes(search, arr)</a> ⇒ <code>Boolean</code></dt>
 <dd><p>Check if string or array includes the searched part.</p>
 </dd>
+<dt><a href="#without">without(xs, list)</a> ⇒ <code>Array</code></dt>
+<dd><p>Returns a new list without values in the first argument.</p>
+<p>Acts as a transducer if a transformer is given in list position.</p>
+</dd>
 <dt><a href="#defaultTo">defaultTo(d, v)</a> ⇒ <code>*</code></dt>
 <dd><p>Default to a value if the passed is null or undefined.</p>
 </dd>
@@ -111,6 +115,19 @@ Once a property is set, additional values of the same property are ignored.</p>
 </dd>
 <dt><a href="#get">get(paths, obj)</a> ⇒ <code>*</code></dt>
 <dd><p>Get a object value by a string dot path or array path.</p>
+</dd>
+<dt><a href="#has">has(prop, obj)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Returns whether or not an object has an own property with the specified name</p>
+</dd>
+<dt><a href="#hasPath">hasPath(path, obj)</a> ⇒ <code>Boolean</code></dt>
+<dd><p>Returns whether or not a path exists in an object. Only the object&#39;s
+own properties are checked.</p>
+</dd>
+<dt><a href="#keys">keys(obj)</a> ⇒ <code>Array</code></dt>
+<dd><p>Returns a list containing the names of all the enumerable own properties of
+the supplied object.
+Note that the order of the output array is not guaranteed to be consistent
+across different JS platforms.</p>
 </dd>
 <dt><a href="#merge">merge(target, [...sources])</a> ⇒ <code>Object</code></dt>
 <dd><p>This method is like <code>assign</code> except that it recursively merges own and
@@ -427,6 +444,28 @@ Check if string or array includes the searched part.
 | search | <code>\*</code> | 
 | arr | <code>Array</code> \| <code>String</code> | 
 
+<a name="without"></a>
+
+## without(xs, list) ⇒ <code>Array</code>
+Returns a new list without values in the first argument.
+
+Acts as a transducer if a transformer is given in list position.
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - The new array without values in `list1`.  
+**Category**: List  
+**Sig**: [a] -> [a] -> [a]  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| xs | <code>Array</code> | The values to be removed from `list2`. |
+| list | <code>Array</code> | The array to remove values from. |
+
+**Example**  
+```js
+without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
+```
 <a name="defaultTo"></a>
 
 ## defaultTo(d, v) ⇒ <code>\*</code>
@@ -557,6 +596,84 @@ Get a object value by a string dot path or array path.
 | paths | <code>String</code> \| <code>Array</code> | 
 | obj | <code>Object</code> | 
 
+<a name="has"></a>
+
+## has(prop, obj) ⇒ <code>Boolean</code>
+Returns whether or not an object has an own property with the specified name
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - Whether the property exists.  
+**Category**: Object  
+**Sig**: s -> {s: x} -> Boolean  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| prop | <code>String</code> | The name of the property to check for. |
+| obj | <code>Object</code> | The object to query. |
+
+**Example**  
+```js
+const hasName = curry(has)('name');
+     hasName({name: 'alice'});   //=> true
+     hasName({name: 'bob'});     //=> true
+     hasName({});                //=> false
+
+     const point = {x: 0, y: 0};
+     const pointHas = curry(has)(__, point);
+     pointHas('x');  //=> true
+     pointHas('y');  //=> true
+     pointHas('z');  //=> false
+```
+<a name="hasPath"></a>
+
+## hasPath(path, obj) ⇒ <code>Boolean</code>
+Returns whether or not a path exists in an object. Only the object's
+own properties are checked.
+
+**Kind**: global function  
+**Returns**: <code>Boolean</code> - Whether the path exists.  
+**Category**: Object  
+**Typedefn**: Idx = String | Int  
+**Sig**: [Idx] -> {a} -> Boolean  
+**See**: has  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>Array</code> | The path to use. |
+| obj | <code>Object</code> | The object to check the path in. |
+
+**Example**  
+```js
+hasPath(['a', 'b'], {a: {b: 2}});         // => true
+     hasPath(['a', 'b'], {a: {b: undefined}}); // => true
+     hasPath(['a', 'b'], {a: {c: 2}});         // => false
+     hasPath(['a', 'b'], {});                  // => false
+```
+<a name="keys"></a>
+
+## keys(obj) ⇒ <code>Array</code>
+Returns a list containing the names of all the enumerable own properties of
+the supplied object.
+Note that the order of the output array is not guaranteed to be consistent
+across different JS platforms.
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - An array of the object's own properties.  
+**Category**: Object  
+**Sig**: <code>k: v</code> -> [k]  
+**See**: values  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Object</code> | The object to extract properties from |
+
+**Example**  
+```js
+keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+```
 <a name="merge"></a>
 
 ## merge(target, [...sources]) ⇒ <code>Object</code>
