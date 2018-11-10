@@ -1,18 +1,3 @@
-/* eslint quotes:0 */
-
-/* Used to map characters to HTML entities. */
-const htmlEscapes = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;'
-};
-
-/* Used to match HTML entities and HTML characters. */
-const reUnescapedHtml = /[&<>"']/g;
-const reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
-
 /**
  * Converts the characters "&", "<", ">", '"', and "'" in `string` to their
  * corresponding HTML entities.
@@ -42,6 +27,19 @@ const reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
  *    // => 'fred, barney, &amp; pebbles'
  */
 function escape(string) {
+  /* Used to map characters to HTML entities. */
+  const htmlEscapes = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    '\'': '&#39;'
+  };
+
+  /* Used to match HTML entities and HTML characters. */
+  const reUnescapedHtml = /[&<>"']/g;
+  const reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+
   return string && reHasUnescapedHtml.test(string)
     ? string.replace(reUnescapedHtml, chr => htmlEscapes[chr])
     : string;

@@ -1,8 +1,5 @@
 // https://github.com/ianstormtaylor/is-empty
 
-var has = Object.prototype.hasOwnProperty;
-var toString = Object.prototype.toString;
-
 /**
  * Returns `true` if the given value is its type's empty value; `false`
  * otherwise.
@@ -43,6 +40,9 @@ function isEmpty(val) {
 
   // Errors...
   if (val instanceof Error) return val.message === '';
+
+  var has = Object.prototype.hasOwnProperty;
+  var toString = Object.prototype.toString;
 
   // Objects...
   if (val.toString == toString) {
