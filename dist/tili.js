@@ -746,6 +746,79 @@
     return path(paths, obj);
   }
 
+  function _has(prop, obj) {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
+  }
+
+  /**
+   * Returns whether or not a path exists in an object. Only the object's
+   * own properties are checked.
+   *
+   * @func
+   * @since v0.11.0
+   * @category Object
+   * @typedefn Idx = String | Int
+   * @sig [Idx] -> {a} -> Boolean
+   * @param {Array} path The path to use.
+   * @param {Object} obj The object to check the path in.
+   * @return {Boolean} Whether the path exists.
+   * @see has
+   * @example
+   *
+   *      hasPath(['a', 'b'], {a: {b: 2}});         // => true
+   *      hasPath(['a', 'b'], {a: {b: undefined}}); // => true
+   *      hasPath(['a', 'b'], {a: {c: 2}});         // => false
+   *      hasPath(['a', 'b'], {});                  // => false
+   */
+
+  function hasPath(path, obj) {
+    if (path.length === 0) {
+      return false;
+    }
+
+    var val = obj;
+    var idx = 0;
+
+    while (idx < path.length) {
+      if (_has(path[idx], val)) {
+        val = val[path[idx]];
+        idx += 1;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Returns whether or not an object has an own property with the specified name
+   *
+   * @func
+   * @since v0.11.0
+   * @category Object
+   * @sig s -> {s: x} -> Boolean
+   * @param {String} prop The name of the property to check for.
+   * @param {Object} obj The object to query.
+   * @return {Boolean} Whether the property exists.
+   * @example
+   *
+   *      const hasName = curry(has)('name');
+   *      hasName({name: 'alice'});   //=> true
+   *      hasName({name: 'bob'});     //=> true
+   *      hasName({});                //=> false
+   *
+   *      const point = {x: 0, y: 0};
+   *      const pointHas = curry(has)(__, point);
+   *      pointHas('x');  //=> true
+   *      pointHas('y');  //=> true
+   *      pointHas('z');  //=> false
+   */
+
+  function has(prop, obj) {
+    return hasPath([prop], obj);
+  }
+
   /**
    * Check if string or array includes the searched part.
    *
@@ -761,7 +834,7 @@
   }
 
   // https://github.com/ianstormtaylor/is-empty
-  var has = Object.prototype.hasOwnProperty;
+  var has$1 = Object.prototype.hasOwnProperty;
   var toString = Object.prototype.toString;
   /**
    * Returns `true` if the given value is its type's empty value; `false`
@@ -813,7 +886,7 @@
         case '[object Object]':
           {
             for (var key in val) {
-              if (has.call(val, key)) return false;
+              if (has$1.call(val, key)) return false;
             }
 
             return true;
@@ -823,6 +896,44 @@
 
 
     return false;
+  }
+
+  /**
+   * Returns a list containing the names of all the enumerable own properties of
+   * the supplied object.
+   * Note that the order of the output array is not guaranteed to be consistent
+   * across different JS platforms.
+   *
+   * @func
+   * @since v0.11.0
+   * @category Object
+   * @sig {k: v} -> [k]
+   * @param {Object} obj The object to extract properties from
+   * @return {Array} An array of the object's own properties.
+   * @see values
+   * @example
+   *
+   *      keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+   */
+
+  function keys(obj) {
+    if (Object(obj) !== obj) {
+      return [];
+    }
+
+    if (typeof Object.keys === 'function') {
+      return Object.keys(obj);
+    }
+
+    var keys = [];
+
+    for (var prop in obj) {
+      if (_has(prop, obj)) {
+        keys[keys.length] = prop;
+      }
+    }
+
+    return keys;
   }
 
   /**
@@ -1281,6 +1392,29 @@
     return vals;
   }
 
+  /**
+   * Returns a new list without values in the first argument.
+   *
+   * Acts as a transducer if a transformer is given in list position.
+   *
+   * @func
+   * @since v0.11.0
+   * @category List
+   * @sig [a] -> [a] -> [a]
+   * @param {Array} xs The values to be removed from `list2`.
+   * @param {Array} list The array to remove values from.
+   * @return {Array} The new array without values in `list1`.
+   * @example
+   *
+   *      without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
+   */
+
+  function without(xs, list) {
+    return list.filter(function (search) {
+      return !includes(search, xs);
+    });
+  }
+
   exports.__ = __;
   exports.clamp = clamp;
   exports.clone = clone;
@@ -1294,10 +1428,13 @@
   exports.delay = delay;
   exports.escape = escape;
   exports.get = get;
+  exports.has = has;
+  exports.hasPath = hasPath;
   exports.includes = includes;
   exports.is = is;
   exports.isEmpty = isEmpty;
   exports.isPlainObject = isPlainObject;
+  exports.keys = keys;
   exports.memoize = memoize;
   exports.merge = merge;
   exports.omit = omit;
@@ -1311,6 +1448,7 @@
   exports.unescape = unescape;
   exports.uniqueId = uniqueId;
   exports.values = values;
+  exports.without = without;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
