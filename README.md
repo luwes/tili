@@ -1,4 +1,4 @@
-# Tili 
+# 🌴ili 
 
 [![Build Status](https://travis-ci.org/luwes/tili.svg?branch=master)](https://travis-ci.org/luwes/tili)
 [![codecov](https://codecov.io/gh/luwes/tili/branch/master/graph/badge.svg)](https://codecov.io/gh/luwes/tili)
@@ -6,11 +6,9 @@
 
 Small javascript utilities.
 
-- Tiny in size and no dependencies.
-- Functions have minimal reliance on other functions for efficient tree shaking.
-- Not curried by default, but arguments set up for it.
-- This library was not meant to cover all situations and data types, this helps keep the library small.  
-  Use a single specialized function for edge cases.
+- Tiny 🦎 in size and no dependencies.
+- 100% tree-shakeable 🥥!
+- Not curried 🍛 by default, but arguments set up for it.
 
 ## Install
 
@@ -22,6 +20,18 @@ or from a CDN:
 
 ```html
 <script src="//unpkg.com/tili@latest/dist/tili.min.js"></script>
+```
+
+## Usage
+
+```js
+import * as _ from 'tili';
+```
+
+or
+
+```js
+import { get, compose, merge } from 'tili';
 ```
 
 ## API
@@ -946,7 +956,7 @@ uniqueId('contact_');
 
 ## Credits
 
-Remixed code by:
+Some code and most naming is borrowed from the following popular JS utility libraries but lots of code is rewritten to be as lightweight and modular as possible.
 
 - [Ramda](https://github.com/ramda/ramda)
 - [Lodash](https://github.com/lodash/lodash)

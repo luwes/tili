@@ -6,7 +6,7 @@
   "main": "dist/tili.js",
   "module": "dist/tili.mjs",
   "author": "Wesley Luyten",
-  "license": "ISC",
+  "license": "MIT",
   "repository": "luwes/tili",
   "files": [
     "dist",
