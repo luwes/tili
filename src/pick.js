@@ -3,6 +3,7 @@
  * the key does not exist, the property is ignored.
  *
  * @func
+ * @memberOf tili
  * @since v0.3.0
  * @category Object
  * @sig [k] -> {k: v} -> {k: v}

@@ -26,6 +26,7 @@ import _curryN from './internal/_curryN';
  *   - `g(_, 2)(_, 3)(1)`
  *
  * @func
+ * @memberOf tili
  * @since v0.1.0
  * @category Function
  * @sig Number -> (* -> a) -> (* -> a)

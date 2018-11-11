@@ -2,6 +2,8 @@
  * Checks if `value` is a plain object, that is, an object created by the
  * `Object` constructor or one with a `[[Prototype]]` of `null`.
  *
+ * @func
+ * @memberOf tili
  * @since 0.1.0
  * @category Type
  * @param {*} obj The value to check.

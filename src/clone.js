@@ -8,6 +8,7 @@ import _clone from './internal/_clone';
  * Dispatches to a `clone` method if present.
  *
  * @func
+ * @memberOf tili
  * @since v0.3.0
  * @category Object
  * @sig {*} -> {*}

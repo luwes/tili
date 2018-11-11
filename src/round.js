@@ -4,6 +4,7 @@ import _round from './internal/_round';
  * Computes `number` rounded to `precision`.
  *
  * @func
+ * @memberOf tili
  * @since 0.4.0
  * @category Math
  * @param {number} number The number to round.

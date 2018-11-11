@@ -8,6 +8,8 @@ import isPlainObject from './isPlainObject';
  *
  * **Note:** This method mutates `object`.
  *
+ * @func
+ * @memberOf tili
  * @since 0.7.0
  * @category Object
  * @param {Object} target The destination object.

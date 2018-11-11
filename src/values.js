@@ -4,6 +4,7 @@
  * JS platforms.
  *
  * @func
+ * @memberOf tili
  * @since v0.6.0
  * @category Object
  * @sig {k: v} -> [v]

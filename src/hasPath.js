@@ -5,6 +5,7 @@ import _has from './internal/_has';
  * own properties are checked.
  *
  * @func
+ * @memberOf tili
  * @since v0.11.0
  * @category Object
  * @typedefn Idx = String | Int

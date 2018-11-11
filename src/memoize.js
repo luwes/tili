@@ -2,6 +2,7 @@
  * Memoize a function.
  *
  * @func
+ * @memberOf tili
  * @since v0.1.0
  * @category Function
  * @param  {Function} fn

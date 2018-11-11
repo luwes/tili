@@ -5,6 +5,7 @@
  * 'Object'.
  *
  * @func
+ * @memberOf tili
  * @since v0.3.0
  * @category Type
  * @sig (* -> {*}) -> String

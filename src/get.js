@@ -5,6 +5,7 @@ import path from './path';
  * Get a object value by a string dot path or array path.
  *
  * @func
+ * @memberOf tili
  * @since v0.7.0
  * @category Object
  * @param  {String|Array} paths

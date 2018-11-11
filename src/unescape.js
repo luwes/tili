@@ -7,6 +7,7 @@
  * HTML entities use a third-party library like [_he_](https://mths.be/he).
  *
  * @func
+ * @memberOf tili
  * @since 0.7.0
  * @category String
  * @param {string} [string=''] The string to unescape.

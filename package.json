@@ -22,9 +22,8 @@
     "build:umd:min": "cross-env NODE_ENV=umd:min rollup -c -o dist/tili.min.js",
     "build": "npm run build:es && npm run build:umd && npm run build:umd:min",
     "watch": "cross-env NODE_ENV=es rollup -w -c -o dist/tili.mjs",
-    "prepare": "npm run clean && npm run lint && npm run build",
-    "prepublishOnly": "agadoo",
-    "docs": "jsdoc2md src/*.js -c jsdoc.config.js > API.md"
+    "prepublishOnly": "npm run clean && npm run lint && npm run build && agadoo",
+    "docs": "node scripts/docs.js"
   },
   "ava": {
     "babel": false,
@@ -71,6 +70,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-ava": "^4.5.1",
     "esm": "^3.0.84",
+    "fs-extra": "^7.0.1",
     "jsdoc": "^3.5.5",
     "jsdoc-to-markdown": "^4.0.1",
     "nyc": "^12.0.2",

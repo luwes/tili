@@ -5,6 +5,7 @@
  * across different JS platforms.
  *
  * @func
+ * @memberOf tili
  * @since v0.11.0
  * @category Object
  * @sig {k: v} -> [k]

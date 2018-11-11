@@ -7,6 +7,7 @@ import delay from './delay';
  * leading edge, instead of the trailing.
  *
  * @func
+ * @memberOf tili
  * @since v0.4.0
  * @category Function
  * @param  {Number} wait - Amount of milliseconds

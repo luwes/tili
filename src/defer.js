@@ -4,6 +4,7 @@
  * Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
  *
  * @func
+ * @memberOf tili
  * @since v0.4.0
  * @category Function
  * @param  {Function} func - Deferred function

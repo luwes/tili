@@ -1,3 +1,7 @@
+/**
+ * @namespace tili
+ * @typicalname _
+ */
 export { default as __ } from './__';
 export { default as clamp } from './clamp';
 export { default as clone } from './clone';

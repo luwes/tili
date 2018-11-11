@@ -2,6 +2,7 @@
  * Check if string or array includes the searched part.
  *
  * @func
+ * @memberOf tili
  * @since v0.1.0
  * @category List
  * @param  {*} search

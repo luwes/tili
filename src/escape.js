@@ -16,6 +16,7 @@
  * XSS vectors.
  *
  * @func
+ * @memberOf tili
  * @since 0.7.0
  * @category String
  * @param {string} [string=''] The string to escape.

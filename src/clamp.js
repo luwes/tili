@@ -4,6 +4,7 @@
  * Also works for other ordered types such as Strings and Dates.
  *
  * @func
+ * @memberOf tili
  * @since v0.4.0
  * @category Relation
  * @sig Ord a => a -> a -> a -> a

@@ -4,6 +4,7 @@
  * the resulting composite function.
  *
  * @func
+ * @memberOf tili
  * @since v0.10.0
  * @category Function
  * @param {...Function} funcs - The functions to compose.

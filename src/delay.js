@@ -3,6 +3,7 @@
  * provided to `func` when it's invoked.
  *
  * @func
+ * @memberOf tili
  * @since 0.4.0
  * @category Function
  * @param {number} wait The number of milliseconds to delay invocation.

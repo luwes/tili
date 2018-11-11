@@ -9,7 +9,8 @@ Small javascript utilities.
 - Tiny in size and no dependencies.
 - Functions have minimal reliance on other functions for efficient tree shaking.
 - Not curried by default, but arguments set up for it.
-- This library was not meant to cover all situations and data types, this helps keep the library small. Use a single specialized function for edge cases.
+- This library was not meant to cover all situations and data types, this helps keep the library small.  
+  Use a single specialized function for edge cases.
 
 ## Install
 
@@ -23,233 +24,68 @@ or from a CDN:
 <script src="//unpkg.com/tili@latest/dist/tili.min.js"></script>
 ```
 
-## Credits
+## API
 
-Remixed code by:
+<a name="tili"></a>
 
-- [Ramda](https://github.com/ramda/ramda)
-- [Lodash](https://github.com/lodash/lodash)
-- [Underscore](https://github.com/jashkenas/underscore)
-- And many more libraries and scripts
+### tili : <code>object</code>
+**Kind**: global namespace  
 
-## Constants
+* [tili](#tili) : <code>object</code>
+    * _Function_
+        * [.compose(...funcs)](#tili.compose) ⇒ <code>function</code>
+        * [.curry(fn, ...args)](#tili.curry) ⇒ <code>function</code>
+        * [.curryN(length, fn)](#tili.curryN) ⇒ <code>function</code>
+        * [.debounce(wait, func, [immediate])](#tili.debounce) ⇒ <code>function</code>
+        * [.defer(func, [...args])](#tili.defer)
+        * [.delay(wait, func, [...args])](#tili.delay) ⇒ <code>number</code>
+        * [.memoize(fn)](#tili.memoize) ⇒ <code>\*</code>
+        * [.pipe(...funcs)](#tili.pipe) ⇒ <code>function</code>
+        * [.tap(fn, x)](#tili.tap) ⇒ <code>\*</code>
+        * [.throttle(wait, fn, [options])](#tili.throttle) ⇒ <code>function</code>
+    * _List_
+        * [.includes(search, arr)](#tili.includes) ⇒ <code>Boolean</code>
+        * [.without(xs, list)](#tili.without) ⇒ <code>Array</code>
+    * _Logic_
+        * [.defaultTo(d, v)](#tili.defaultTo) ⇒ <code>\*</code>
+        * [.isEmpty(val)](#tili.isEmpty) ⇒ <code>Boolean</code>
+    * _Math_
+        * [.round(number, [precision])](#tili.round) ⇒ <code>number</code>
+    * _Object_
+        * [.clone(value)](#tili.clone) ⇒ <code>\*</code>
+        * [.defaultsDeep(target, [...sources])](#tili.defaultsDeep) ⇒ <code>Object</code>
+        * [.get(paths, obj)](#tili.get) ⇒ <code>\*</code>
+        * [.has(prop, obj)](#tili.has) ⇒ <code>Boolean</code>
+        * [.hasPath(path, obj)](#tili.hasPath) ⇒ <code>Boolean</code>
+        * [.keys(obj)](#tili.keys) ⇒ <code>Array</code>
+        * [.merge(target, [...sources])](#tili.merge) ⇒ <code>Object</code>
+        * [.omit(names, obj)](#tili.omit) ⇒ <code>Object</code>
+        * [.path(paths, obj)](#tili.path) ⇒ <code>\*</code>
+        * [.pick(names, obj)](#tili.pick) ⇒ <code>Object</code>
+        * [.values(obj)](#tili.values) ⇒ <code>Array</code>
+    * _Relation_
+        * [.clamp(min, max, value)](#tili.clamp) ⇒ <code>Number</code>
+    * _String_
+        * [.escape([string])](#tili.escape) ⇒ <code>string</code>
+        * [.unescape([string])](#tili.unescape) ⇒ <code>string</code>
+    * _Type_
+        * [.is(Ctor, val)](#tili.is) ⇒ <code>Boolean</code>
+        * [.isPlainObject(obj)](#tili.isPlainObject) ⇒ <code>boolean</code>
+        * [.type(val)](#tili.type) ⇒ <code>String</code>
+    * _Util_
+        * [.uniqueId([prefix])](#tili.uniqueId) ⇒ <code>string</code>
 
-<dl>
-<dt><a href="#__">__</a></dt>
-<dd><p>A special placeholder value used to specify &quot;gaps&quot; within curried functions,
-allowing partial application of any combination of arguments, regardless of
-their positions.</p>
-<p>If <code>g</code> is a curried ternary function and <code>_</code> is <code>__</code>, the following are
-equivalent:</p>
-<ul>
-<li><code>g(1, 2, 3)</code></li>
-<li><code>g(_, 2, 3)(1)</code></li>
-<li><code>g(_, _, 3)(1)(2)</code></li>
-<li><code>g(_, _, 3)(1, 2)</code></li>
-<li><code>g(_, 2, _)(1, 3)</code></li>
-<li><code>g(_, 2)(1)(3)</code></li>
-<li><code>g(_, 2)(1, 3)</code></li>
-<li><code>g(_, 2)(_, 3)(1)</code></li>
-</ul>
-</dd>
-</dl>
 
-## Functions
+* * *
 
-<dl>
-<dt><a href="#compose">compose(...funcs)</a> ⇒ <code>function</code></dt>
-<dd><p>Composes single-argument functions from right to left. The rightmost
-function can take multiple arguments as it provides the signature for
-the resulting composite function.</p>
-</dd>
-<dt><a href="#curry">curry(fn, ...args)</a> ⇒ <code>function</code></dt>
-<dd><p>Curry a function.</p>
-</dd>
-<dt><a href="#curryN">curryN(length, fn)</a> ⇒ <code>function</code></dt>
-<dd><p>Returns a curried equivalent of the provided function, with the specified
-arity. The curried function has two unusual capabilities. First, its
-arguments needn&#39;t be provided one at a time. If <code>g</code> is <code>curryN(3, f)</code>, the
-following are equivalent:</p>
-<ul>
-<li><code>g(1)(2)(3)</code></li>
-<li><code>g(1)(2, 3)</code></li>
-<li><code>g(1, 2)(3)</code></li>
-<li><code>g(1, 2, 3)</code></li>
-</ul>
-<p>Secondly, the special placeholder value <a href="#__"><code>__</code></a> may be used to specify
-&quot;gaps&quot;, allowing partial application of any combination of arguments,
-regardless of their positions. If <code>g</code> is as above and <code>_</code> is <a href="#__"><code>__</code></a>,
-the following are equivalent:</p>
-<ul>
-<li><code>g(1, 2, 3)</code></li>
-<li><code>g(_, 2, 3)(1)</code></li>
-<li><code>g(_, _, 3)(1)(2)</code></li>
-<li><code>g(_, _, 3)(1, 2)</code></li>
-<li><code>g(_, 2)(1)(3)</code></li>
-<li><code>g(_, 2)(1, 3)</code></li>
-<li><code>g(_, 2)(_, 3)(1)</code></li>
-</ul>
-</dd>
-<dt><a href="#debounce">debounce(wait, func, [immediate])</a> ⇒ <code>function</code></dt>
-<dd><p>Returns a function, that, as long as it continues to be invoked, will not
-be triggered. The function will be called after it stops being called for
-N milliseconds. If <code>immediate</code> is passed, trigger the function on the
-leading edge, instead of the trailing.</p>
-</dd>
-<dt><a href="#defer">defer(func, [...args])</a></dt>
-<dd><p>Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it&#39;s invoked.</p>
-</dd>
-<dt><a href="#delay">delay(wait, func, [...args])</a> ⇒ <code>number</code></dt>
-<dd><p>Invokes <code>func</code> after <code>wait</code> milliseconds. Any additional arguments are
-provided to <code>func</code> when it&#39;s invoked.</p>
-</dd>
-<dt><a href="#memoize">memoize(fn)</a> ⇒ <code>*</code></dt>
-<dd><p>Memoize a function.</p>
-</dd>
-<dt><a href="#pipe">pipe(...funcs)</a> ⇒ <code>function</code></dt>
-<dd><p>Pipes single-argument functions from left to right. The leftmost
-function can take multiple arguments as it provides the signature for
-the resulting composite function.</p>
-</dd>
-<dt><a href="#tap">tap(fn, x)</a> ⇒ <code>*</code></dt>
-<dd><p>Runs the given function with the supplied object, then returns the object.</p>
-</dd>
-<dt><a href="#throttle">throttle(wait, fn, [options])</a> ⇒ <code>function</code></dt>
-<dd><p>Throttle a function.</p>
-</dd>
-<dt><a href="#includes">includes(search, arr)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>Check if string or array includes the searched part.</p>
-</dd>
-<dt><a href="#defaultTo">defaultTo(d, v)</a> ⇒ <code>*</code></dt>
-<dd><p>Default to a value if the passed is null or undefined.</p>
-</dd>
-<dt><a href="#isEmpty">isEmpty(val)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>Returns <code>true</code> if the given value is its type&#39;s empty value; <code>false</code>
-otherwise.</p>
-</dd>
-<dt><a href="#round">round(number, [precision])</a> ⇒ <code>number</code></dt>
-<dd><p>Computes <code>number</code> rounded to <code>precision</code>.</p>
-</dd>
-<dt><a href="#clone">clone(value)</a> ⇒ <code>*</code></dt>
-<dd><p>Creates a deep copy of the value which may contain (nested) <code>Array</code>s and
-<code>Object</code>s, <code>Number</code>s, <code>String</code>s, <code>Boolean</code>s and <code>Date</code>s. <code>Function</code>s are
-assigned by reference rather than copied</p>
-<p>Dispatches to a <code>clone</code> method if present.</p>
-</dd>
-<dt><a href="#defaultsDeep">defaultsDeep(target, [...sources])</a> ⇒ <code>Object</code></dt>
-<dd><p>Deeply assigns own and inherited enumerable string keyed properties of source
-objects to the destination object for all destination properties that
-resolve to <code>undefined</code>. Source objects are applied from left to right.
-Once a property is set, additional values of the same property are ignored.</p>
-<p><strong>Note:</strong> This method mutates <code>object</code>.</p>
-</dd>
-<dt><a href="#get">get(paths, obj)</a> ⇒ <code>*</code></dt>
-<dd><p>Get a object value by a string dot path or array path.</p>
-</dd>
-<dt><a href="#merge">merge(target, [...sources])</a> ⇒ <code>Object</code></dt>
-<dd><p>This method is like <code>assign</code> except that it recursively merges own and
-inherited enumerable string keyed properties of source objects into the
-destination object. Source properties that resolve to <code>undefined</code> are
-skipped if a destination value exists. Array and plain object properties
-are merged recursively. Other objects and value types are overridden by
-assignment. Source objects are applied from left to right. Subsequent
-sources overwrite property assignments of previous sources.</p>
-<p><strong>Note:</strong> This method mutates <code>target</code>.</p>
-</dd>
-<dt><a href="#omit">omit(names, obj)</a> ⇒ <code>Object</code></dt>
-<dd><p>Returns a partial copy of an object omitting the keys specified.</p>
-</dd>
-<dt><a href="#path">path(paths, obj)</a> ⇒ <code>*</code></dt>
-<dd><p>Retrieve the value at a given path.</p>
-</dd>
-<dt><a href="#pick">pick(names, obj)</a> ⇒ <code>Object</code></dt>
-<dd><p>Returns a partial copy of an object containing only the keys specified. If
-the key does not exist, the property is ignored.</p>
-</dd>
-<dt><a href="#values">values(obj)</a> ⇒ <code>Array</code></dt>
-<dd><p>Returns a list of all the enumerable own properties of the supplied object.
-Note that the order of the output array is not guaranteed across different
-JS platforms.</p>
-</dd>
-<dt><a href="#clamp">clamp(min, max, value)</a> ⇒ <code>Number</code></dt>
-<dd><p>Restricts a number to be within a range.</p>
-<p>Also works for other ordered types such as Strings and Dates.</p>
-</dd>
-<dt><a href="#escape">escape([string])</a> ⇒ <code>string</code></dt>
-<dd><p>Converts the characters &quot;&amp;&quot;, &quot;&lt;&quot;, &quot;&gt;&quot;, &#39;&quot;&#39;, and &quot;&#39;&quot; in <code>string</code> to their
-corresponding HTML entities.</p>
-<p><strong>Note:</strong> No other characters are escaped. To escape additional
-characters use a third-party library like <a href="https://mths.be/he">_he_</a>.</p>
-<p>Though the &quot;&gt;&quot; character is escaped for symmetry, characters like
-&quot;&gt;&quot; and &quot;/&quot; don&#39;t need escaping in HTML and have no special meaning
-unless they&#39;re part of a tag or unquoted attribute value. See
-<a href="https://mathiasbynens.be/notes/ambiguous-ampersands">Mathias Bynens&#39;s article</a>
-(under &quot;semi-related fun fact&quot;) for more details.</p>
-<p>When working with HTML you should always
-<a href="http://wonko.com/post/html-escaping">quote attribute values</a> to reduce
-XSS vectors.</p>
-</dd>
-<dt><a href="#unescape">unescape([string])</a> ⇒ <code>string</code></dt>
-<dd><p>The inverse of <code>escape</code>this method converts the HTML entities
-<code>&amp;amp;</code>, <code>&amp;lt;</code>, <code>&amp;gt;</code>, <code>&amp;quot;</code> and <code>&amp;#39;</code> in <code>string</code> to
-their corresponding characters.</p>
-<p><strong>Note:</strong> No other HTML entities are unescaped. To unescape additional
-HTML entities use a third-party library like <a href="https://mths.be/he">_he_</a>.</p>
-</dd>
-<dt><a href="#is">is(Ctor, val)</a> ⇒ <code>Boolean</code></dt>
-<dd><p>See if an object (<code>val</code>) is an instance of the supplied constructor. This
-function will check up the inheritance chain, if any.</p>
-</dd>
-<dt><a href="#isPlainObject">isPlainObject(obj)</a> ⇒ <code>boolean</code></dt>
-<dd><p>Checks if <code>value</code> is a plain object, that is, an object created by the
-<code>Object</code> constructor or one with a <code>[[Prototype]]</code> of <code>null</code>.</p>
-</dd>
-<dt><a href="#type">type(val)</a> ⇒ <code>String</code></dt>
-<dd><p>Gives a single-word string description of the (native) type of a value,
-returning such answers as &#39;Object&#39;, &#39;Number&#39;, &#39;Array&#39;, or &#39;Null&#39;. Does not
-attempt to distinguish user Object types any further, reporting them all as
-&#39;Object&#39;.</p>
-</dd>
-<dt><a href="#uniqueId">uniqueId([prefix])</a> ⇒ <code>string</code></dt>
-<dd><p>Generates a unique ID. If <code>prefix</code> is given, the ID is appended to it.</p>
-</dd>
-</dl>
+<a name="tili.compose"></a>
 
-<a name="__"></a>
-
-## __
-A special placeholder value used to specify "gaps" within curried functions,
-allowing partial application of any combination of arguments, regardless of
-their positions.
-
-If `g` is a curried ternary function and `_` is `__`, the following are
-equivalent:
-
-  - `g(1, 2, 3)`
-  - `g(_, 2, 3)(1)`
-  - `g(_, _, 3)(1)(2)`
-  - `g(_, _, 3)(1, 2)`
-  - `g(_, 2, _)(1, 3)`
-  - `g(_, 2)(1)(3)`
-  - `g(_, 2)(1, 3)`
-  - `g(_, 2)(_, 3)(1)`
-
-**Kind**: global constant  
-**Category**: Function  
-**Since**: v0.8.0  
-**Example**  
-```js
-const greet = replace('{name}', __, 'Hello, {name}!');
-     greet('Alice'); //=> 'Hello, Alice!'
-```
-<a name="compose"></a>
-
-## compose(...funcs) ⇒ <code>function</code>
+#### _.compose(...funcs) ⇒ <code>function</code>
 Composes single-argument functions from right to left. The rightmost
 function can take multiple arguments as it provides the signature for
 the resulting composite function.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>function</code> - - A function obtained by composing the argument functions
 from right to left. For example, compose(f, g, h) is identical to doing
 (...args) => f(g(h(...args))).  
@@ -260,12 +96,15 @@ from right to left. For example, compose(f, g, h) is identical to doing
 | --- | --- | --- |
 | ...funcs | <code>function</code> | The functions to compose. |
 
-<a name="curry"></a>
 
-## curry(fn, ...args) ⇒ <code>function</code>
+* * *
+
+<a name="tili.curry"></a>
+
+#### _.curry(fn, ...args) ⇒ <code>function</code>
 Curry a function.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Function  
 **Since**: v0.1.0  
 
@@ -274,9 +113,12 @@ Curry a function.
 | fn | <code>function</code> | 
 | ...args | <code>function</code> | 
 
-<a name="curryN"></a>
 
-## curryN(length, fn) ⇒ <code>function</code>
+* * *
+
+<a name="tili.curryN"></a>
+
+#### _.curryN(length, fn) ⇒ <code>function</code>
 Returns a curried equivalent of the provided function, with the specified
 arity. The curried function has two unusual capabilities. First, its
 arguments needn't be provided one at a time. If `g` is `curryN(3, f)`, the
@@ -300,7 +142,7 @@ the following are equivalent:
   - `g(_, 2)(1, 3)`
   - `g(_, 2)(_, 3)(1)`
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>function</code> - A new, curried function.  
 **Category**: Function  
 **Sig**: Number -> (* -> a) -> (* -> a)  
@@ -321,15 +163,18 @@ const sumArgs = (...args) => sum(args);
      const g = f(3);
      g(4); //=> 10
 ```
-<a name="debounce"></a>
 
-## debounce(wait, func, [immediate]) ⇒ <code>function</code>
+* * *
+
+<a name="tili.debounce"></a>
+
+#### _.debounce(wait, func, [immediate]) ⇒ <code>function</code>
 Returns a function, that, as long as it continues to be invoked, will not
 be triggered. The function will be called after it stops being called for
 N milliseconds. If `immediate` is passed, trigger the function on the
 leading edge, instead of the trailing.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Function  
 **Since**: v0.4.0  
 
@@ -339,12 +184,15 @@ leading edge, instead of the trailing.
 | func | <code>function</code> |  |  |
 | [immediate] | <code>Boolean</code> | <code>false</code> |  |
 
-<a name="defer"></a>
 
-## defer(func, [...args])
+* * *
+
+<a name="tili.defer"></a>
+
+#### _.defer(func, [...args])
 Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Function  
 **See**: https://github.com/jamiebuilds/tickedoff  
 **Since**: v0.4.0  
@@ -354,13 +202,16 @@ Defers invoking the func until the current call stack has cleared. Any additiona
 | func | <code>function</code> | Deferred function |
 | [...args] | <code>\*</code> | Optional arguments |
 
-<a name="delay"></a>
 
-## delay(wait, func, [...args]) ⇒ <code>number</code>
+* * *
+
+<a name="tili.delay"></a>
+
+#### _.delay(wait, func, [...args]) ⇒ <code>number</code>
 Invokes `func` after `wait` milliseconds. Any additional arguments are
 provided to `func` when it's invoked.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>number</code> - Returns the timer id.  
 **Category**: Function  
 **Since**: 0.4.0  
@@ -376,12 +227,15 @@ provided to `func` when it's invoked.
 delay(text => console.log(text), 1000, 'later')
    // => Logs 'later' after one second.
 ```
-<a name="memoize"></a>
 
-## memoize(fn) ⇒ <code>\*</code>
+* * *
+
+<a name="tili.memoize"></a>
+
+#### _.memoize(fn) ⇒ <code>\*</code>
 Memoize a function.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Function  
 **Since**: v0.1.0  
 
@@ -389,14 +243,17 @@ Memoize a function.
 | --- | --- |
 | fn | <code>function</code> | 
 
-<a name="pipe"></a>
 
-## pipe(...funcs) ⇒ <code>function</code>
+* * *
+
+<a name="tili.pipe"></a>
+
+#### _.pipe(...funcs) ⇒ <code>function</code>
 Pipes single-argument functions from left to right. The leftmost
 function can take multiple arguments as it provides the signature for
 the resulting composite function.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>function</code> - - A function obtained by composing the argument functions
 from left to right. For example, pipe(f, g, h) is identical to doing
 (...args) => h(g(f(...args))).  
@@ -407,12 +264,15 @@ from left to right. For example, pipe(f, g, h) is identical to doing
 | --- | --- | --- |
 | ...funcs | <code>function</code> | The functions to compose. |
 
-<a name="tap"></a>
 
-## tap(fn, x) ⇒ <code>\*</code>
+* * *
+
+<a name="tili.tap"></a>
+
+#### _.tap(fn, x) ⇒ <code>\*</code>
 Runs the given function with the supplied object, then returns the object.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>\*</code> - `x`.  
 **Category**: Function  
 **Sig**: (a -> *) -> a -> a  
@@ -430,12 +290,15 @@ const sayX = x => console.log('x is ' + x);
    tap(sayX, 100); //=> 100
    // logs 'x is 100'
 ```
-<a name="throttle"></a>
 
-## throttle(wait, fn, [options]) ⇒ <code>function</code>
+* * *
+
+<a name="tili.throttle"></a>
+
+#### _.throttle(wait, fn, [options]) ⇒ <code>function</code>
 Throttle a function.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Function  
 **Since**: v0.2.0  
 
@@ -447,12 +310,15 @@ Throttle a function.
 | [options.leading] | <code>Boolean</code> | <code>true</code> | Trigger a leading function call. |
 | [options.trailing] | <code>Boolean</code> | <code>true</code> | Trigger a trailing function call. |
 
-<a name="includes"></a>
 
-## includes(search, arr) ⇒ <code>Boolean</code>
+* * *
+
+<a name="tili.includes"></a>
+
+#### _.includes(search, arr) ⇒ <code>Boolean</code>
 Check if string or array includes the searched part.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: List  
 **Since**: v0.1.0  
 
@@ -461,12 +327,40 @@ Check if string or array includes the searched part.
 | search | <code>\*</code> | 
 | arr | <code>Array</code> \| <code>String</code> | 
 
-<a name="defaultTo"></a>
 
-## defaultTo(d, v) ⇒ <code>\*</code>
+* * *
+
+<a name="tili.without"></a>
+
+#### _.without(xs, list) ⇒ <code>Array</code>
+Returns a new list without values in the first argument.
+
+Acts as a transducer if a transformer is given in list position.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Array</code> - The new array without values in `list1`.  
+**Category**: List  
+**Sig**: [a] -> [a] -> [a]  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| xs | <code>Array</code> | The values to be removed from `list2`. |
+| list | <code>Array</code> | The array to remove values from. |
+
+**Example**  
+```js
+without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
+```
+
+* * *
+
+<a name="tili.defaultTo"></a>
+
+#### _.defaultTo(d, v) ⇒ <code>\*</code>
 Default to a value if the passed is null or undefined.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Logic  
 **Since**: v0.1.0  
 
@@ -475,13 +369,16 @@ Default to a value if the passed is null or undefined.
 | d | <code>\*</code> | The default value. |
 | v | <code>\*</code> | The passed value. |
 
-<a name="isEmpty"></a>
 
-## isEmpty(val) ⇒ <code>Boolean</code>
+* * *
+
+<a name="tili.isEmpty"></a>
+
+#### _.isEmpty(val) ⇒ <code>Boolean</code>
 Returns `true` if the given value is its type's empty value; `false`
 otherwise.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Logic  
 **Sig**: a -> Boolean  
 **Since**: v0.4.0  
@@ -499,12 +396,15 @@ isEmpty([1, 2, 3]);   //=> false
      isEmpty({});          //=> true
      isEmpty({length: 0}); //=> false
 ```
-<a name="round"></a>
 
-## round(number, [precision]) ⇒ <code>number</code>
+* * *
+
+<a name="tili.round"></a>
+
+#### _.round(number, [precision]) ⇒ <code>number</code>
 Computes `number` rounded to `precision`.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>number</code> - Returns the rounded number.  
 **Category**: Math  
 **Since**: 0.4.0  
@@ -525,16 +425,19 @@ round(4.006)
    round(4060, -2)
    // => 4100
 ```
-<a name="clone"></a>
 
-## clone(value) ⇒ <code>\*</code>
+* * *
+
+<a name="tili.clone"></a>
+
+#### _.clone(value) ⇒ <code>\*</code>
 Creates a deep copy of the value which may contain (nested) `Array`s and
 `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
 assigned by reference rather than copied
 
 Dispatches to a `clone` method if present.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>\*</code> - A deeply cloned copy of `val`  
 **Category**: Object  
 **Sig**: <code>\*</code> -> {*}  
@@ -551,9 +454,12 @@ const objects = [{}, {}, {}];
    objects === objectsClone; //=> false
    objects[0] === objectsClone[0]; //=> false
 ```
-<a name="defaultsDeep"></a>
 
-## defaultsDeep(target, [...sources]) ⇒ <code>Object</code>
+* * *
+
+<a name="tili.defaultsDeep"></a>
+
+#### _.defaultsDeep(target, [...sources]) ⇒ <code>Object</code>
 Deeply assigns own and inherited enumerable string keyed properties of source
 objects to the destination object for all destination properties that
 resolve to `undefined`. Source objects are applied from left to right.
@@ -561,7 +467,7 @@ Once a property is set, additional values of the same property are ignored.
 
 **Note:** This method mutates `object`.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>Object</code> - Returns `object`.  
 **Category**: Object  
 **See**: defaults  
@@ -577,12 +483,15 @@ Once a property is set, additional values of the same property are ignored.
 defaultsDeep({ 'a': { 'b': 2 } }, { 'a': { 'b': 1, 'c': 3 } })
 // => { 'a': { 'b': 2, 'c': 3 } }
 ```
-<a name="get"></a>
 
-## get(paths, obj) ⇒ <code>\*</code>
+* * *
+
+<a name="tili.get"></a>
+
+#### _.get(paths, obj) ⇒ <code>\*</code>
 Get a object value by a string dot path or array path.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Object  
 **Since**: v0.7.0  
 
@@ -591,9 +500,99 @@ Get a object value by a string dot path or array path.
 | paths | <code>String</code> \| <code>Array</code> | 
 | obj | <code>Object</code> | 
 
-<a name="merge"></a>
 
-## merge(target, [...sources]) ⇒ <code>Object</code>
+* * *
+
+<a name="tili.has"></a>
+
+#### _.has(prop, obj) ⇒ <code>Boolean</code>
+Returns whether or not an object has an own property with the specified name
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Boolean</code> - Whether the property exists.  
+**Category**: Object  
+**Sig**: s -> {s: x} -> Boolean  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| prop | <code>String</code> | The name of the property to check for. |
+| obj | <code>Object</code> | The object to query. |
+
+**Example**  
+```js
+const hasName = curry(has)('name');
+     hasName({name: 'alice'});   //=> true
+     hasName({name: 'bob'});     //=> true
+     hasName({});                //=> false
+
+     const point = {x: 0, y: 0};
+     const pointHas = curry(has)(__, point);
+     pointHas('x');  //=> true
+     pointHas('y');  //=> true
+     pointHas('z');  //=> false
+```
+
+* * *
+
+<a name="tili.hasPath"></a>
+
+#### _.hasPath(path, obj) ⇒ <code>Boolean</code>
+Returns whether or not a path exists in an object. Only the object's
+own properties are checked.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Boolean</code> - Whether the path exists.  
+**Category**: Object  
+**Typedefn**: Idx = String | Int  
+**Sig**: [Idx] -> {a} -> Boolean  
+**See**: has  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>Array</code> | The path to use. |
+| obj | <code>Object</code> | The object to check the path in. |
+
+**Example**  
+```js
+hasPath(['a', 'b'], {a: {b: 2}});         // => true
+     hasPath(['a', 'b'], {a: {b: undefined}}); // => true
+     hasPath(['a', 'b'], {a: {c: 2}});         // => false
+     hasPath(['a', 'b'], {});                  // => false
+```
+
+* * *
+
+<a name="tili.keys"></a>
+
+#### _.keys(obj) ⇒ <code>Array</code>
+Returns a list containing the names of all the enumerable own properties of
+the supplied object.
+Note that the order of the output array is not guaranteed to be consistent
+across different JS platforms.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Array</code> - An array of the object's own properties.  
+**Category**: Object  
+**Sig**: <code>k: v</code> -> [k]  
+**See**: values  
+**Since**: v0.11.0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Object</code> | The object to extract properties from |
+
+**Example**  
+```js
+keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+```
+
+* * *
+
+<a name="tili.merge"></a>
+
+#### _.merge(target, [...sources]) ⇒ <code>Object</code>
 This method is like `assign` except that it recursively merges own and
 inherited enumerable string keyed properties of source objects into the
 destination object. Source properties that resolve to `undefined` are
@@ -604,7 +603,7 @@ sources overwrite property assignments of previous sources.
 
 **Note:** This method mutates `target`.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>Object</code> - Returns `object`.  
 **Category**: Object  
 **Since**: 0.4.0  
@@ -627,12 +626,15 @@ const object = {
    merge(object, other)
    // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
 ```
-<a name="omit"></a>
 
-## omit(names, obj) ⇒ <code>Object</code>
+* * *
+
+<a name="tili.omit"></a>
+
+#### _.omit(names, obj) ⇒ <code>Object</code>
 Returns a partial copy of an object omitting the keys specified.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>Object</code> - A new object with properties from `names` not on it.  
 **Category**: Object  
 **Sig**: [String] -> {String: *} -> {String: *}  
@@ -648,12 +650,15 @@ Returns a partial copy of an object omitting the keys specified.
 ```js
 omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
 ```
-<a name="path"></a>
 
-## path(paths, obj) ⇒ <code>\*</code>
+* * *
+
+<a name="tili.path"></a>
+
+#### _.path(paths, obj) ⇒ <code>\*</code>
 Retrieve the value at a given path.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>\*</code> - The data at `path`.  
 **Category**: Object  
 **Typedefn**: Idx = String | Int  
@@ -670,13 +675,16 @@ Retrieve the value at a given path.
 path(['a', 'b'], {a: {b: 2}}); //=> 2
    path(['a', 'b'], {c: {b: 2}}); //=> undefined
 ```
-<a name="pick"></a>
 
-## pick(names, obj) ⇒ <code>Object</code>
+* * *
+
+<a name="tili.pick"></a>
+
+#### _.pick(names, obj) ⇒ <code>Object</code>
 Returns a partial copy of an object containing only the keys specified. If
 the key does not exist, the property is ignored.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>Object</code> - A new object with only properties from `names` on it.  
 **Category**: Object  
 **Sig**: [k] -> {k: v} -> {k: v}  
@@ -693,14 +701,17 @@ the key does not exist, the property is ignored.
 pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
    pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
 ```
-<a name="values"></a>
 
-## values(obj) ⇒ <code>Array</code>
+* * *
+
+<a name="tili.values"></a>
+
+#### _.values(obj) ⇒ <code>Array</code>
 Returns a list of all the enumerable own properties of the supplied object.
 Note that the order of the output array is not guaranteed across different
 JS platforms.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>Array</code> - An array of the values of the object's own properties.  
 **Category**: Object  
 **Sig**: <code>k: v</code> -> [v]  
@@ -714,14 +725,17 @@ JS platforms.
 ```js
 values({a: 1, b: 2, c: 3}); //=> [1, 2, 3]
 ```
-<a name="clamp"></a>
 
-## clamp(min, max, value) ⇒ <code>Number</code>
+* * *
+
+<a name="tili.clamp"></a>
+
+#### _.clamp(min, max, value) ⇒ <code>Number</code>
 Restricts a number to be within a range.
 
 Also works for other ordered types such as Strings and Dates.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>Number</code> - Returns `minimum` when `val < minimum`, `maximum` when `val > maximum`, returns `val` otherwise  
 **Category**: Relation  
 **Sig**: Ord a => a -> a -> a -> a  
@@ -739,9 +753,12 @@ clamp(1, 10, -5) // => 1
      clamp(1, 10, 15) // => 10
      clamp(1, 10, 4)  // => 4
 ```
-<a name="escape"></a>
 
-## escape([string]) ⇒ <code>string</code>
+* * *
+
+<a name="tili.escape"></a>
+
+#### _.escape([string]) ⇒ <code>string</code>
 Converts the characters "&", "<", ">", '"', and "'" in `string` to their
 corresponding HTML entities.
 
@@ -758,7 +775,7 @@ When working with HTML you should always
 [quote attribute values](http://wonko.com/post/html-escaping) to reduce
 XSS vectors.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>string</code> - Returns the escaped string.  
 **Category**: String  
 **See**: escapeRegExp, unescape  
@@ -773,9 +790,12 @@ XSS vectors.
 escape('fred, barney, & pebbles')
    // => 'fred, barney, &amp; pebbles'
 ```
-<a name="unescape"></a>
 
-## unescape([string]) ⇒ <code>string</code>
+* * *
+
+<a name="tili.unescape"></a>
+
+#### _.unescape([string]) ⇒ <code>string</code>
 The inverse of `escape`this method converts the HTML entities
 `&amp;`, `&lt;`, `&gt;`, `&quot;` and `&#39;` in `string` to
 their corresponding characters.
@@ -783,7 +803,7 @@ their corresponding characters.
 **Note:** No other HTML entities are unescaped. To unescape additional
 HTML entities use a third-party library like [_he_](https://mths.be/he).
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>string</code> - Returns the unescaped string.  
 **Category**: String  
 **See**: escape, escapeRegExp  
@@ -798,13 +818,16 @@ HTML entities use a third-party library like [_he_](https://mths.be/he).
 unescape('fred, barney, &amp; pebbles')
    // => 'fred, barney, & pebbles'
 ```
-<a name="is"></a>
 
-## is(Ctor, val) ⇒ <code>Boolean</code>
+* * *
+
+<a name="tili.is"></a>
+
+#### _.is(Ctor, val) ⇒ <code>Boolean</code>
 See if an object (`val`) is an instance of the supplied constructor. This
 function will check up the inheritance chain, if any.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Type  
 **Sig**: (* -> {*}) -> a -> Boolean  
 **Since**: v0.1.0  
@@ -825,13 +848,16 @@ is(Object, {}); //=> true
    is(Object, 's'); //=> false
    is(Number, {}); //=> false
 ```
-<a name="isPlainObject"></a>
 
-## isPlainObject(obj) ⇒ <code>boolean</code>
+* * *
+
+<a name="tili.isPlainObject"></a>
+
+#### _.isPlainObject(obj) ⇒ <code>boolean</code>
 Checks if `value` is a plain object, that is, an object created by the
 `Object` constructor or one with a `[[Prototype]]` of `null`.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>boolean</code> - Returns `true` if `value` is a plain object, else `false`.  
 **Category**: Type  
 **Since**: 0.1.0  
@@ -858,15 +884,18 @@ function Foo() {
    isPlainObject(Object.create(null))
    // => true
 ```
-<a name="type"></a>
 
-## type(val) ⇒ <code>String</code>
+* * *
+
+<a name="tili.type"></a>
+
+#### _.type(val) ⇒ <code>String</code>
 Gives a single-word string description of the (native) type of a value,
 returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
 attempt to distinguish user Object types any further, reporting them all as
 'Object'.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Category**: Type  
 **Sig**: (* -> {*}) -> String  
 **Since**: v0.3.0  
@@ -887,12 +916,15 @@ type({}); //=> "Object"
    type(() => {}); //=> "Function"
    type(undefined); //=> "Undefined"
 ```
-<a name="uniqueId"></a>
 
-## uniqueId([prefix]) ⇒ <code>string</code>
+* * *
+
+<a name="tili.uniqueId"></a>
+
+#### _.uniqueId([prefix]) ⇒ <code>string</code>
 Generates a unique ID. If `prefix` is given, the ID is appended to it.
 
-**Kind**: global function  
+**Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>string</code> - Returns the unique ID.  
 **Category**: Util  
 **Since**: 0.1.0  
@@ -909,3 +941,13 @@ uniqueId('contact_');
    uniqueId();
    // => '105'
 ```
+
+* * *
+
+## Credits
+
+Remixed code by:
+
+- [Ramda](https://github.com/ramda/ramda)
+- [Lodash](https://github.com/lodash/lodash)
+- [Underscore](https://github.com/jashkenas/underscore)

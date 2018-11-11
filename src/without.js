@@ -6,6 +6,7 @@ import includes from './includes';
  * Acts as a transducer if a transformer is given in list position.
  *
  * @func
+ * @memberOf tili
  * @since v0.11.0
  * @category List
  * @sig [a] -> [a] -> [a]

@@ -4,6 +4,7 @@ import hasPath from './hasPath';
  * Returns whether or not an object has an own property with the specified name
  *
  * @func
+ * @memberOf tili
  * @since v0.11.0
  * @category Object
  * @sig s -> {s: x} -> Boolean

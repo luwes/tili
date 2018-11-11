@@ -2,6 +2,7 @@
  * Runs the given function with the supplied object, then returns the object.
  *
  * @func
+ * @memberOf tili
  * @since v0.3.0
  * @category Function
  * @sig (a -> *) -> a -> a

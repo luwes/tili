@@ -2,6 +2,7 @@
  * Throttle a function.
  *
  * @func
+ * @memberOf tili
  * @since v0.2.0
  * @category Function
  * @param  {Number}   wait

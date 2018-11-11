@@ -3,6 +3,7 @@
  * function will check up the inheritance chain, if any.
  *
  * @func
+ * @memberOf tili
  * @since v0.1.0
  * @category Type
  * @sig (* -> {*}) -> a -> Boolean

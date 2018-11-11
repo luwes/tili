@@ -2,6 +2,7 @@
  * Returns a partial copy of an object omitting the keys specified.
  *
  * @func
+ * @memberOf tili
  * @since v0.3.0
  * @category Object
  * @sig [String] -> {String: *} -> {String: *}

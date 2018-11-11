@@ -5,6 +5,7 @@
  * otherwise.
  *
  * @func
+ * @memberOf tili
  * @since v0.4.0
  * @category Logic
  * @sig a -> Boolean

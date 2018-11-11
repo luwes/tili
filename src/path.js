@@ -2,6 +2,7 @@
  * Retrieve the value at a given path.
  *
  * @func
+ * @memberOf tili
  * @since v0.1.0
  * @category Object
  * @typedefn Idx = String | Int
