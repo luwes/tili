@@ -20,24 +20,24 @@ test('clones booleans', function(t) {
 });
 
 test('clones shallow object', function(t) {
-  var obj = {a: 1, b: 'ramda', c: true, d: new Date(2013, 11, 25)};
+  var obj = { a: 1, b: 'ramda', c: true, d: new Date(2013, 11, 25) };
   var clone = l.clone(obj);
   obj.c = false;
   obj.d.setDate(31);
-  t.deepEqual(clone, {a: 1, b: 'ramda', c: true, d: new Date(2013, 11, 25)});
+  t.deepEqual(clone, { a: 1, b: 'ramda', c: true, d: new Date(2013, 11, 25) });
 });
 
 test('clones deep object', function(t) {
-  var obj = {a: {b: {c: 'ramda'}}};
+  var obj = { a: { b: { c: 'ramda' } } };
   var clone = l.clone(obj);
   obj.a.b.c = null;
-  t.deepEqual(clone, {a: {b: {c: 'ramda'}}});
+  t.deepEqual(clone, { a: { b: { c: 'ramda' } } });
 });
 
 test('clones objects with circular references', function(t) {
-  var x = {c: null};
-  var y = {a: x};
-  var z = {b: y};
+  var x = { c: null };
+  var y = { a: x };
+  var z = { b: y };
   x.c = z;
   var clone = l.clone(x);
   t.not(x, clone);
@@ -109,7 +109,9 @@ test('clones Date object', function(t) {
 });
 
 test('clones RegExp object', function(t) {
-  [/x/, /x/g, /x/i, /x/m, /x/gi, /x/gm, /x/im, /x/gim].forEach(function(pattern) {
+  [/x/, /x/g, /x/i, /x/m, /x/gi, /x/gm, /x/im, /x/gim].forEach(function(
+    pattern
+  ) {
     var clone = l.clone(pattern);
     t.not(clone, pattern);
     t.deepEqual(clone.constructor, RegExp);
@@ -121,10 +123,10 @@ test('clones RegExp object', function(t) {
 });
 
 test('clones array with objects', function(t) {
-  var list = [{a: {b: 1}}, [{c: {d: 1}}]];
+  var list = [{ a: { b: 1 } }, [{ c: { d: 1 } }]];
   var clone = l.clone(list);
   list[1][0] = null;
-  t.deepEqual(clone, [{a: {b: 1}}, [{c: {d: 1}}]]);
+  t.deepEqual(clone, [{ a: { b: 1 } }, [{ c: { d: 1 } }]]);
 });
 
 test('clones array with arrays', function(t) {
@@ -135,8 +137,8 @@ test('clones array with arrays', function(t) {
 });
 
 test('clones array with mutual ref object', function(t) {
-  var obj = {a: 1};
-  var list = [{b: obj}, {b: obj}];
+  var obj = { a: 1 };
+  var list = [{ b: obj }, { b: obj }];
   var clone = l.clone(list);
 
   t.is(list[0].b, list[1].b);
@@ -144,12 +146,12 @@ test('clones array with mutual ref object', function(t) {
   t.not(clone[0].b, list[0].b);
   t.not(clone[1].b, list[1].b);
 
-  t.deepEqual(clone[0].b, {a:1});
-  t.deepEqual(clone[1].b, {a:1});
+  t.deepEqual(clone[0].b, { a: 1 });
+  t.deepEqual(clone[1].b, { a: 1 });
 
   obj.a = 2;
-  t.deepEqual(clone[0].b, {a:1});
-  t.deepEqual(clone[1].b, {a:1});
+  t.deepEqual(clone[0].b, { a: 1 });
+  t.deepEqual(clone[1].b, { a: 1 });
 });
 
 test('nulls, undefineds and empty objects and arrays', function(t) {
@@ -165,8 +167,12 @@ test('nulls, undefineds and empty objects and arrays', function(t) {
 });
 
 test('dispatches to `clone` method if present', function(t) {
-  function ArbitraryClone(x) { this.value = x; }
-  ArbitraryClone.prototype.clone = function() { return new ArbitraryClone(this.value); };
+  function ArbitraryClone(x) {
+    this.value = x;
+  }
+  ArbitraryClone.prototype.clone = function() {
+    return new ArbitraryClone(this.value);
+  };
 
   var obj = new ArbitraryClone(42);
   var arbitraryClonedObj = l.clone(obj);

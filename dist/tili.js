@@ -288,7 +288,7 @@
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      '\'': '&#39;'
+      "'": '&#39;'
     };
     var reUnescapedHtml = /[&<>"']/g;
     var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
@@ -570,7 +570,7 @@
       '&lt;': '<',
       '&gt;': '>',
       '&quot;': '"',
-      '&#39;': '\''
+      '&#39;': "'"
     };
     var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
     var reHasEscapedHtml = RegExp(reEscapedHtml.source);

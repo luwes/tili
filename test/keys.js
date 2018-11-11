@@ -3,7 +3,12 @@ import * as l from '../src';
 
 test('keys with native Object.keys', function(t) {
   var obj = {
-    a: 100, b: [1, 2, 3], c: { x: 200, y: 300 }, d: 'D', e: null, f: undefined
+    a: 100,
+    b: [1, 2, 3],
+    c: { x: 200, y: 300 },
+    d: 'D',
+    e: null,
+    f: undefined
   };
 
   t.deepEqual(l.keys(obj).sort(), ['a', 'b', 'c', 'd', 'e', 'f']);
@@ -21,7 +26,7 @@ test('keys with native Object.keys', function(t) {
   t.deepEqual(
     l.keys(cobj).sort(),
     ['a', 'b'],
-    'does not include the given object\'s prototype properties'
+    "does not include the given object's prototype properties"
   );
 });
 

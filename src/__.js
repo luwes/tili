@@ -24,4 +24,4 @@
  *      const greet = replace('{name}', __, 'Hello, {name}!');
  *      greet('Alice'); //=> 'Hello, Alice!'
  */
-export default {'@@functional/placeholder': true};
+export default { '@@functional/placeholder': true };

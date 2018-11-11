@@ -1,7 +1,6 @@
 import _arity from './_arity';
 import _isPlaceholder from './_isPlaceholder';
 
-
 /**
  * Internal curryN function.
  *
@@ -20,9 +19,10 @@ export default function _curryN(length, received, fn) {
     var combinedIdx = 0;
     while (combinedIdx < received.length || argsIdx < arguments.length) {
       var result;
-      if (combinedIdx < received.length &&
-          (!_isPlaceholder(received[combinedIdx]) ||
-           argsIdx >= arguments.length)) {
+      if (
+        combinedIdx < received.length &&
+        (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)
+      ) {
         result = received[combinedIdx];
       } else {
         result = arguments[argsIdx];
@@ -34,7 +34,8 @@ export default function _curryN(length, received, fn) {
       }
       combinedIdx += 1;
     }
-    return left <= 0 ? fn.apply(this, combined)
+    return left <= 0
+      ? fn.apply(this, combined)
       : _arity(left, _curryN(length, combined, fn));
   };
 }

@@ -4,14 +4,14 @@ import test from 'ava';
 import delay from 'delay';
 import { defer } from '../src';
 
-test('defer should throw on non function', (t) => {
+test('defer should throw on non function', t => {
   t.throws(() => defer({}, true));
 });
 
-test.serial('defer with process.nextTick', async (t) => {
+test.serial('defer with process.nextTick', async t => {
   var deferred = false;
 
-  defer((bool) => {
+  defer(bool => {
     deferred = bool;
   }, true);
 
@@ -21,13 +21,13 @@ test.serial('defer with process.nextTick', async (t) => {
   t.true(deferred, 'deferred the function');
 });
 
-test.serial('defer with Promise', async (t) => {
+test.serial('defer with Promise', async t => {
   var deferred = false;
 
   const nextTick = process.nextTick;
   process.nextTick = null;
 
-  defer((bool) => {
+  defer(bool => {
     deferred = bool;
   }, true);
 
@@ -39,7 +39,7 @@ test.serial('defer with Promise', async (t) => {
   t.true(deferred, 'deferred the function');
 });
 
-test.serial('defer with setImmediate', async (t) => {
+test.serial('defer with setImmediate', async t => {
   var deferred = false;
 
   const nextTick = process.nextTick;
@@ -47,7 +47,7 @@ test.serial('defer with setImmediate', async (t) => {
   const tempPromise = Promise;
   Promise = null;
 
-  defer((bool) => {
+  defer(bool => {
     deferred = bool;
   }, true);
 
@@ -60,7 +60,7 @@ test.serial('defer with setImmediate', async (t) => {
   t.true(deferred, 'deferred the function');
 });
 
-test.serial('defer with setTimeout', async (t) => {
+test.serial('defer with setTimeout', async t => {
   var deferred = false;
 
   const nextTick = process.nextTick;
@@ -70,7 +70,7 @@ test.serial('defer with setTimeout', async (t) => {
   const tempSetImmediate = setImmediate;
   setImmediate = null;
 
-  defer((bool) => {
+  defer(bool => {
     deferred = bool;
   }, true);
 

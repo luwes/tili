@@ -1,4 +1,4 @@
-var __ = {'@@functional/placeholder': true};
+var __ = { '@@functional/placeholder': true };
 
 function clamp(min, max, value) {
   if (min > max) {
@@ -10,15 +10,22 @@ function clamp(min, max, value) {
 }
 
 function _cloneRegExp(pattern) {
-  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
+  return new RegExp(
+    pattern.source,
+    (pattern.global ? 'g' : '') +
+      (pattern.ignoreCase ? 'i' : '') +
+      (pattern.multiline ? 'm' : '') +
+      (pattern.sticky ? 'y' : '') +
+      (pattern.unicode ? 'u' : '')
+  );
 }
 
 function type(val) {
   return val === null
     ? 'Null'
     : val === undefined
-      ? 'Undefined'
-      : Object.prototype.toString.call(val).slice(8, -1);
+    ? 'Undefined'
+    : Object.prototype.toString.call(val).slice(8, -1);
 }
 
 function _clone(value, refFrom, refTo, deep) {
@@ -34,17 +41,23 @@ function _clone(value, refFrom, refTo, deep) {
     refFrom[idx + 1] = value;
     refTo[idx + 1] = copiedValue;
     for (var key in value) {
-      copiedValue[key] = deep ?
-        _clone(value[key], refFrom, refTo, true) : value[key];
+      copiedValue[key] = deep
+        ? _clone(value[key], refFrom, refTo, true)
+        : value[key];
     }
     return copiedValue;
   };
   switch (type(value)) {
-    case 'Object':  return copy({});
-    case 'Array':   return copy([]);
-    case 'Date':    return new Date(value.valueOf());
-    case 'RegExp':  return _cloneRegExp(value);
-    default:        return value;
+    case 'Object':
+      return copy({});
+    case 'Array':
+      return copy([]);
+    case 'Date':
+      return new Date(value.valueOf());
+    case 'RegExp':
+      return _cloneRegExp(value);
+    default:
+      return value;
   }
 }
 
@@ -66,25 +79,61 @@ function compose(...funcs) {
 
 function _arity(n, fn) {
   switch (n) {
-    case 0: return function() { return fn.apply(this, arguments); };
-    case 1: return function(a0) { return fn.apply(this, arguments); };
-    case 2: return function(a0, a1) { return fn.apply(this, arguments); };
-    case 3: return function(a0, a1, a2) { return fn.apply(this, arguments); };
-    case 4: return function(a0, a1, a2, a3) { return fn.apply(this, arguments); };
-    case 5: return function(a0, a1, a2, a3, a4) { return fn.apply(this, arguments); };
-    case 6: return function(a0, a1, a2, a3, a4, a5) { return fn.apply(this, arguments); };
-    case 7: return function(a0, a1, a2, a3, a4, a5, a6) { return fn.apply(this, arguments); };
-    case 8: return function(a0, a1, a2, a3, a4, a5, a6, a7) { return fn.apply(this, arguments); };
-    case 9: return function(a0, a1, a2, a3, a4, a5, a6, a7, a8) { return fn.apply(this, arguments); };
-    case 10: return function(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) { return fn.apply(this, arguments); };
-    default: throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+    case 0:
+      return function() {
+        return fn.apply(this, arguments);
+      };
+    case 1:
+      return function(a0) {
+        return fn.apply(this, arguments);
+      };
+    case 2:
+      return function(a0, a1) {
+        return fn.apply(this, arguments);
+      };
+    case 3:
+      return function(a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+    case 4:
+      return function(a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+    case 5:
+      return function(a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+    case 6:
+      return function(a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+    case 7:
+      return function(a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+    case 8:
+      return function(a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+    case 9:
+      return function(a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+    case 10:
+      return function(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+    default:
+      throw new Error(
+        'First argument to _arity must be a non-negative integer no greater than ten'
+      );
   }
 }
 
 function _isPlaceholder(a) {
-  return a != null &&
-         typeof a === 'object' &&
-         a['@@functional/placeholder'] === true;
+  return (
+    a != null && typeof a === 'object' && a['@@functional/placeholder'] === true
+  );
 }
 
 function _curryN(length, received, fn) {
@@ -95,9 +144,10 @@ function _curryN(length, received, fn) {
     var combinedIdx = 0;
     while (combinedIdx < received.length || argsIdx < arguments.length) {
       var result;
-      if (combinedIdx < received.length &&
-          (!_isPlaceholder(received[combinedIdx]) ||
-           argsIdx >= arguments.length)) {
+      if (
+        combinedIdx < received.length &&
+        (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)
+      ) {
         result = received[combinedIdx];
       } else {
         result = arguments[argsIdx];
@@ -109,7 +159,8 @@ function _curryN(length, received, fn) {
       }
       combinedIdx += 1;
     }
-    return left <= 0 ? fn.apply(this, combined)
+    return left <= 0
+      ? fn.apply(this, combined)
       : _arity(left, _curryN(length, combined, fn));
   };
 }
@@ -226,7 +277,7 @@ function escape(string) {
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    '\'': '&#39;'
+    "'": '&#39;'
   };
   const reUnescapedHtml = /[&<>"']/g;
   const reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
@@ -491,7 +542,7 @@ function unescape(string) {
     '&lt;': '<',
     '&gt;': '>',
     '&quot;': '"',
-    '&#39;': '\''
+    '&#39;': "'"
   };
   const reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
   const reHasEscapedHtml = RegExp(reEscapedHtml.source);
@@ -519,7 +570,7 @@ function values(obj) {
 }
 
 function without(xs, list) {
-  return list.filter((search) => !includes(search, xs));
+  return list.filter(search => !includes(search, xs));
 }
 
 export { __, clamp, clone, compose, curry, curryN, debounce, defaultTo, defaultsDeep, defer, delay, escape, get, has, hasPath, includes, is, isEmpty, isPlainObject, keys, memoize, merge, omit, path, pick, pipe, round, tap, throttle, type, unescape, uniqueId, values, without };

@@ -18,7 +18,7 @@ import includes from './includes';
  *      without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
  */
 function without(xs, list) {
-  return list.filter((search) => !includes(search, xs));
+  return list.filter(search => !includes(search, xs));
 }
 
 export default without;

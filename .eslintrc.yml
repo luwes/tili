@@ -1,0 +1,11 @@
+---
+env:
+  browser: true
+  commonjs: true
+  es6: true
+
+extends: plugin:prettier/recommended
+
+parserOptions:
+  ecmaVersion: 8
+  sourceType: module

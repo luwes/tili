@@ -2,13 +2,17 @@ import test from 'ava';
 import * as l from '../src';
 
 test('curries a single value', function(t) {
-  var f = l.curry(function(a, b, c, d) {return (a + b * c) / d;}); // f(12, 3, 6, 2) == 15
+  var f = l.curry(function(a, b, c, d) {
+    return (a + b * c) / d;
+  }); // f(12, 3, 6, 2) == 15
   var g = f(12);
   t.is(g(3, 6, 2), 15);
 });
 
 test('curries multiple values', function(t) {
-  var f = l.curry(function(a, b, c, d) {return (a + b * c) / d;}); // f(12, 3, 6, 2) == 15
+  var f = l.curry(function(a, b, c, d) {
+    return (a + b * c) / d;
+  }); // f(12, 3, 6, 2) == 15
   var g = f(12, 3);
   t.is(g(6, 2), 15);
   var h = f(12, 3, 6);
@@ -16,7 +20,9 @@ test('curries multiple values', function(t) {
 });
 
 test('allows further currying of a curried function', function(t) {
-  var f = l.curry(function(a, b, c, d) {return (a + b * c) / d;}); // f(12, 3, 6, 2) == 15
+  var f = l.curry(function(a, b, c, d) {
+    return (a + b * c) / d;
+  }); // f(12, 3, 6, 2) == 15
   var g = f(12);
   t.is(g(3, 6, 2), 15);
   var h = g(3);
@@ -25,7 +31,9 @@ test('allows further currying of a curried function', function(t) {
 });
 
 test('properly reports the length of the curried function', function(t) {
-  var f = l.curry(function(a, b, c, d) {return (a + b * c) / d;});
+  var f = l.curry(function(a, b, c, d) {
+    return (a + b * c) / d;
+  });
   t.is(f.length, 4);
   var g = f(12);
   t.is(g.length, 3);
@@ -35,8 +43,10 @@ test('properly reports the length of the curried function', function(t) {
 });
 
 test('preserves context', function(t) {
-  var ctx = {x: 10};
-  var f = function(a, b) { return a + b * this.x; };
+  var ctx = { x: 10 };
+  var f = function(a, b) {
+    return a + b * this.x;
+  };
   var g = l.curry(f);
 
   t.is(g.call(ctx, 2, 4), 42);
@@ -44,7 +54,9 @@ test('preserves context', function(t) {
 });
 
 test('supports l.__ placeholder', function(t) {
-  var f = function(a, b, c) { return [a, b, c]; };
+  var f = function(a, b, c) {
+    return [a, b, c];
+  };
   var g = l.curry(f);
   var _ = l.__;
 
@@ -74,9 +86,11 @@ test('supports l.__ placeholder', function(t) {
 });
 
 test('supports @@functional/placeholder', function(t) {
-  var f = function(a, b, c) { return [a, b, c]; };
+  var f = function(a, b, c) {
+    return [a, b, c];
+  };
   var g = l.curry(f);
-  var _ = {'@@functional/placeholder': true, x: Math.random()};
+  var _ = { '@@functional/placeholder': true, x: Math.random() };
 
   t.deepEqual(g(1)(2)(3), [1, 2, 3]);
   t.deepEqual(g(1)(2, 3), [1, 2, 3]);

@@ -25,7 +25,7 @@ function unescape(string) {
     '&lt;': '<',
     '&gt;': '>',
     '&quot;': '"',
-    '&#39;': '\''
+    '&#39;': "'"
   };
 
   /* Used to match HTML entities and HTML characters. */
