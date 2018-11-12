@@ -6,5 +6,6 @@ extends:
 - plugin:ava/recommended
 
 rules:
-  indent: 'off'
-  ava/no-skip-test: 'off'
+  indent: off
+  no-sparse-arrays: off
+  ava/no-skip-test: off

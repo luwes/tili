@@ -1,5 +1,13 @@
 var __ = { '@@functional/placeholder': true };
 
+function castArray() {
+  if (!arguments.length) {
+    return [];
+  }
+  var value = arguments[0];
+  return Array.isArray(value) ? value : [value];
+}
+
 function clamp(min, max, value) {
   if (min > max) {
     throw new Error(
@@ -286,6 +294,45 @@ function escape(string) {
     : string;
 }
 
+function _isArrayLike(x) {
+  if (Array.isArray(x)) return true;
+  if (!x) return false;
+  if (typeof x !== 'object') return false;
+  if (typeof x === 'string') return false;
+  if (x.nodeType === 1) return !!x.length;
+  if (x.length === 0) return true;
+  if (x.length > 0) {
+    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
+  }
+  return false;
+}
+
+function flat(depth, list) {
+  if (typeof depth !== 'number') {
+    list = depth;
+    depth = Number.MAX_VALUE;
+  }
+  var value, jlen, j;
+  var result = [];
+  var idx = 0;
+  var ilen = list.length;
+  while (idx < ilen) {
+    if (_isArrayLike(list[idx])) {
+      value = depth > 1 ? flat(depth - 1, list[idx]) : list[idx];
+      j = 0;
+      jlen = value.length;
+      while (j < jlen) {
+        result[result.length] = value[j];
+        j += 1;
+      }
+    } else {
+      result[result.length] = list[idx];
+    }
+    idx += 1;
+  }
+  return result;
+}
+
 function is(Ctor, val) {
   return val != null && (val.constructor === Ctor || val instanceof Ctor);
 }
@@ -455,6 +502,19 @@ function omit(names, obj) {
   return result;
 }
 
+function once(fn) {
+  var called = false;
+  var result;
+  return _arity(fn.length, function() {
+    if (called) {
+      return result;
+    }
+    called = true;
+    result = fn.apply(this, arguments);
+    return result;
+  });
+}
+
 function pick(names, obj) {
   var result = {};
   var idx = 0;
@@ -573,4 +633,4 @@ function without(xs, list) {
   return list.filter(search => !includes(search, xs));
 }
 
-export { __, clamp, clone, compose, curry, curryN, debounce, defaultTo, defaultsDeep, defer, delay, escape, get, has, hasPath, includes, is, isEmpty, isPlainObject, keys, memoize, merge, omit, path, pick, pipe, round, tap, throttle, type, unescape, uniqueId, values, without };
+export { __, castArray, clamp, clone, compose, curry, curryN, debounce, defaultTo, defaultsDeep, defer, delay, escape, flat, get, has, hasPath, includes, is, isEmpty, isPlainObject, keys, memoize, merge, omit, once, path, pick, pipe, round, tap, throttle, type, unescape, uniqueId, values, without };

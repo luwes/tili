@@ -8,6 +8,14 @@
     '@@functional/placeholder': true
   };
 
+  function castArray() {
+    if (!arguments.length) {
+      return [];
+    }
+    var value = arguments[0];
+    return Array.isArray(value) ? value : [value];
+  }
+
   function clamp(min, max, value) {
     if (min > max) {
       throw new Error('min must not be greater than max in clamp(min, max, value)');
@@ -297,6 +305,45 @@
     }) : string;
   }
 
+  function _isArrayLike(x) {
+    if (Array.isArray(x)) return true;
+    if (!x) return false;
+    if (typeof x !== 'object') return false;
+    if (typeof x === 'string') return false;
+    if (x.nodeType === 1) return !!x.length;
+    if (x.length === 0) return true;
+    if (x.length > 0) {
+      return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
+    }
+    return false;
+  }
+
+  function flat(depth, list) {
+    if (typeof depth !== 'number') {
+      list = depth;
+      depth = Number.MAX_VALUE;
+    }
+    var value, jlen, j;
+    var result = [];
+    var idx = 0;
+    var ilen = list.length;
+    while (idx < ilen) {
+      if (_isArrayLike(list[idx])) {
+        value = depth > 1 ? flat(depth - 1, list[idx]) : list[idx];
+        j = 0;
+        jlen = value.length;
+        while (j < jlen) {
+          result[result.length] = value[j];
+          j += 1;
+        }
+      } else {
+        result[result.length] = list[idx];
+      }
+      idx += 1;
+    }
+    return result;
+  }
+
   function is(Ctor, val) {
     return val != null && (val.constructor === Ctor || val instanceof Ctor);
   }
@@ -471,6 +518,19 @@
     return result;
   }
 
+  function once(fn) {
+    var called = false;
+    var result;
+    return _arity(fn.length, function () {
+      if (called) {
+        return result;
+      }
+      called = true;
+      result = fn.apply(this, arguments);
+      return result;
+    });
+  }
+
   function pick(names, obj) {
     var result = {};
     var idx = 0;
@@ -604,6 +664,7 @@
   }
 
   exports.__ = __;
+  exports.castArray = castArray;
   exports.clamp = clamp;
   exports.clone = clone;
   exports.compose = compose;
@@ -615,6 +676,7 @@
   exports.defer = defer;
   exports.delay = delay;
   exports.escape = escape;
+  exports.flat = flat;
   exports.get = get;
   exports.has = has;
   exports.hasPath = hasPath;
@@ -626,6 +688,7 @@
   exports.memoize = memoize;
   exports.merge = merge;
   exports.omit = omit;
+  exports.once = once;
   exports.path = path;
   exports.pick = pick;
   exports.pipe = pipe;

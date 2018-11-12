@@ -3,6 +3,7 @@
  * @typicalname _
  */
 export { default as __ } from './__';
+export { default as castArray } from './castArray';
 export { default as clamp } from './clamp';
 export { default as clone } from './clone';
 export { default as compose } from './compose';
@@ -14,6 +15,7 @@ export { default as defaultsDeep } from './defaultsDeep';
 export { default as defer } from './defer';
 export { default as delay } from './delay';
 export { default as escape } from './escape';
+export { default as flat } from './flat';
 export { default as get } from './get';
 export { default as has } from './has';
 export { default as hasPath } from './hasPath';
@@ -25,6 +27,7 @@ export { default as keys } from './keys';
 export { default as memoize } from './memoize';
 export { default as merge } from './merge';
 export { default as omit } from './omit';
+export { default as once } from './once';
 export { default as path } from './path';
 export { default as pick } from './pick';
 export { default as pipe } from './pipe';

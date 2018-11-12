@@ -52,10 +52,14 @@ import { get, compose, merge } from 'tili';
     - [.defer(func, [...args])](#tili.defer)
     - [.delay(wait, func, [...args])](#tili.delay) ⇒ <code>number</code>
     - [.memoize(fn)](#tili.memoize) ⇒ <code>\*</code>
+    - [.once(fn)](#tili.once) ⇒ <code>function</code>
     - [.pipe(...funcs)](#tili.pipe) ⇒ <code>function</code>
     - [.tap(fn, x)](#tili.tap) ⇒ <code>\*</code>
     - [.throttle(wait, fn, [options])](#tili.throttle) ⇒ <code>function</code>
+  - _Lang_
+    - [.castArray(value)](#tili.castArray) ⇒ <code>Array</code>
   - _List_
+    - [.flat([depth], list)](#tili.flat) ⇒ <code>Array</code>
     - [.includes(search, arr)](#tili.includes) ⇒ <code>Boolean</code>
     - [.without(xs, list)](#tili.without) ⇒ <code>Array</code>
   - _Logic_
@@ -261,6 +265,35 @@ Memoize a function.
 
 ---
 
+<a name="tili.once"></a>
+
+#### \_.once(fn) ⇒ <code>function</code>
+
+Accepts a function `fn` and returns a function that guards invocation of
+`fn` such that `fn` can only ever be called once, no matter how many times
+the returned function is invoked. The first value calculated is returned in
+subsequent invocations.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>function</code> - The wrapped function.  
+**Category**: Function  
+**Sig**: (a... -> b) -> (a... -> b)  
+**Since**: v0.12.0
+
+| Param | Type                  | Description                                       |
+| ----- | --------------------- | ------------------------------------------------- |
+| fn    | <code>function</code> | The function to wrap in a call-only-once wrapper. |
+
+**Example**
+
+```js
+const addOneOnce = once(x => x + 1);
+addOneOnce(10); //=> 11
+addOneOnce(addOneOnce(50)); //=> 11
+```
+
+---
+
 <a name="tili.pipe"></a>
 
 #### \_.pipe(...funcs) ⇒ <code>function</code>
@@ -327,6 +360,76 @@ Throttle a function.
 | [options]          | <code>Object</code>   |                   |                                   |
 | [options.leading]  | <code>Boolean</code>  | <code>true</code> | Trigger a leading function call.  |
 | [options.trailing] | <code>Boolean</code>  | <code>true</code> | Trigger a trailing function call. |
+
+---
+
+<a name="tili.castArray"></a>
+
+#### \_.castArray(value) ⇒ <code>Array</code>
+
+Casts `value` as an array if it's not one.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Array</code> - Returns the cast array.  
+**Category**: Lang  
+**Since**: 0.12.0
+
+| Param | Type            | Description           |
+| ----- | --------------- | --------------------- |
+| value | <code>\*</code> | The value to inspect. |
+
+**Example**
+
+```js
+_.castArray(1);
+// => [1]
+
+_.castArray({ a: 1 });
+// => [{ 'a': 1 }]
+
+_.castArray('abc');
+// => ['abc']
+
+_.castArray(null);
+// => [null]
+
+_.castArray(undefined);
+// => [undefined]
+
+_.castArray();
+// => []
+
+var array = [1, 2, 3];
+console.log(_.castArray(array) === array);
+// => true
+```
+
+---
+
+<a name="tili.flat"></a>
+
+#### \_.flat([depth], list) ⇒ <code>Array</code>
+
+Returns a new list by pulling every item out of it (and all its sub-arrays)
+and putting them in a new array, depth-first.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Array</code> - The flattened list.  
+**Category**: List  
+**Sig**: [a] -> [b]  
+**Since**: v0.12.0
+
+| Param   | Type                | Description              |
+| ------- | ------------------- | ------------------------ |
+| [depth] | <code>Number</code> | The flatten depth level. |
+| list    | <code>Array</code>  | The array to consider.   |
+
+**Example**
+
+```js
+flat([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+//=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+```
 
 ---
 
