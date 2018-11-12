@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.12.0 - 2018-11-11
+
+### Added
+
+- Add `flat`, `castArray`, `once` function
+
 ## 0.11.0 - 2018-11-10
 
 ### Added

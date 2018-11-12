@@ -1,6 +1,6 @@
 {
   "name": "tili",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Small javascript utilities.",
   "unpkg": "dist/tili.min.js",
   "main": "dist/tili.js",
