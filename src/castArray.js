@@ -4,7 +4,7 @@
  * @static
  * @memberOf tili
  * @since 0.12.0
- * @category Lang
+ * @category Type
  * @param {*} value The value to inspect.
  * @returns {Array} Returns the cast array.
  * @example

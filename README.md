@@ -56,8 +56,6 @@ import { get, compose, merge } from 'tili';
     - [.pipe(...funcs)](#tili.pipe) ⇒ <code>function</code>
     - [.tap(fn, x)](#tili.tap) ⇒ <code>\*</code>
     - [.throttle(wait, fn, [options])](#tili.throttle) ⇒ <code>function</code>
-  - _Lang_
-    - [.castArray(value)](#tili.castArray) ⇒ <code>Array</code>
   - _List_
     - [.flat([depth], list)](#tili.flat) ⇒ <code>Array</code>
     - [.includes(search, arr)](#tili.includes) ⇒ <code>Boolean</code>
@@ -85,6 +83,7 @@ import { get, compose, merge } from 'tili';
     - [.escape([string])](#tili.escape) ⇒ <code>string</code>
     - [.unescape([string])](#tili.unescape) ⇒ <code>string</code>
   - _Type_
+    - [.castArray(value)](#tili.castArray) ⇒ <code>Array</code>
     - [.is(Ctor, val)](#tili.is) ⇒ <code>Boolean</code>
     - [.isPlainObject(obj)](#tili.isPlainObject) ⇒ <code>boolean</code>
     - [.type(val)](#tili.type) ⇒ <code>String</code>
@@ -360,49 +359,6 @@ Throttle a function.
 | [options]          | <code>Object</code>   |                   |                                   |
 | [options.leading]  | <code>Boolean</code>  | <code>true</code> | Trigger a leading function call.  |
 | [options.trailing] | <code>Boolean</code>  | <code>true</code> | Trigger a trailing function call. |
-
----
-
-<a name="tili.castArray"></a>
-
-#### \_.castArray(value) ⇒ <code>Array</code>
-
-Casts `value` as an array if it's not one.
-
-**Kind**: static method of [<code>tili</code>](#tili)  
-**Returns**: <code>Array</code> - Returns the cast array.  
-**Category**: Lang  
-**Since**: 0.12.0
-
-| Param | Type            | Description           |
-| ----- | --------------- | --------------------- |
-| value | <code>\*</code> | The value to inspect. |
-
-**Example**
-
-```js
-_.castArray(1);
-// => [1]
-
-_.castArray({ a: 1 });
-// => [{ 'a': 1 }]
-
-_.castArray('abc');
-// => ['abc']
-
-_.castArray(null);
-// => [null]
-
-_.castArray(undefined);
-// => [undefined]
-
-_.castArray();
-// => []
-
-var array = [1, 2, 3];
-console.log(_.castArray(array) === array);
-// => true
-```
 
 ---
 
@@ -969,6 +925,49 @@ HTML entities use a third-party library like [_he_](https://mths.be/he).
 ```js
 unescape('fred, barney, &amp; pebbles');
 // => 'fred, barney, & pebbles'
+```
+
+---
+
+<a name="tili.castArray"></a>
+
+#### \_.castArray(value) ⇒ <code>Array</code>
+
+Casts `value` as an array if it's not one.
+
+**Kind**: static method of [<code>tili</code>](#tili)  
+**Returns**: <code>Array</code> - Returns the cast array.  
+**Category**: Type  
+**Since**: 0.12.0
+
+| Param | Type            | Description           |
+| ----- | --------------- | --------------------- |
+| value | <code>\*</code> | The value to inspect. |
+
+**Example**
+
+```js
+_.castArray(1);
+// => [1]
+
+_.castArray({ a: 1 });
+// => [{ 'a': 1 }]
+
+_.castArray('abc');
+// => ['abc']
+
+_.castArray(null);
+// => [null]
+
+_.castArray(undefined);
+// => [undefined]
+
+_.castArray();
+// => []
+
+var array = [1, 2, 3];
+console.log(_.castArray(array) === array);
+// => true
 ```
 
 ---
