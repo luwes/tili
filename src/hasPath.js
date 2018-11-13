@@ -1,4 +1,4 @@
-import _has from './internal/_has';
+import _has from './internal/_has.js';
 
 /**
  * Returns whether or not a path exists in an object. Only the object's

@@ -21,7 +21,7 @@
     "build:es": "cross-env NODE_ENV=es rollup -c -o dist/tili.mjs",
     "build:umd": "cross-env NODE_ENV=umd rollup -c -o dist/tili.js",
     "build:umd:min": "cross-env NODE_ENV=umd:min rollup -c -o dist/tili.min.js",
-    "build": "npm run build:es && npm run build:umd && npm run build:umd:min",
+    "build": "npm run build:es && npm run build:umd && npm run build:umd:min && agadoo",
     "watch": "cross-env NODE_ENV=es rollup -w -c -o dist/tili.mjs",
     "prepublishOnly": "npm run clean && npm run lint && npm run build && agadoo",
     "docs": "node scripts/docs.js && npm run format:docs",

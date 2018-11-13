@@ -1,8 +1,8 @@
 # 🌴ili
 
 [![Build Status](https://img.shields.io/travis/luwes/tili/master.svg?style=flat-square&label=Travis+CI)](https://travis-ci.org/luwes/tili)
-[![codecov](https://img.shields.io/codecov/c/github/luwes/tili.svg?style=flat-square)](https://codecov.io/gh/luwes/tili)
-![](http://img.badgesize.io/luwes/tili/master/dist/tili.min.js.svg?style=flat-square&compression=gzip)
+[![codecov](https://img.shields.io/codecov/c/github/luwes/tili.svg?style=flat-square&version=$VERSION)](https://codecov.io/gh/luwes/tili)
+![Badge size](http://img.badgesize.io/luwes/tili/master/dist/tili.min.js.svg?style=flat-square&compression=gzip&version=$VERSION)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 Small javascript utilities.

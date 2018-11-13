@@ -1,4 +1,4 @@
-import includes from './includes';
+import includes from './includes.js';
 
 /**
  * Returns a new list without values in the first argument.

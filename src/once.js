@@ -1,4 +1,4 @@
-import _arity from './internal/_arity';
+import _arity from './internal/_arity.js';
 
 /**
  * Accepts a function `fn` and returns a function that guards invocation of

@@ -1,5 +1,5 @@
-import is from './is';
-import path from './path';
+import is from './is.js';
+import path from './path.js';
 
 /**
  * Get a object value by a string dot path or array path.

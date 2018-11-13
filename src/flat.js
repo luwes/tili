@@ -1,4 +1,4 @@
-import _isArrayLike from './internal/_isArrayLike';
+import _isArrayLike from './internal/_isArrayLike.js';
 
 /**
  * Returns a new list by pulling every item out of it (and all its sub-arrays)

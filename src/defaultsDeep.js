@@ -1,4 +1,4 @@
-import isPlainObject from './isPlainObject';
+import isPlainObject from './isPlainObject.js';
 
 /**
  * Deeply assigns own and inherited enumerable string keyed properties of source

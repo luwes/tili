@@ -1,4 +1,4 @@
-import curryN from './curryN';
+import curryN from './curryN.js';
 
 /**
  * Curry a function.

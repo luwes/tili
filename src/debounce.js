@@ -1,4 +1,4 @@
-import delay from './delay';
+import delay from './delay.js';
 
 /**
  * Returns a function, that, as long as it continues to be invoked, will not

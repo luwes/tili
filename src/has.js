@@ -1,4 +1,4 @@
-import hasPath from './hasPath';
+import hasPath from './hasPath.js';
 
 /**
  * Returns whether or not an object has an own property with the specified name

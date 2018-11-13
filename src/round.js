@@ -1,4 +1,4 @@
-import _round from './internal/_round';
+import _round from './internal/_round.js';
 
 /**
  * Computes `number` rounded to `precision`.

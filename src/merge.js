@@ -1,6 +1,6 @@
-import isFunction from './internal/_isFunction';
-import isObjectLike from './internal/_isObjectLike';
-import isPlainObject from './isPlainObject';
+import isFunction from './internal/_isFunction.js';
+import isObjectLike from './internal/_isObjectLike.js';
+import isPlainObject from './isPlainObject.js';
 
 /**
  * This method is like `assign` except that it recursively merges own and

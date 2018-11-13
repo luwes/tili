@@ -1,4 +1,4 @@
-import _clone from './internal/_clone';
+import _clone from './internal/_clone.js';
 
 /**
  * Creates a deep copy of the value which may contain (nested) `Array`s and

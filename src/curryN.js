@@ -1,5 +1,5 @@
-import _arity from './internal/_arity';
-import _curryN from './internal/_curryN';
+import _arity from './internal/_arity.js';
+import _curryN from './internal/_curryN.js';
 
 /**
  * Returns a curried equivalent of the provided function, with the specified
