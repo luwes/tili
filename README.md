@@ -7,9 +7,9 @@
 
 Small javascript utilities.
 
-- Tiny 🦎 in size and no dependencies.
+- Tiny 🦎 in size.
 - 100% tree-shakeable 🥥!
-- Not curried 🍛 by default, but arguments set up for it.
+- Curried 🍛 by default.
 
 ## Install
 
