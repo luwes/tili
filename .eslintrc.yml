@@ -4,10 +4,10 @@ env:
   commonjs: true
   es6: true
 
-extends: plugin:prettier/recommended
+extends: eslint:recommended
 
 parserOptions:
-  ecmaVersion: 8
+  ecmaVersion: 9
   sourceType: module
 
 rules:

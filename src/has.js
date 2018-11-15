@@ -1,3 +1,4 @@
+import _curry2 from './internal/_curry2.js';
 import hasPath from './hasPath.js';
 
 /**
@@ -13,19 +14,19 @@ import hasPath from './hasPath.js';
  * @return {Boolean} Whether the property exists.
  * @example
  *
- *      const hasName = curry(has)('name');
+ *      const hasName = has('name');
  *      hasName({name: 'alice'});   //=> true
  *      hasName({name: 'bob'});     //=> true
  *      hasName({});                //=> false
  *
  *      const point = {x: 0, y: 0};
- *      const pointHas = curry(has)(__, point);
+ *      const pointHas = has(__, point);
  *      pointHas('x');  //=> true
  *      pointHas('y');  //=> true
  *      pointHas('z');  //=> false
  */
-function has(prop, obj) {
+const has = _curry2(function has(prop, obj) {
   return hasPath([prop], obj);
-}
+});
 
 export default has;

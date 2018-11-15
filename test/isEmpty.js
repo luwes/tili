@@ -32,7 +32,6 @@ test('handles functions', function(t) {
 test('handles nulls', function(t) {
   t.true(l.isEmpty(null) == true);
   t.true(l.isEmpty(undefined) == true);
-  t.true(l.isEmpty() == true);
 });
 
 test('handles booleans', function(t) {

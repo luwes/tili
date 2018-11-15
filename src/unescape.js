@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 /**
  * The inverse of `escape`this method converts the HTML entities
  * `&amp;`, `&lt;`, `&gt;`, `&quot;` and `&#39;` in `string` to
@@ -18,7 +20,7 @@
  *    unescape('fred, barney, &amp; pebbles')
  *    // => 'fred, barney, & pebbles'
  */
-function unescape(string) {
+const unescape = _curry1(function unescape(string) {
   /* Used to map HTML entities to characters. */
   const htmlUnescapes = {
     '&amp;': '&',
@@ -35,6 +37,6 @@ function unescape(string) {
   return string && reHasEscapedHtml.test(string)
     ? string.replace(reEscapedHtml, entity => htmlUnescapes[entity])
     : string;
-}
+});
 
 export default unescape;

@@ -8,28 +8,92 @@
     '@@functional/placeholder': true
   };
 
-  function castArray() {
-    if (!arguments.length) {
-      return [];
-    }
-    var value = arguments[0];
-    return Array.isArray(value) ? value : [value];
+  function _isPlaceholder(a) {
+    return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
   }
 
-  function clamp(min, max, value) {
+  function _curry1(fn) {
+    return function f1(a) {
+      if (arguments.length === 0 || _isPlaceholder(a)) {
+        return f1;
+      } else {
+        return fn.apply(this, arguments);
+      }
+    };
+  }
+
+  var castArray = _curry1(function castArray(value) {
+    return Array.isArray(value) ? value.slice(0) : [value];
+  });
+
+  function _curry2(fn) {
+    return function f2(a, b) {
+      switch (arguments.length) {
+        case 0:
+          return f2;
+        case 1:
+          return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+            return fn(a, _b);
+          });
+        default:
+          return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+            return fn(_a, b);
+          }) : _isPlaceholder(b) ? _curry1(function (_b) {
+            return fn(a, _b);
+          }) : fn(a, b);
+      }
+    };
+  }
+
+  function _curry3(fn) {
+    return function f3(a, b, c) {
+      switch (arguments.length) {
+        case 0:
+          return f3;
+        case 1:
+          return _isPlaceholder(a) ? f3 : _curry2(function (_b, _c) {
+            return fn(a, _b, _c);
+          });
+        case 2:
+          return _isPlaceholder(a) && _isPlaceholder(b) ? f3 : _isPlaceholder(a) ? _curry2(function (_a, _c) {
+            return fn(_a, b, _c);
+          }) : _isPlaceholder(b) ? _curry2(function (_b, _c) {
+            return fn(a, _b, _c);
+          }) : _curry1(function (_c) {
+            return fn(a, b, _c);
+          });
+        default:
+          return _isPlaceholder(a) && _isPlaceholder(b) && _isPlaceholder(c) ? f3 : _isPlaceholder(a) && _isPlaceholder(b) ? _curry2(function (_a, _b) {
+            return fn(_a, _b, c);
+          }) : _isPlaceholder(a) && _isPlaceholder(c) ? _curry2(function (_a, _c) {
+            return fn(_a, b, _c);
+          }) : _isPlaceholder(b) && _isPlaceholder(c) ? _curry2(function (_b, _c) {
+            return fn(a, _b, _c);
+          }) : _isPlaceholder(a) ? _curry1(function (_a) {
+            return fn(_a, b, c);
+          }) : _isPlaceholder(b) ? _curry1(function (_b) {
+            return fn(a, _b, c);
+          }) : _isPlaceholder(c) ? _curry1(function (_c) {
+            return fn(a, b, _c);
+          }) : fn(a, b, c);
+      }
+    };
+  }
+
+  var clamp = _curry3(function clamp(min, max, value) {
     if (min > max) {
       throw new Error('min must not be greater than max in clamp(min, max, value)');
     }
     return value < min ? min : value > max ? max : value;
-  }
+  });
 
   function _cloneRegExp(pattern) {
     return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
   }
 
-  function type(val) {
+  var type = _curry1(function type(val) {
     return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
-  }
+  });
 
   function _clone(value, refFrom, refTo, deep) {
     var copy = function copy(copiedValue) {
@@ -62,23 +126,23 @@
     }
   }
 
-  function clone(value) {
+  var clone = _curry1(function clone(value) {
     return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
-  }
+  });
 
   function compose() {
-    for (var _len = arguments.length, funcs = new Array(_len), _key = 0; _key < _len; _key++) {
-      funcs[_key] = arguments[_key];
+    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+      fns[_key] = arguments[_key];
     }
-    if (funcs.length === 0) {
+    if (fns.length === 0) {
       return function (arg) {
         return arg;
       };
     }
-    if (funcs.length === 1) {
-      return funcs[0];
+    if (fns.length === 1) {
+      return fns[0];
     }
-    return funcs.reduce(function (a, b) {
+    return fns.reduce(function (a, b) {
       return function () {
         return a(b.apply(void 0, arguments));
       };
@@ -136,10 +200,6 @@
     }
   }
 
-  function _isPlaceholder(a) {
-    return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
-  }
-
   function _curryN(length, received, fn) {
     return function () {
       var combined = [];
@@ -175,122 +235,11 @@
     return curryN.apply(void 0, [fn.length, fn].concat(args));
   }
 
-  function delay(wait, func) {
-    if (typeof func != 'function') {
-      throw new TypeError('Expected a function');
-    }
-    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      args[_key - 2] = arguments[_key];
-    }
-    return setTimeout.apply(void 0, [func, +wait || 0].concat(args));
-  }
+  var defaultTo = _curry2(function defaultTo(def, value) {
+    return value == null || value !== value ? def : value;
+  });
 
-  function debounce(wait, func, immediate) {
-    if (immediate === void 0) {
-      immediate = false;
-    }
-    var timeout;
-    var result;
-    var later = function later(context, args) {
-      timeout = null;
-      if (args) result = func.apply(context, args);
-    };
-    var debounced = function debounced() {
-      if (timeout) clearTimeout(timeout);
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-      if (immediate) {
-        var callNow = !timeout;
-        timeout = setTimeout(later, wait);
-        if (callNow) result = func.apply(this, args);
-      } else {
-        timeout = delay(wait, later, this, args);
-      }
-      return result;
-    };
-    debounced.cancel = function () {
-      clearTimeout(timeout);
-      timeout = null;
-    };
-    return debounced;
-  }
-
-  function defaultTo(d, v) {
-    return v == null || v !== v ? d : v;
-  }
-
-  function isPlainObject(obj) {
-    if (typeof obj !== 'object' || obj === null) return false;
-    var proto = obj;
-    while (Object.getPrototypeOf(proto) !== null) {
-      proto = Object.getPrototypeOf(proto);
-    }
-    return Object.getPrototypeOf(obj) === proto;
-  }
-
-  function defaultsDeep(target) {
-    for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      sources[_key - 1] = arguments[_key];
-    }
-    return sources.reduce(_defaultsDeep, target);
-  }
-  function _defaultsDeep(target, source) {
-    if (target === source) {
-      return target;
-    }
-    if (Array.isArray(source)) {
-      return defaultsArray(target, source);
-    }
-    if (isPlainObject(source)) {
-      return defaultsObject(target, source);
-    }
-    if (target === undefined) {
-      return source;
-    }
-    return target;
-  }
-  function defaultsArray(target, source) {
-    if (target === undefined) target = [];
-    if (Array.isArray(target)) {
-      for (var i = 0; i < source.length; i++) {
-        target[i] = _defaultsDeep(target[i], source[i]);
-      }
-    }
-    return target;
-  }
-  function defaultsObject(target, source) {
-    if (target === undefined) target = {};
-    for (var key in source) {
-      target[key] = _defaultsDeep(target[key], source[key]);
-    }
-    return target;
-  }
-
-  function defer(func) {
-    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-    if (typeof func != 'function') {
-      throw new TypeError('Expected a function');
-    }
-    var tick;
-    if (typeof process === 'object' && typeof process.nextTick === 'function') {
-      tick = process.nextTick;
-    } else if (typeof Promise === 'function') {
-      var resolve = Promise.resolve();
-      tick = resolve.then.bind(resolve);
-    } else if (typeof setImmediate === 'function') {
-      tick = setImmediate;
-    } else {
-      tick = setTimeout;
-    }
-    tick(function () {
-      return func.apply(void 0, args);
-    });
-  }
-
-  function escape(string) {
+  var escape = _curry1(function escape(string) {
     var htmlEscapes = {
       '&': '&amp;',
       '<': '&lt;',
@@ -303,52 +252,23 @@
     return string && reHasUnescapedHtml.test(string) ? string.replace(reUnescapedHtml, function (chr) {
       return htmlEscapes[chr];
     }) : string;
-  }
+  });
 
-  function _isArrayLike(x) {
-    if (Array.isArray(x)) return true;
-    if (!x) return false;
-    if (typeof x !== 'object') return false;
-    if (typeof x === 'string') return false;
-    if (x.nodeType === 1) return !!x.length;
-    if (x.length === 0) return true;
-    if (x.length > 0) {
-      return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
-    }
-    return false;
-  }
+  var flat = _curry2(function flat(depth, arr) {
+    return depth === 0 ? arr : arr.reduce(function (acc, val) {
+      return Array.isArray(val) ? acc.concat(flat(depth - 1, val)) : acc.concat(val);
+    }, []);
+  });
 
-  function flat(depth, list) {
-    if (typeof depth !== 'number') {
-      list = depth;
-      depth = Number.MAX_VALUE;
-    }
-    var value, jlen, j;
-    var result = [];
-    var idx = 0;
-    var ilen = list.length;
-    while (idx < ilen) {
-      if (_isArrayLike(list[idx])) {
-        value = depth > 1 ? flat(depth - 1, list[idx]) : list[idx];
-        j = 0;
-        jlen = value.length;
-        while (j < jlen) {
-          result[result.length] = value[j];
-          j += 1;
-        }
-      } else {
-        result[result.length] = list[idx];
-      }
-      idx += 1;
-    }
-    return result;
-  }
+  var flatten = _curry1(function flatten(list) {
+    return flat(Infinity, list);
+  });
 
-  function is(Ctor, val) {
-    return val != null && (val.constructor === Ctor || val instanceof Ctor);
-  }
+  var is = _curry2(function is(Ctor, value) {
+    return value != null && (value.constructor === Ctor || value instanceof Ctor);
+  });
 
-  function path(paths, obj) {
+  var path = _curry2(function path(paths, obj) {
     var val = obj;
     var idx = 0;
     while (idx < paths.length) {
@@ -359,20 +279,20 @@
       idx += 1;
     }
     return val;
-  }
+  });
 
-  function get(paths, obj) {
+  var get = _curry2(function get(paths, obj) {
     if (is(String, paths)) {
       return path(paths.split('.'), obj);
     }
     return path(paths, obj);
-  }
+  });
 
   function _has(prop, obj) {
     return Object.prototype.hasOwnProperty.call(obj, prop);
   }
 
-  function hasPath(path, obj) {
+  var hasPath = _curry2(function hasPath(path, obj) {
     if (path.length === 0) {
       return false;
     }
@@ -387,17 +307,17 @@
       }
     }
     return true;
-  }
+  });
 
-  function has(prop, obj) {
+  var has = _curry2(function has(prop, obj) {
     return hasPath([prop], obj);
-  }
+  });
 
-  function includes(search, arr) {
+  var includes = _curry2(function includes(search, arr) {
     return arr.indexOf(search) !== -1;
-  }
+  });
 
-  function isEmpty(val) {
+  var isEmpty = _curry1(function isEmpty(val) {
     if (val == null) return true;
     if ('boolean' == typeof val) return false;
     if ('number' == typeof val) return val === 0;
@@ -425,11 +345,20 @@
       }
     }
     return false;
-  }
+  });
 
-  var keys = Object.keys;
+  var isPlainObject = _curry1(function isPlainObject(obj) {
+    if (typeof obj !== 'object' || obj === null) return false;
+    var proto = obj;
+    while (Object.getPrototypeOf(proto) !== null) {
+      proto = Object.getPrototypeOf(proto);
+    }
+    return Object.getPrototypeOf(obj) === proto;
+  });
 
-  function memoize(fn) {
+  var keys = _curry1(Object.keys);
+
+  var memoize = _curry1(function memoize(fn) {
     var lastArgs = null;
     var lastResult = null;
     return function () {
@@ -439,7 +368,7 @@
       lastArgs = arguments;
       return lastResult;
     };
-  }
+  });
   function areArgumentsShallowlyEqual(prev, next) {
     if (prev === null || next === null || prev.length !== next.length) {
       return false;
@@ -453,55 +382,7 @@
     return true;
   }
 
-  function _isFunction(value) {
-    return value != null && typeof value == 'function';
-  }
-
-  function _isObjectLike(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  function merge(target) {
-    for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      sources[_key - 1] = arguments[_key];
-    }
-    return sources.reduce(_merge, target);
-  }
-  function _merge(target, source) {
-    if (target === source) {
-      return target;
-    }
-    if (Array.isArray(source)) {
-      return mergeArray(target, source);
-    }
-    if (isPlainObject(source)) {
-      return mergeObject(target, source);
-    }
-    if (source === undefined) {
-      return target;
-    }
-    return source;
-  }
-  function mergeArray(target, source) {
-    if (!Array.isArray(target)) {
-      target = [];
-    }
-    for (var i = 0; i < source.length; i++) {
-      target[i] = _merge(target[i], source[i]);
-    }
-    return target;
-  }
-  function mergeObject(target, source) {
-    if (!_isObjectLike(target) && !_isFunction(target)) {
-      target = {};
-    }
-    for (var key in source) {
-      target[key] = _merge(target[key], source[key]);
-    }
-    return target;
-  }
-
-  function omit(names, obj) {
+  var omit = _curry2(function omit(names, obj) {
     var result = {};
     var index = {};
     var idx = 0;
@@ -516,9 +397,9 @@
       }
     }
     return result;
-  }
+  });
 
-  function once(fn) {
+  var once = _curry1(function once(fn) {
     var called = false;
     var result;
     return _arity(fn.length, function () {
@@ -529,9 +410,9 @@
       result = fn.apply(this, arguments);
       return result;
     });
-  }
+  });
 
-  function pick(names, obj) {
+  var pick = _curry2(function pick(names, obj) {
     var result = {};
     var idx = 0;
     while (idx < names.length) {
@@ -541,21 +422,21 @@
       idx += 1;
     }
     return result;
-  }
+  });
 
   function pipe() {
-    for (var _len = arguments.length, funcs = new Array(_len), _key = 0; _key < _len; _key++) {
-      funcs[_key] = arguments[_key];
+    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+      fns[_key] = arguments[_key];
     }
-    if (funcs.length === 0) {
+    if (fns.length === 0) {
       return function (arg) {
         return arg;
       };
     }
-    if (funcs.length === 1) {
-      return funcs[0];
+    if (fns.length === 1) {
+      return fns[0];
     }
-    return funcs.reduce(function (a, b) {
+    return fns.reduce(function (a, b) {
       return function () {
         return b(a.apply(void 0, arguments));
       };
@@ -563,68 +444,29 @@
   }
 
   function _round(methodName) {
-    var func = Math[methodName];
-    return function (number, precision) {
+    var fn = Math[methodName];
+    return function (precision, number) {
       precision = precision == null ? 0 : Math.min(precision, 292);
       if (precision) {
         var pair = (number + "e").split('e');
-        var value = func(pair[0] + "e" + (+pair[1] + precision));
+        var value = fn(pair[0] + "e" + (+pair[1] + precision));
         pair = (value + "e").split('e');
         return +(pair[0] + "e" + (+pair[1] - precision));
       }
-      return func(number);
+      return fn(number);
     };
   }
 
-  function round(number, precision) {
-    return _round('round')(number, precision);
-  }
+  var round = _curry2(function round(precision, number) {
+    return _round('round')(precision, number);
+  });
 
-  function tap(fn, x) {
+  var tap = _curry2(function tap(fn, x) {
     fn(x);
     return x;
-  }
+  });
 
-  function throttle(wait, fn, options) {
-    if (options === void 0) {
-      options = {};
-    }
-    var timeout, context, args, result;
-    var previous = 0;
-    var later = function later() {
-      previous = options.leading === false ? 0 : Date.now();
-      timeout = null;
-      result = fn.apply(context, args);
-      if (!timeout) context = args = null;
-    };
-    var throttled = function throttled() {
-      var now = Date.now();
-      if (!previous && options.leading === false) previous = now;
-      var remaining = wait - (now - previous);
-      context = this;
-      args = arguments;
-      if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-        previous = now;
-        result = fn.apply(context, args);
-        if (!timeout) context = args = null;
-      } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
-      }
-      return result;
-    };
-    throttled.cancel = function () {
-      clearTimeout(timeout);
-      previous = 0;
-      timeout = context = args = null;
-    };
-    return throttled;
-  }
-
-  function unescape(string) {
+  var unescape = _curry1(function unescape(string) {
     var htmlUnescapes = {
       '&amp;': '&',
       '&lt;': '<',
@@ -637,31 +479,25 @@
     return string && reHasEscapedHtml.test(string) ? string.replace(reEscapedHtml, function (entity) {
       return htmlUnescapes[entity];
     }) : string;
-  }
+  });
 
   var idCounter = 0;
-  function uniqueId(prefix) {
+  var uniqueId = _curry1(function uniqueId(prefix) {
     var id = ++idCounter;
     return "" + prefix + id;
-  }
+  });
 
-  function values(obj) {
-    var props = Object.keys(obj);
-    var len = props.length;
-    var vals = [];
-    var idx = 0;
-    while (idx < len) {
-      vals[idx] = obj[props[idx]];
-      idx += 1;
-    }
-    return vals;
-  }
+  var values = _curry1(function values(obj) {
+    return Object.keys(obj).map(function (i) {
+      return obj[i];
+    });
+  });
 
-  function without(xs, list) {
+  var without = _curry2(function without(xs, list) {
     return list.filter(function (search) {
       return !includes(search, xs);
     });
-  }
+  });
 
   exports.__ = __;
   exports.castArray = castArray;
@@ -670,13 +506,10 @@
   exports.compose = compose;
   exports.curry = curry;
   exports.curryN = curryN;
-  exports.debounce = debounce;
   exports.defaultTo = defaultTo;
-  exports.defaultsDeep = defaultsDeep;
-  exports.defer = defer;
-  exports.delay = delay;
   exports.escape = escape;
   exports.flat = flat;
+  exports.flatten = flatten;
   exports.get = get;
   exports.has = has;
   exports.hasPath = hasPath;
@@ -686,7 +519,6 @@
   exports.isPlainObject = isPlainObject;
   exports.keys = keys;
   exports.memoize = memoize;
-  exports.merge = merge;
   exports.omit = omit;
   exports.once = once;
   exports.path = path;
@@ -694,7 +526,6 @@
   exports.pipe = pipe;
   exports.round = round;
   exports.tap = tap;
-  exports.throttle = throttle;
   exports.type = type;
   exports.unescape = unescape;
   exports.uniqueId = uniqueId;

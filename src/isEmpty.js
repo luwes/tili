@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 // https://github.com/ianstormtaylor/is-empty
 
 /**
@@ -20,7 +22,7 @@
  *      isEmpty({});          //=> true
  *      isEmpty({length: 0}); //=> false
  */
-function isEmpty(val) {
+const isEmpty = _curry1(function isEmpty(val) {
   // Null and Undefined...
   if (val == null) return true;
 
@@ -68,6 +70,6 @@ function isEmpty(val) {
 
   // Anything else...
   return false;
-}
+});
 
 export default isEmpty;

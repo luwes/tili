@@ -1,3 +1,4 @@
+import _curry2 from './internal/_curry2.js';
 import is from './is.js';
 import path from './path.js';
 
@@ -12,11 +13,11 @@ import path from './path.js';
  * @param  {Object} obj
  * @return {*}
  */
-function get(paths, obj) {
+const get = _curry2(function get(paths, obj) {
   if (is(String, paths)) {
     return path(paths.split('.'), obj);
   }
   return path(paths, obj);
-}
+});
 
 export default get;

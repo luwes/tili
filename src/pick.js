@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * Returns a partial copy of an object containing only the keys specified. If
  * the key does not exist, the property is ignored.
@@ -16,7 +18,7 @@
  *    pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
  *    pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
  */
-function pick(names, obj) {
+const pick = _curry2(function pick(names, obj) {
   var result = {};
   var idx = 0;
   while (idx < names.length) {
@@ -26,6 +28,6 @@ function pick(names, obj) {
     idx += 1;
   }
   return result;
-}
+});
 
 export default pick;

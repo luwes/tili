@@ -15,6 +15,5 @@ test('returns true only if plain object', t => {
   t.is(l.isPlainObject(new Date()), false);
   t.is(l.isPlainObject([1, 2, 3]), false);
   t.is(l.isPlainObject(null), false);
-  t.is(l.isPlainObject(), false);
   t.is(l.isPlainObject({ x: 1, y: 2 }), true);
 });

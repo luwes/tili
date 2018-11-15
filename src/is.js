@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * See if an object (`val`) is an instance of the supplied constructor. This
  * function will check up the inheritance chain, if any.
@@ -8,7 +10,7 @@
  * @category Type
  * @sig (* -> {*}) -> a -> Boolean
  * @param {Object} Ctor A constructor
- * @param {*} val The value to test
+ * @param {*} value The value to test
  * @return {Boolean}
  * @example
  *
@@ -21,8 +23,8 @@
  *    is(Object, 's'); //=> false
  *    is(Number, {}); //=> false
  */
-function is(Ctor, val) {
-  return val != null && (val.constructor === Ctor || val instanceof Ctor);
-}
+const is = _curry2(function is(Ctor, value) {
+  return value != null && (value.constructor === Ctor || value instanceof Ctor);
+});
 
 export default is;

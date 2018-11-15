@@ -1,3 +1,4 @@
+import _curry1 from './internal/_curry1.js';
 import _arity from './internal/_arity.js';
 
 /**
@@ -19,7 +20,7 @@ import _arity from './internal/_arity.js';
  *      addOneOnce(10); //=> 11
  *      addOneOnce(addOneOnce(50)); //=> 11
  */
-function once(fn) {
+const once = _curry1(function once(fn) {
   var called = false;
   var result;
   return _arity(fn.length, function() {
@@ -30,6 +31,6 @@ function once(fn) {
     result = fn.apply(this, arguments);
     return result;
   });
-}
+});
 
 export default once;

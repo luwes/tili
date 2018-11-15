@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 /**
  * Converts the characters "&", "<", ">", '"', and "'" in `string` to their
  * corresponding HTML entities.
@@ -27,7 +29,7 @@
  *    escape('fred, barney, & pebbles')
  *    // => 'fred, barney, &amp; pebbles'
  */
-function escape(string) {
+const escape = _curry1(function escape(string) {
   /* Used to map characters to HTML entities. */
   const htmlEscapes = {
     '&': '&amp;',
@@ -44,6 +46,6 @@ function escape(string) {
   return string && reHasUnescapedHtml.test(string)
     ? string.replace(reUnescapedHtml, chr => htmlEscapes[chr])
     : string;
-}
+});
 
 export default escape;

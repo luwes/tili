@@ -1,5 +1,7 @@
+import _curry1 from './internal/_curry1.js';
+
 /**
- * Casts `value` as an array if it's not one.
+ * If the provided `value` is an array returns a copy of it otherwise returns an array containing the original `value`.
  *
  * @static
  * @memberOf tili
@@ -24,19 +26,12 @@
  * _.castArray(undefined);
  * // => [undefined]
  *
- * _.castArray();
- * // => []
- *
  * var array = [1, 2, 3];
  * console.log(_.castArray(array) === array);
- * // => true
+ * // => false
  */
-function castArray() {
-  if (!arguments.length) {
-    return [];
-  }
-  var value = arguments[0];
-  return Array.isArray(value) ? value : [value];
-}
+const castArray = _curry1(function castArray(value) {
+  return Array.isArray(value) ? value.slice(0) : [value];
+});
 
 export default castArray;

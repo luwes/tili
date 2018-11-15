@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 /**
  * Memoize a function.
  *
@@ -8,7 +10,7 @@
  * @param  {Function} fn
  * @return {*}
  */
-function memoize(fn) {
+const memoize = _curry1(function memoize(fn) {
   let lastArgs = null;
   let lastResult = null;
   return function() {
@@ -18,7 +20,7 @@ function memoize(fn) {
     lastArgs = arguments;
     return lastResult;
   };
-}
+});
 
 function areArgumentsShallowlyEqual(prev, next) {
   if (prev === null || next === null || prev.length !== next.length) {

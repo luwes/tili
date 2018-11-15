@@ -1,21 +1,117 @@
 var __ = { '@@functional/placeholder': true };
 
-function castArray() {
-  if (!arguments.length) {
-    return [];
-  }
-  var value = arguments[0];
-  return Array.isArray(value) ? value : [value];
+function _isPlaceholder(a) {
+  return (
+    a != null && typeof a === 'object' && a['@@functional/placeholder'] === true
+  );
 }
 
-function clamp(min, max, value) {
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+
+const castArray = _curry1(function castArray(value) {
+  return Array.isArray(value) ? value.slice(0) : [value];
+});
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+      case 1:
+        return _isPlaceholder(a)
+          ? f2
+          : _curry1(function(_b) {
+              return fn(a, _b);
+            });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b)
+          ? f2
+          : _isPlaceholder(a)
+          ? _curry1(function(_a) {
+              return fn(_a, b);
+            })
+          : _isPlaceholder(b)
+          ? _curry1(function(_b) {
+              return fn(a, _b);
+            })
+          : fn(a, b);
+    }
+  };
+}
+
+function _curry3(fn) {
+  return function f3(a, b, c) {
+    switch (arguments.length) {
+      case 0:
+        return f3;
+      case 1:
+        return _isPlaceholder(a)
+          ? f3
+          : _curry2(function(_b, _c) {
+              return fn(a, _b, _c);
+            });
+      case 2:
+        return _isPlaceholder(a) && _isPlaceholder(b)
+          ? f3
+          : _isPlaceholder(a)
+          ? _curry2(function(_a, _c) {
+              return fn(_a, b, _c);
+            })
+          : _isPlaceholder(b)
+          ? _curry2(function(_b, _c) {
+              return fn(a, _b, _c);
+            })
+          : _curry1(function(_c) {
+              return fn(a, b, _c);
+            });
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) && _isPlaceholder(c)
+          ? f3
+          : _isPlaceholder(a) && _isPlaceholder(b)
+          ? _curry2(function(_a, _b) {
+              return fn(_a, _b, c);
+            })
+          : _isPlaceholder(a) && _isPlaceholder(c)
+          ? _curry2(function(_a, _c) {
+              return fn(_a, b, _c);
+            })
+          : _isPlaceholder(b) && _isPlaceholder(c)
+          ? _curry2(function(_b, _c) {
+              return fn(a, _b, _c);
+            })
+          : _isPlaceholder(a)
+          ? _curry1(function(_a) {
+              return fn(_a, b, c);
+            })
+          : _isPlaceholder(b)
+          ? _curry1(function(_b) {
+              return fn(a, _b, c);
+            })
+          : _isPlaceholder(c)
+          ? _curry1(function(_c) {
+              return fn(a, b, _c);
+            })
+          : fn(a, b, c);
+    }
+  };
+}
+
+const clamp = _curry3(function clamp(min, max, value) {
   if (min > max) {
     throw new Error(
       'min must not be greater than max in clamp(min, max, value)'
     );
   }
   return value < min ? min : value > max ? max : value;
-}
+});
 
 function _cloneRegExp(pattern) {
   return new RegExp(
@@ -28,13 +124,13 @@ function _cloneRegExp(pattern) {
   );
 }
 
-function type(val) {
+const type = _curry1(function type(val) {
   return val === null
     ? 'Null'
     : val === undefined
     ? 'Undefined'
     : Object.prototype.toString.call(val).slice(8, -1);
-}
+});
 
 function _clone(value, refFrom, refTo, deep) {
   var copy = function copy(copiedValue) {
@@ -69,20 +165,20 @@ function _clone(value, refFrom, refTo, deep) {
   }
 }
 
-function clone(value) {
+const clone = _curry1(function clone(value) {
   return value != null && typeof value.clone === 'function'
     ? value.clone()
     : _clone(value, [], [], true);
-}
+});
 
-function compose(...funcs) {
-  if (funcs.length === 0) {
+function compose(...fns) {
+  if (fns.length === 0) {
     return arg => arg;
   }
-  if (funcs.length === 1) {
-    return funcs[0];
+  if (fns.length === 1) {
+    return fns[0];
   }
-  return funcs.reduce((a, b) => (...args) => a(b(...args)));
+  return fns.reduce((a, b) => (...args) => a(b(...args)));
 }
 
 function _arity(n, fn) {
@@ -138,12 +234,6 @@ function _arity(n, fn) {
   }
 }
 
-function _isPlaceholder(a) {
-  return (
-    a != null && typeof a === 'object' && a['@@functional/placeholder'] === true
-  );
-}
-
 function _curryN(length, received, fn) {
   return function() {
     var combined = [];
@@ -181,105 +271,11 @@ function curry(fn, ...args) {
   return curryN(fn.length, fn, ...args);
 }
 
-function delay(wait, func, ...args) {
-  if (typeof func != 'function') {
-    throw new TypeError('Expected a function');
-  }
-  return setTimeout(func, +wait || 0, ...args);
-}
+const defaultTo = _curry2(function defaultTo(def, value) {
+  return value == null || value !== value ? def : value;
+});
 
-function debounce(wait, func, immediate = false) {
-  let timeout;
-  let result;
-  const later = function(context, args) {
-    timeout = null;
-    if (args) result = func.apply(context, args);
-  };
-  const debounced = function(...args) {
-    if (timeout) clearTimeout(timeout);
-    if (immediate) {
-      const callNow = !timeout;
-      timeout = setTimeout(later, wait);
-      if (callNow) result = func.apply(this, args);
-    } else {
-      timeout = delay(wait, later, this, args);
-    }
-    return result;
-  };
-  debounced.cancel = function() {
-    clearTimeout(timeout);
-    timeout = null;
-  };
-  return debounced;
-}
-
-function defaultTo(d, v) {
-  return v == null || v !== v ? d : v;
-}
-
-function isPlainObject(obj) {
-  if (typeof obj !== 'object' || obj === null) return false;
-  let proto = obj;
-  while (Object.getPrototypeOf(proto) !== null) {
-    proto = Object.getPrototypeOf(proto);
-  }
-  return Object.getPrototypeOf(obj) === proto;
-}
-
-function defaultsDeep(target, ...sources) {
-  return sources.reduce(_defaultsDeep, target);
-}
-function _defaultsDeep(target, source) {
-  if (target === source) {
-    return target;
-  }
-  if (Array.isArray(source)) {
-    return defaultsArray(target, source);
-  }
-  if (isPlainObject(source)) {
-    return defaultsObject(target, source);
-  }
-  if (target === undefined) {
-    return source;
-  }
-  return target;
-}
-function defaultsArray(target, source) {
-  if (target === undefined) target = [];
-  if (Array.isArray(target)) {
-    for (var i = 0; i < source.length; i++) {
-      target[i] = _defaultsDeep(target[i], source[i]);
-    }
-  }
-  return target;
-}
-function defaultsObject(target, source) {
-  if (target === undefined) target = {};
-  for (var key in source) {
-    target[key] = _defaultsDeep(target[key], source[key]);
-  }
-  return target;
-}
-
-function defer(func, ...args) {
-  if (typeof func != 'function') {
-    throw new TypeError('Expected a function');
-  }
-  var tick;
-  if (typeof process === 'object' && typeof process.nextTick === 'function') {
-    tick = process.nextTick;
-  } else if (typeof Promise === 'function') {
-    var resolve = Promise.resolve();
-    tick = resolve.then.bind(resolve);
-  } else if (typeof setImmediate === 'function') {
-    tick = setImmediate;
-  } else {
-    tick = setTimeout;
-  }
-  tick(() => func(...args));
-}
-
-function escape(string) {
+const escape = _curry1(function escape(string) {
   const htmlEscapes = {
     '&': '&amp;',
     '<': '&lt;',
@@ -292,52 +288,29 @@ function escape(string) {
   return string && reHasUnescapedHtml.test(string)
     ? string.replace(reUnescapedHtml, chr => htmlEscapes[chr])
     : string;
-}
+});
 
-function _isArrayLike(x) {
-  if (Array.isArray(x)) return true;
-  if (!x) return false;
-  if (typeof x !== 'object') return false;
-  if (typeof x === 'string') return false;
-  if (x.nodeType === 1) return !!x.length;
-  if (x.length === 0) return true;
-  if (x.length > 0) {
-    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
-  }
-  return false;
-}
+const flat = _curry2(function flat(depth, arr) {
+  return depth === 0
+    ? arr
+    : arr.reduce(
+        (acc, val) =>
+          Array.isArray(val)
+            ? acc.concat(flat(depth - 1, val))
+            : acc.concat(val),
+        []
+      );
+});
 
-function flat(depth, list) {
-  if (typeof depth !== 'number') {
-    list = depth;
-    depth = Number.MAX_VALUE;
-  }
-  var value, jlen, j;
-  var result = [];
-  var idx = 0;
-  var ilen = list.length;
-  while (idx < ilen) {
-    if (_isArrayLike(list[idx])) {
-      value = depth > 1 ? flat(depth - 1, list[idx]) : list[idx];
-      j = 0;
-      jlen = value.length;
-      while (j < jlen) {
-        result[result.length] = value[j];
-        j += 1;
-      }
-    } else {
-      result[result.length] = list[idx];
-    }
-    idx += 1;
-  }
-  return result;
-}
+const flatten = _curry1(function flatten(list) {
+  return flat(Infinity, list);
+});
 
-function is(Ctor, val) {
-  return val != null && (val.constructor === Ctor || val instanceof Ctor);
-}
+const is = _curry2(function is(Ctor, value) {
+  return value != null && (value.constructor === Ctor || value instanceof Ctor);
+});
 
-function path(paths, obj) {
+const path = _curry2(function path(paths, obj) {
   let val = obj;
   let idx = 0;
   while (idx < paths.length) {
@@ -348,20 +321,20 @@ function path(paths, obj) {
     idx += 1;
   }
   return val;
-}
+});
 
-function get(paths, obj) {
+const get = _curry2(function get(paths, obj) {
   if (is(String, paths)) {
     return path(paths.split('.'), obj);
   }
   return path(paths, obj);
-}
+});
 
 function _has(prop, obj) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-function hasPath(path, obj) {
+const hasPath = _curry2(function hasPath(path, obj) {
   if (path.length === 0) {
     return false;
   }
@@ -376,17 +349,17 @@ function hasPath(path, obj) {
     }
   }
   return true;
-}
+});
 
-function has(prop, obj) {
+const has = _curry2(function has(prop, obj) {
   return hasPath([prop], obj);
-}
+});
 
-function includes(search, arr) {
+const includes = _curry2(function includes(search, arr) {
   return arr.indexOf(search) !== -1;
-}
+});
 
-function isEmpty(val) {
+const isEmpty = _curry1(function isEmpty(val) {
   if (val == null) return true;
   if ('boolean' == typeof val) return false;
   if ('number' == typeof val) return val === 0;
@@ -412,11 +385,20 @@ function isEmpty(val) {
     }
   }
   return false;
-}
+});
 
-const keys = Object.keys;
+const isPlainObject = _curry1(function isPlainObject(obj) {
+  if (typeof obj !== 'object' || obj === null) return false;
+  let proto = obj;
+  while (Object.getPrototypeOf(proto) !== null) {
+    proto = Object.getPrototypeOf(proto);
+  }
+  return Object.getPrototypeOf(obj) === proto;
+});
 
-function memoize(fn) {
+const keys = _curry1(Object.keys);
+
+const memoize = _curry1(function memoize(fn) {
   let lastArgs = null;
   let lastResult = null;
   return function() {
@@ -426,7 +408,7 @@ function memoize(fn) {
     lastArgs = arguments;
     return lastResult;
   };
-}
+});
 function areArgumentsShallowlyEqual(prev, next) {
   if (prev === null || next === null || prev.length !== next.length) {
     return false;
@@ -440,52 +422,7 @@ function areArgumentsShallowlyEqual(prev, next) {
   return true;
 }
 
-function _isFunction(value) {
-  return value != null && typeof value == 'function';
-}
-
-function _isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-function merge(target, ...sources) {
-  return sources.reduce(_merge, target);
-}
-function _merge(target, source) {
-  if (target === source) {
-    return target;
-  }
-  if (Array.isArray(source)) {
-    return mergeArray(target, source);
-  }
-  if (isPlainObject(source)) {
-    return mergeObject(target, source);
-  }
-  if (source === undefined) {
-    return target;
-  }
-  return source;
-}
-function mergeArray(target, source) {
-  if (!Array.isArray(target)) {
-    target = [];
-  }
-  for (var i = 0; i < source.length; i++) {
-    target[i] = _merge(target[i], source[i]);
-  }
-  return target;
-}
-function mergeObject(target, source) {
-  if (!_isObjectLike(target) && !_isFunction(target)) {
-    target = {};
-  }
-  for (var key in source) {
-    target[key] = _merge(target[key], source[key]);
-  }
-  return target;
-}
-
-function omit(names, obj) {
+const omit = _curry2(function omit(names, obj) {
   var result = {};
   var index = {};
   var idx = 0;
@@ -500,9 +437,9 @@ function omit(names, obj) {
     }
   }
   return result;
-}
+});
 
-function once(fn) {
+const once = _curry1(function once(fn) {
   var called = false;
   var result;
   return _arity(fn.length, function() {
@@ -513,9 +450,9 @@ function once(fn) {
     result = fn.apply(this, arguments);
     return result;
   });
-}
+});
 
-function pick(names, obj) {
+const pick = _curry2(function pick(names, obj) {
   var result = {};
   var idx = 0;
   while (idx < names.length) {
@@ -525,78 +462,42 @@ function pick(names, obj) {
     idx += 1;
   }
   return result;
-}
+});
 
-function pipe(...funcs) {
-  if (funcs.length === 0) {
+function pipe(...fns) {
+  if (fns.length === 0) {
     return arg => arg;
   }
-  if (funcs.length === 1) {
-    return funcs[0];
+  if (fns.length === 1) {
+    return fns[0];
   }
-  return funcs.reduce((a, b) => (...args) => b(a(...args)));
+  return fns.reduce((a, b) => (...args) => b(a(...args)));
 }
 
 function _round(methodName) {
-  const func = Math[methodName];
-  return (number, precision) => {
+  const fn = Math[methodName];
+  return (precision, number) => {
     precision = precision == null ? 0 : Math.min(precision, 292);
     if (precision) {
       let pair = `${number}e`.split('e');
-      const value = func(`${pair[0]}e${+pair[1] + precision}`);
+      const value = fn(`${pair[0]}e${+pair[1] + precision}`);
       pair = `${value}e`.split('e');
       return +`${pair[0]}e${+pair[1] - precision}`;
     }
-    return func(number);
+    return fn(number);
   };
 }
 
-function round(number, precision) {
-  return _round('round')(number, precision);
-}
+const round = _curry2(function round(precision, number) {
+  return _round('round')(precision, number);
+});
 
-function tap(fn, x) {
+const tap = _curry2(function tap(fn, x) {
   fn(x);
   return x;
-}
+});
 
-function throttle(wait, fn, options = {}) {
-  let timeout, context, args, result;
-  let previous = 0;
-  const later = function() {
-    previous = options.leading === false ? 0 : Date.now();
-    timeout = null;
-    result = fn.apply(context, args);
-    if (!timeout) context = args = null;
-  };
-  const throttled = function() {
-    const now = Date.now();
-    if (!previous && options.leading === false) previous = now;
-    const remaining = wait - (now - previous);
-    context = this;
-    args = arguments;
-    if (remaining <= 0 || remaining > wait) {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-      previous = now;
-      result = fn.apply(context, args);
-      if (!timeout) context = args = null;
-    } else if (!timeout && options.trailing !== false) {
-      timeout = setTimeout(later, remaining);
-    }
-    return result;
-  };
-  throttled.cancel = function() {
-    clearTimeout(timeout);
-    previous = 0;
-    timeout = context = args = null;
-  };
-  return throttled;
-}
-
-function unescape(string) {
+const unescape = _curry1(function unescape(string) {
   const htmlUnescapes = {
     '&amp;': '&',
     '&lt;': '<',
@@ -609,28 +510,20 @@ function unescape(string) {
   return string && reHasEscapedHtml.test(string)
     ? string.replace(reEscapedHtml, entity => htmlUnescapes[entity])
     : string;
-}
+});
 
 let idCounter = 0;
-function uniqueId(prefix) {
+const uniqueId = _curry1(function uniqueId(prefix) {
   var id = ++idCounter;
   return `${prefix}${id}`;
-}
+});
 
-function values(obj) {
-  var props = Object.keys(obj);
-  var len = props.length;
-  var vals = [];
-  var idx = 0;
-  while (idx < len) {
-    vals[idx] = obj[props[idx]];
-    idx += 1;
-  }
-  return vals;
-}
+const values = _curry1(function values(obj) {
+  return Object.keys(obj).map(i => obj[i]);
+});
 
-function without(xs, list) {
+const without = _curry2(function without(xs, list) {
   return list.filter(search => !includes(search, xs));
-}
+});
 
-export { __, castArray, clamp, clone, compose, curry, curryN, debounce, defaultTo, defaultsDeep, defer, delay, escape, flat, get, has, hasPath, includes, is, isEmpty, isPlainObject, keys, memoize, merge, omit, once, path, pick, pipe, round, tap, throttle, type, unescape, uniqueId, values, without };
+export { __, castArray, clamp, clone, compose, curry, curryN, defaultTo, escape, flat, flatten, get, has, hasPath, includes, is, isEmpty, isPlainObject, keys, memoize, omit, once, path, pick, pipe, round, tap, type, unescape, uniqueId, values, without };

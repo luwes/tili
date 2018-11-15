@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 /**
  * Checks if `value` is a plain object, that is, an object created by the
  * `Object` constructor or one with a `[[Prototype]]` of `null`.
@@ -26,7 +28,7 @@
  *    isPlainObject(Object.create(null))
  *    // => true
  */
-function isPlainObject(obj) {
+const isPlainObject = _curry1(function isPlainObject(obj) {
   if (typeof obj !== 'object' || obj === null) return false;
 
   let proto = obj;
@@ -35,6 +37,6 @@ function isPlainObject(obj) {
   }
 
   return Object.getPrototypeOf(obj) === proto;
-}
+});
 
 export default isPlainObject;

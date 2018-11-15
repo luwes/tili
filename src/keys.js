@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 /**
  * Returns a list containing the names of all the enumerable own properties of
  * the supplied object.
@@ -17,5 +19,5 @@
  *      keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
  */
 
-const keys = Object.keys;
+const keys = _curry1(Object.keys);
 export default keys;

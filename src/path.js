@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * Retrieve the value at a given path.
  *
@@ -15,7 +17,7 @@
  *    path(['a', 'b'], {a: {b: 2}}); //=> 2
  *    path(['a', 'b'], {c: {b: 2}}); //=> undefined
  */
-function path(paths, obj) {
+const path = _curry2(function path(paths, obj) {
   let val = obj;
   let idx = 0;
   while (idx < paths.length) {
@@ -26,6 +28,6 @@ function path(paths, obj) {
     idx += 1;
   }
   return val;
-}
+});
 
 export default path;

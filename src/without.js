@@ -1,3 +1,4 @@
+import _curry2 from './internal/_curry2.js';
 import includes from './includes.js';
 
 /**
@@ -17,8 +18,8 @@ import includes from './includes.js';
  *
  *      without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
  */
-function without(xs, list) {
+const without = _curry2(function without(xs, list) {
   return list.filter(search => !includes(search, xs));
-}
+});
 
 export default without;

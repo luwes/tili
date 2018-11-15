@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * Check if string or array includes the searched part.
  *
@@ -9,8 +11,8 @@
  * @param  {Array|String} arr
  * @return {Boolean}
  */
-function includes(search, arr) {
+const includes = _curry2(function includes(search, arr) {
   return arr.indexOf(search) !== -1;
-}
+});
 
 export default includes;

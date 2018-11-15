@@ -45,34 +45,29 @@ import { get, compose, merge } from 'tili';
 
 - [tili](#tili) : <code>object</code>
   - _Function_
-    - [.compose(...funcs)](#tili.compose) ⇒ <code>function</code>
+    - [.compose(...fns)](#tili.compose) ⇒ <code>function</code>
     - [.curry(fn, ...args)](#tili.curry) ⇒ <code>function</code>
     - [.curryN(length, fn)](#tili.curryN) ⇒ <code>function</code>
-    - [.debounce(wait, func, [immediate])](#tili.debounce) ⇒ <code>function</code>
-    - [.defer(func, [...args])](#tili.defer)
-    - [.delay(wait, func, [...args])](#tili.delay) ⇒ <code>number</code>
     - [.memoize(fn)](#tili.memoize) ⇒ <code>\*</code>
     - [.once(fn)](#tili.once) ⇒ <code>function</code>
-    - [.pipe(...funcs)](#tili.pipe) ⇒ <code>function</code>
+    - [.pipe(...fns)](#tili.pipe) ⇒ <code>function</code>
     - [.tap(fn, x)](#tili.tap) ⇒ <code>\*</code>
-    - [.throttle(wait, fn, [options])](#tili.throttle) ⇒ <code>function</code>
   - _List_
-    - [.flat([depth], list)](#tili.flat) ⇒ <code>Array</code>
+    - [.flat(depth, arr)](#tili.flat) ⇒ <code>Array</code>
+    - [.flatten(list)](#tili.flatten) ⇒ <code>Array</code>
     - [.includes(search, arr)](#tili.includes) ⇒ <code>Boolean</code>
     - [.without(xs, list)](#tili.without) ⇒ <code>Array</code>
   - _Logic_
-    - [.defaultTo(d, v)](#tili.defaultTo) ⇒ <code>\*</code>
+    - [.defaultTo(def, value)](#tili.defaultTo) ⇒ <code>\*</code>
     - [.isEmpty(val)](#tili.isEmpty) ⇒ <code>Boolean</code>
   - _Math_
-    - [.round(number, [precision])](#tili.round) ⇒ <code>number</code>
+    - [.round(precision, number)](#tili.round) ⇒ <code>number</code>
   - _Object_
     - [.clone(value)](#tili.clone) ⇒ <code>\*</code>
-    - [.defaultsDeep(target, [...sources])](#tili.defaultsDeep) ⇒ <code>Object</code>
     - [.get(paths, obj)](#tili.get) ⇒ <code>\*</code>
     - [.has(prop, obj)](#tili.has) ⇒ <code>Boolean</code>
     - [.hasPath(path, obj)](#tili.hasPath) ⇒ <code>Boolean</code>
     - [.keys(obj)](#tili.keys) ⇒ <code>Array</code>
-    - [.merge(target, [...sources])](#tili.merge) ⇒ <code>Object</code>
     - [.omit(names, obj)](#tili.omit) ⇒ <code>Object</code>
     - [.path(paths, obj)](#tili.path) ⇒ <code>\*</code>
     - [.pick(names, obj)](#tili.pick) ⇒ <code>Object</code>
@@ -83,33 +78,35 @@ import { get, compose, merge } from 'tili';
     - [.escape([string])](#tili.escape) ⇒ <code>string</code>
     - [.unescape([string])](#tili.unescape) ⇒ <code>string</code>
   - _Type_
-    - [.castArray(value)](#tili.castArray) ⇒ <code>Array</code>
-    - [.is(Ctor, val)](#tili.is) ⇒ <code>Boolean</code>
+    - [.castArray](#tili.castArray) ⇒ <code>Array</code>
+    - [.is(Ctor, value)](#tili.is) ⇒ <code>Boolean</code>
     - [.isPlainObject(obj)](#tili.isPlainObject) ⇒ <code>boolean</code>
     - [.type(val)](#tili.type) ⇒ <code>String</code>
   - _Util_
-    - [.uniqueId([prefix])](#tili.uniqueId) ⇒ <code>string</code>
+    - [.uniqueId(prefix)](#tili.uniqueId) ⇒ <code>string</code>
 
 ---
 
 <a name="tili.compose"></a>
 
-#### \_.compose(...funcs) ⇒ <code>function</code>
+#### \_.compose(...fns) ⇒ <code>function</code>
 
 Composes single-argument functions from right to left. The rightmost
 function can take multiple arguments as it provides the signature for
 the resulting composite function.
 
+**Note:** The result of compose is not automatically curried.
+
 **Kind**: static method of [<code>tili</code>](#tili)  
-**Returns**: <code>function</code> - - A function obtained by composing the argument functions
+**Returns**: <code>function</code> - A function obtained by composing the argument functions
 from right to left. For example, compose(f, g, h) is identical to doing
 (...args) => f(g(h(...args))).  
 **Category**: Function  
 **Since**: v0.1.0
 
-| Param    | Type                  | Description               |
-| -------- | --------------------- | ------------------------- |
-| ...funcs | <code>function</code> | The functions to compose. |
+| Param  | Type                  | Description               |
+| ------ | --------------------- | ------------------------- |
+| ...fns | <code>function</code> | The functions to compose. |
 
 ---
 
@@ -182,72 +179,6 @@ g(4); //=> 10
 
 ---
 
-<a name="tili.debounce"></a>
-
-#### \_.debounce(wait, func, [immediate]) ⇒ <code>function</code>
-
-Returns a function, that, as long as it continues to be invoked, will not
-be triggered. The function will be called after it stops being called for
-N milliseconds. If `immediate` is passed, trigger the function on the
-leading edge, instead of the trailing.
-
-**Kind**: static method of [<code>tili</code>](#tili)  
-**Category**: Function  
-**Since**: v0.4.0
-
-| Param       | Type                  | Default            | Description            |
-| ----------- | --------------------- | ------------------ | ---------------------- |
-| wait        | <code>Number</code>   |                    | Amount of milliseconds |
-| func        | <code>function</code> |                    |                        |
-| [immediate] | <code>Boolean</code>  | <code>false</code> |                        |
-
----
-
-<a name="tili.defer"></a>
-
-#### \_.defer(func, [...args])
-
-Defers invoking the func until the current call stack has cleared. Any additional arguments are provided to func when it's invoked.
-
-**Kind**: static method of [<code>tili</code>](#tili)  
-**Category**: Function  
-**See**: https://github.com/jamiebuilds/tickedoff  
-**Since**: v0.4.0
-
-| Param     | Type                  | Description        |
-| --------- | --------------------- | ------------------ |
-| func      | <code>function</code> | Deferred function  |
-| [...args] | <code>\*</code>       | Optional arguments |
-
----
-
-<a name="tili.delay"></a>
-
-#### \_.delay(wait, func, [...args]) ⇒ <code>number</code>
-
-Invokes `func` after `wait` milliseconds. Any additional arguments are
-provided to `func` when it's invoked.
-
-**Kind**: static method of [<code>tili</code>](#tili)  
-**Returns**: <code>number</code> - Returns the timer id.  
-**Category**: Function  
-**Since**: 0.4.0
-
-| Param     | Type                  | Description                                     |
-| --------- | --------------------- | ----------------------------------------------- |
-| wait      | <code>number</code>   | The number of milliseconds to delay invocation. |
-| func      | <code>function</code> | The function to delay.                          |
-| [...args] | <code>\*</code>       | The arguments to invoke `func` with.            |
-
-**Example**
-
-```js
-delay(text => console.log(text), 1000, 'later');
-// => Logs 'later' after one second.
-```
-
----
-
 <a name="tili.memoize"></a>
 
 #### \_.memoize(fn) ⇒ <code>\*</code>
@@ -295,11 +226,13 @@ addOneOnce(addOneOnce(50)); //=> 11
 
 <a name="tili.pipe"></a>
 
-#### \_.pipe(...funcs) ⇒ <code>function</code>
+#### \_.pipe(...fns) ⇒ <code>function</code>
 
 Pipes single-argument functions from left to right. The leftmost
 function can take multiple arguments as it provides the signature for
 the resulting composite function.
+
+**Note:** The result of pipe is not automatically curried.
 
 **Kind**: static method of [<code>tili</code>](#tili)  
 **Returns**: <code>function</code> - - A function obtained by composing the argument functions
@@ -308,9 +241,9 @@ from left to right. For example, pipe(f, g, h) is identical to doing
 **Category**: Function  
 **Since**: v0.10.0
 
-| Param    | Type                  | Description               |
-| -------- | --------------------- | ------------------------- |
-| ...funcs | <code>function</code> | The functions to compose. |
+| Param  | Type                  | Description               |
+| ------ | --------------------- | ------------------------- |
+| ...fns | <code>function</code> | The functions to compose. |
 
 ---
 
@@ -342,29 +275,36 @@ tap(sayX, 100); //=> 100
 
 ---
 
-<a name="tili.throttle"></a>
+<a name="tili.flat"></a>
 
-#### \_.throttle(wait, fn, [options]) ⇒ <code>function</code>
+#### \_.flat(depth, arr) ⇒ <code>Array</code>
 
-Throttle a function.
+Returns a new array by pulling every item out of it (and all its sub-arrays)
+and putting them in a new array, depth-first.
 
 **Kind**: static method of [<code>tili</code>](#tili)  
-**Category**: Function  
-**Since**: v0.2.0
+**Returns**: <code>Array</code> - The flattened array.  
+**Category**: List  
+**Sig**: [a] -> [b]  
+**Since**: v0.12.0
 
-| Param              | Type                  | Default           | Description                       |
-| ------------------ | --------------------- | ----------------- | --------------------------------- |
-| wait               | <code>Number</code>   |                   |                                   |
-| fn                 | <code>function</code> |                   |                                   |
-| [options]          | <code>Object</code>   |                   |                                   |
-| [options.leading]  | <code>Boolean</code>  | <code>true</code> | Trigger a leading function call.  |
-| [options.trailing] | <code>Boolean</code>  | <code>true</code> | Trigger a trailing function call. |
+| Param | Type                | Description              |
+| ----- | ------------------- | ------------------------ |
+| depth | <code>Number</code> | The flatten depth level. |
+| arr   | <code>Array</code>  | The array to consider.   |
+
+**Example**
+
+```js
+flat(10, [1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+//=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+```
 
 ---
 
-<a name="tili.flat"></a>
+<a name="tili.flatten"></a>
 
-#### \_.flat([depth], list) ⇒ <code>Array</code>
+#### \_.flatten(list) ⇒ <code>Array</code>
 
 Returns a new list by pulling every item out of it (and all its sub-arrays)
 and putting them in a new array, depth-first.
@@ -373,17 +313,16 @@ and putting them in a new array, depth-first.
 **Returns**: <code>Array</code> - The flattened list.  
 **Category**: List  
 **Sig**: [a] -> [b]  
-**Since**: v0.12.0
+**Since**: v0.13.0
 
-| Param   | Type                | Description              |
-| ------- | ------------------- | ------------------------ |
-| [depth] | <code>Number</code> | The flatten depth level. |
-| list    | <code>Array</code>  | The array to consider.   |
+| Param | Type               | Description            |
+| ----- | ------------------ | ---------------------- |
+| list  | <code>Array</code> | The array to consider. |
 
 **Example**
 
 ```js
-flat([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
 //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 ```
 
@@ -435,7 +374,7 @@ without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
 
 <a name="tili.defaultTo"></a>
 
-#### \_.defaultTo(d, v) ⇒ <code>\*</code>
+#### \_.defaultTo(def, value) ⇒ <code>\*</code>
 
 Default to a value if the passed is null or undefined.
 
@@ -445,8 +384,8 @@ Default to a value if the passed is null or undefined.
 
 | Param | Type            | Description        |
 | ----- | --------------- | ------------------ |
-| d     | <code>\*</code> | The default value. |
-| v     | <code>\*</code> | The passed value.  |
+| def   | <code>\*</code> | The default value. |
+| value | <code>\*</code> | The passed value.  |
 
 ---
 
@@ -481,7 +420,7 @@ isEmpty({ length: 0 }); //=> false
 
 <a name="tili.round"></a>
 
-#### \_.round(number, [precision]) ⇒ <code>number</code>
+#### \_.round(precision, number) ⇒ <code>number</code>
 
 Computes `number` rounded to `precision`.
 
@@ -490,21 +429,21 @@ Computes `number` rounded to `precision`.
 **Category**: Math  
 **Since**: 0.4.0
 
-| Param       | Type                | Default        | Description                |
-| ----------- | ------------------- | -------------- | -------------------------- |
-| number      | <code>number</code> |                | The number to round.       |
-| [precision] | <code>number</code> | <code>0</code> | The precision to round to. |
+| Param     | Type                | Description                |
+| --------- | ------------------- | -------------------------- |
+| precision | <code>number</code> | The precision to round to. |
+| number    | <code>number</code> | The number to round.       |
 
 **Example**
 
 ```js
-round(4.006);
+round(0, 4.006);
 // => 4
 
-round(4.006, 2);
+round(2, 4.006);
 // => 4.01
 
-round(4060, -2);
+round(-2, 4060);
 // => 4100
 ```
 
@@ -537,37 +476,6 @@ const objects = [{}, {}, {}];
 const objectsClone = clone(objects);
 objects === objectsClone; //=> false
 objects[0] === objectsClone[0]; //=> false
-```
-
----
-
-<a name="tili.defaultsDeep"></a>
-
-#### \_.defaultsDeep(target, [...sources]) ⇒ <code>Object</code>
-
-Deeply assigns own and inherited enumerable string keyed properties of source
-objects to the destination object for all destination properties that
-resolve to `undefined`. Source objects are applied from left to right.
-Once a property is set, additional values of the same property are ignored.
-
-**Note:** This method mutates `object`.
-
-**Kind**: static method of [<code>tili</code>](#tili)  
-**Returns**: <code>Object</code> - Returns `object`.  
-**Category**: Object  
-**See**: defaults  
-**Since**: 0.7.0
-
-| Param        | Type                | Description             |
-| ------------ | ------------------- | ----------------------- |
-| target       | <code>Object</code> | The destination object. |
-| [...sources] | <code>Object</code> | The source objects.     |
-
-**Example**
-
-```js
-defaultsDeep({ a: { b: 2 } }, { a: { b: 1, c: 3 } });
-// => { 'a': { 'b': 2, 'c': 3 } }
 ```
 
 ---
@@ -609,13 +517,13 @@ Returns whether or not an object has an own property with the specified name
 **Example**
 
 ```js
-const hasName = curry(has)('name');
+const hasName = has('name');
 hasName({ name: 'alice' }); //=> true
 hasName({ name: 'bob' }); //=> true
 hasName({}); //=> false
 
 const point = { x: 0, y: 0 };
-const pointHas = curry(has)(__, point);
+const pointHas = has(__, point);
 pointHas('x'); //=> true
 pointHas('y'); //=> true
 pointHas('z'); //=> false
@@ -678,47 +586,6 @@ across different JS platforms.
 
 ```js
 keys({ a: 1, b: 2, c: 3 }); //=> ['a', 'b', 'c']
-```
-
----
-
-<a name="tili.merge"></a>
-
-#### \_.merge(target, [...sources]) ⇒ <code>Object</code>
-
-This method is like `assign` except that it recursively merges own and
-inherited enumerable string keyed properties of source objects into the
-destination object. Source properties that resolve to `undefined` are
-skipped if a destination value exists. Array and plain object properties
-are merged recursively. Other objects and value types are overridden by
-assignment. Source objects are applied from left to right. Subsequent
-sources overwrite property assignments of previous sources.
-
-**Note:** This method mutates `target`.
-
-**Kind**: static method of [<code>tili</code>](#tili)  
-**Returns**: <code>Object</code> - Returns `object`.  
-**Category**: Object  
-**Since**: 0.4.0
-
-| Param        | Type                | Description             |
-| ------------ | ------------------- | ----------------------- |
-| target       | <code>Object</code> | The destination object. |
-| [...sources] | <code>Object</code> | The source objects.     |
-
-**Example**
-
-```js
-const object = {
-  a: [{ b: 2 }, { d: 4 }]
-};
-
-const other = {
-  a: [{ c: 3 }, { e: 5 }]
-};
-
-merge(object, other);
-// => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
 ```
 
 ---
@@ -931,11 +798,11 @@ unescape('fred, barney, &amp; pebbles');
 
 <a name="tili.castArray"></a>
 
-#### \_.castArray(value) ⇒ <code>Array</code>
+#### \_.castArray ⇒ <code>Array</code>
 
-Casts `value` as an array if it's not one.
+If the provided `value` is an array returns a copy of it otherwise returns an array containing the original `value`.
 
-**Kind**: static method of [<code>tili</code>](#tili)  
+**Kind**: static constant of [<code>tili</code>](#tili)  
 **Returns**: <code>Array</code> - Returns the cast array.  
 **Category**: Type  
 **Since**: 0.12.0
@@ -962,19 +829,16 @@ _.castArray(null);
 _.castArray(undefined);
 // => [undefined]
 
-_.castArray();
-// => []
-
 var array = [1, 2, 3];
 console.log(_.castArray(array) === array);
-// => true
+// => false
 ```
 
 ---
 
 <a name="tili.is"></a>
 
-#### \_.is(Ctor, val) ⇒ <code>Boolean</code>
+#### \_.is(Ctor, value) ⇒ <code>Boolean</code>
 
 See if an object (`val`) is an instance of the supplied constructor. This
 function will check up the inheritance chain, if any.
@@ -987,7 +851,7 @@ function will check up the inheritance chain, if any.
 | Param | Type                | Description       |
 | ----- | ------------------- | ----------------- |
 | Ctor  | <code>Object</code> | A constructor     |
-| val   | <code>\*</code>     | The value to test |
+| value | <code>\*</code>     | The value to test |
 
 **Example**
 
@@ -1078,7 +942,7 @@ type(undefined); //=> "Undefined"
 
 <a name="tili.uniqueId"></a>
 
-#### \_.uniqueId([prefix]) ⇒ <code>string</code>
+#### \_.uniqueId(prefix) ⇒ <code>string</code>
 
 Generates a unique ID. If `prefix` is given, the ID is appended to it.
 
@@ -1087,9 +951,9 @@ Generates a unique ID. If `prefix` is given, the ID is appended to it.
 **Category**: Util  
 **Since**: 0.1.0
 
-| Param    | Type                | Default                               | Description                      |
-| -------- | ------------------- | ------------------------------------- | -------------------------------- |
-| [prefix] | <code>string</code> | <code>&quot;&#x27;&#x27;&quot;</code> | The value to prefix the ID with. |
+| Param  | Type                | Description                      |
+| ------ | ------------------- | -------------------------------- |
+| prefix | <code>string</code> | The value to prefix the ID with. |
 
 **Example**
 

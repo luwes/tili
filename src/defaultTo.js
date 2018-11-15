@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * Default to a value if the passed is null or undefined.
  *
@@ -5,12 +7,12 @@
  * @memberOf tili
  * @since v0.1.0
  * @category Logic
- * @param  {*} d - The default value.
- * @param  {*} v - The passed value.
+ * @param  {*} def - The default value.
+ * @param  {*} value - The passed value.
  * @return {*}
  */
-function defaultTo(d, v) {
-  return v == null || v !== v ? d : v;
-}
+const defaultTo = _curry2(function defaultTo(def, value) {
+  return value == null || value !== value ? def : value;
+});
 
 export default defaultTo;

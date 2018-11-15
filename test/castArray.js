@@ -12,15 +12,10 @@ test('should wrap non-array items in an array', function(t) {
   t.deepEqual(actual, expected);
 });
 
-test('should return array values by reference', function(t) {
-  t.plan(1);
+test('should return a new copy of the array', function(t) {
+  t.plan(2);
 
   var array = [1];
-  t.is(l.castArray(array), array);
-});
-
-test('should return an empty array when no arguments are given', function(t) {
-  t.plan(1);
-
-  t.deepEqual(l.castArray(), []);
+  t.not(l.castArray(array), array);
+  t.deepEqual(l.castArray(array), array);
 });

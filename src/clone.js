@@ -1,3 +1,4 @@
+import _curry1 from './internal/_curry1.js';
 import _clone from './internal/_clone.js';
 
 /**
@@ -21,10 +22,10 @@ import _clone from './internal/_clone.js';
  *    objects === objectsClone; //=> false
  *    objects[0] === objectsClone[0]; //=> false
  */
-function clone(value) {
+const clone = _curry1(function clone(value) {
   return value != null && typeof value.clone === 'function'
     ? value.clone()
     : _clone(value, [], [], true);
-}
+});
 
 export default clone;

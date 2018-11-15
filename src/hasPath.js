@@ -1,3 +1,4 @@
+import _curry2 from './internal/_curry2.js';
 import _has from './internal/_has.js';
 
 /**
@@ -21,7 +22,7 @@ import _has from './internal/_has.js';
  *      hasPath(['a', 'b'], {a: {c: 2}});         // => false
  *      hasPath(['a', 'b'], {});                  // => false
  */
-function hasPath(path, obj) {
+const hasPath = _curry2(function hasPath(path, obj) {
   if (path.length === 0) {
     return false;
   }
@@ -36,6 +37,6 @@ function hasPath(path, obj) {
     }
   }
   return true;
-}
+});
 
 export default hasPath;

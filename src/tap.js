@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * Runs the given function with the supplied object, then returns the object.
  *
@@ -18,9 +20,9 @@
  *
  * @symb tap(f, a) = a
  */
-function tap(fn, x) {
+const tap = _curry2(function tap(fn, x) {
   fn(x);
   return x;
-}
+});
 
 export default tap;

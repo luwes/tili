@@ -1,3 +1,5 @@
+import _curry2 from './internal/_curry2.js';
+
 /**
  * Returns a partial copy of an object omitting the keys specified.
  *
@@ -14,7 +16,7 @@
  *
  *    omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, c: 3}
  */
-function omit(names, obj) {
+const omit = _curry2(function omit(names, obj) {
   var result = {};
   var index = {};
   var idx = 0;
@@ -31,6 +33,6 @@ function omit(names, obj) {
     }
   }
   return result;
-}
+});
 
 export default omit;

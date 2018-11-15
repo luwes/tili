@@ -1,3 +1,5 @@
+import _curry1 from './internal/_curry1.js';
+
 let idCounter = 0;
 
 /**
@@ -7,7 +9,7 @@ let idCounter = 0;
  * @memberOf tili
  * @since 0.1.0
  * @category Util
- * @param {string} [prefix=''] The value to prefix the ID with.
+ * @param {string} prefix The value to prefix the ID with.
  * @return {string} Returns the unique ID.
  * @example
  *
@@ -17,9 +19,9 @@ let idCounter = 0;
  *    uniqueId();
  *    // => '105'
  */
-function uniqueId(prefix) {
+const uniqueId = _curry1(function uniqueId(prefix) {
   var id = ++idCounter;
   return `${prefix}${id}`;
-}
+});
 
 export default uniqueId;
